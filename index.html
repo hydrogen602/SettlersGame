@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body {
+                margin: 0px;
+            }
+        </style>
+
+    </head>
+    <body>
+        <div id="box"></div>
+
+        <script src="screen.js"></script>
+        <script src="grid.js"></script>
+        <script>
+            var can = box.children[0];
+
+            var ctx = can.getContext("2d");
+            // ctx.fillStyle = 'rgb(255, 0, 0)';
+            // ctx.beginPath();
+            // ctx.moveTo(0, 0);
+            // coords = hexGridToPx(1, 0);
+
+            // console.log(coords.x, coords.y);
+            // ctx.lineTo(coords.x, coords.y);
+            // ctx.stroke();
+
+            ctx.fillStyle = 'rgb(0, 0, 0)';
+            drawHex(2, 2, ctx);
+            drawHex(3, 3, ctx);
+            drawHex()
+
+            ctx.fillStyle = 'rgb(255, 0, 0)';
+            drawHex(4, 2, ctx);
+            drawHex(5, 3, ctx);
+
+            ctx.fillStyle = 'rgb(255, 255, 0)';
+            drawHex(6, 2, ctx);
+            drawHex(7, 3, ctx);
+            
+            
+
+        </script>
+    </body>
+</html>
