@@ -1,14 +1,17 @@
 
 const sectionLength: number = 50
 
-function Point(x: number, y: number) {
-    var ob = Object()
-    ob.x = x;
-    ob.y = y;
-    return ob
+export class Point {
+    x: number;
+    y: number;
+
+    constructor(x: number, y: number) {
+        this.x = x;
+        this.y = y;
+    }
 }
 
-function hexGridToPx(row: number, col: number) {
+function hexGridToPx(row: number, col: number): Point {
     //  
     //  /--\
     //  \--/
@@ -23,7 +26,7 @@ function hexGridToPx(row: number, col: number) {
 
     var y = hexHeight * row;
 
-    return Point(x, y);
+    return new Point(x, y);
 }
 
 export function drawHex(row: number, col: number, ctx: CanvasRenderingContext2D) {
