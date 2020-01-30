@@ -1,52 +1,9 @@
 
 import grid = require("./grid");
 import screen = require("./screen");
+import { Tile, ResourceType } from "./dataTypes";
+
 var ctx = screen.ctx;
-
-var x: number = 4;
-var y: number = 4;
-
-function assert(condition: boolean, message: string) {
-    if (!condition) {
-        throw message || "Assertion failed";
-    }
-}
-
-//import { strokeHex } from "./grid"
-//import { ctx } from "./screen"
-
-enum ResourceType {
-    Desert = 1,
-    Grassland,
-    Forest,
-    Mountain,
-    Farmland,
-    Quarry
-}
-
-class Tile {
-    p: grid.Point;
-    resourceType: ResourceType;
-    diceValue: number;
-
-    constructor(location: grid.Point, resource: ResourceType, diceValue: number) {
-        assert(parseInt(diceValue.toString()) == diceValue, "diceValue should be an integer")
-
-        this.p = location;
-        this.resourceType = resource;
-        this.diceValue = diceValue;
-    }
-
-    strokeTile(ctx: CanvasRenderingContext2D) {
-        if (this.resourceType == ResourceType.Forest) {
-            ctx.strokeStyle = "green";
-        }
-        if (this.resourceType == ResourceType.Quarry) {
-            ctx.strokeStyle = "red";
-        }
-        grid.strokeHex(this.p.y + y, this.p.x + x, ctx);
-    }
-}
 
 class GameMap {
     sz: number;
@@ -58,7 +15,7 @@ class GameMap {
 
 function generateMap(n: number, ctx: CanvasRenderingContext2D): Array<Tile> {
 
-    n = 4;
+    n = 3;
 
     var nP: number = (n - 1) / 2;
     var nP2: number = (n - 2) / 2;

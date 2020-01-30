@@ -1,6 +1,9 @@
 
 const sectionLength: number = 50
 
+export var x: number = 4;
+export var y: number = 4;
+
 export class Point {
     x: number;
     y: number;
