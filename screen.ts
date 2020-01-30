@@ -36,4 +36,7 @@ var box = document.getElementById("box");
 
 box.appendChild(myCanvas)
 
+
+export const ctx = myCanvas.getContext("2d");
+
 // end of stackoverflow code

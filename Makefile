@@ -4,11 +4,14 @@
 #
 
 SRCS := $(wildcard *.ts)
-JSFILES := $(SRCS:%.ts=%.js)
+JSFILES := $(SRCS:%.ts=built/%.js)
 
 .PHONY = all clean run
 
-all: ${JSFILES}
+all: ${SRCS}
+	tsc
+
+#all: ${JSFILES}
 
 run:
 	@echo "Running localhost page server..."
@@ -19,4 +22,4 @@ run:
 
 clean:
 	@echo "Cleaning up..."
-	rm -f *.js
+	rm -f built/*.js built/*.js.map
