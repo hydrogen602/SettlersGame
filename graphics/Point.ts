@@ -1,5 +1,6 @@
+import { Hex } from "./Hex";
 
-export class Point {
+class Point {
     x: number;
     y: number;
 
@@ -11,4 +12,40 @@ export class Point {
 
 // offset of map on screen in order to move around the map
 export var currLocation = new Point(100, 100); // in px
+
+export class HexPoint extends Point {
+    constructor(x: number, y: number) {
+        super(x, y);
+    }
+
+    toAbsPoint() {
+        var p = Hex.hexGridToPxUnshifted(this.y, this.x);
+        return new AbsPoint(p.x, p.y);
+    }
+
+    toRelPoint() {
+        var p = Hex.hexGridToPx(this.y, this.x);
+        return new RelPoint(p.x, p.y);
+    }
+}
+
+export class AbsPoint extends Point {
+    constructor(x: number, y: number) {
+        super(x, y);
+    }
+
+    toRelPoint() {
+        return new RelPoint(this.x + currLocation.x, this.y + currLocation.y);
+    }
+}
+
+export class RelPoint extends Point {
+    constructor(x: number, y: number) {
+        super(x, y);
+    }
+
+    toAbsPoint() {
+        return new AbsPoint(this.x - currLocation.x, this.y - currLocation.y);
+    }
+}
 
