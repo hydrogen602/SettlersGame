@@ -10,4 +10,4 @@ run:
 
 clean:
 	@echo "Cleaning up..."
-	rm -f built/*.js built/*.js.map
+	rm -rf built/*

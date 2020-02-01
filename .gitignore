@@ -2,3 +2,10 @@
 *.log*
 built/
 libraries/
+
+**/*.js
+
+node_modules/
+typings/
+.npm
+.eslintcache
