@@ -1,9 +1,9 @@
 // https://stackoverflow.com/questions/15661339/how-do-i-fix-blurry-text-in-my-html5-canvas
 
 var PIXEL_RATIO = (function () {
-    var ctx = document.createElement("canvas").getContext("2d"),
+    var ctx: any = document.createElement("canvas").getContext("2d"),
         dpr = window.devicePixelRatio || 1,
-        bsr = ctx["webkitBackingStorePixelRatio"] ||
+        bsr: any = ctx["webkitBackingStorePixelRatio"] ||
               ctx["mozBackingStorePixelRatio"] ||
               ctx["msBackingStorePixelRatio"] ||
               ctx["oBackingStorePixelRatio"] ||
