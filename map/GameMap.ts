@@ -1,4 +1,4 @@
-import { HexPoint } from "../graphics/Point";
+import { HexPoint, RelPoint } from "../graphics/Point";
 import { Tile } from "./Tile";
 import { defined } from "../util";
 
@@ -6,6 +6,9 @@ export class GameMap {
     private sz: number;
     private tilesArr: Array<Tile>;
     private ctx: CanvasRenderingContext2D;
+
+    // offset of map on screen in order to move around the map
+    currLocation: RelPoint;
 
     constructor(size: number, ctx: CanvasRenderingContext2D) {
         this.sz = size;

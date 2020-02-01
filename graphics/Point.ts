@@ -1,4 +1,5 @@
 import { Hex } from "./Hex";
+import { Config } from "../Config";
 
 class Point {
     x: number;
@@ -10,8 +11,11 @@ class Point {
     }
 }
 
+
 // offset of map on screen in order to move around the map
-export var currLocation = new Point(100, 100); // in px
+export var currLocation = new Point(
+    window.innerWidth / 2 - Hex.getSideLength() * (Config.getN() + 1), 
+    window.innerHeight / 2 - Hex.getApothem() * Config.getN()); // in px
 
 export class HexPoint extends Point {
     constructor(x: number, y: number) {

@@ -1,11 +1,12 @@
 
 import { ctx, canvas } from "./graphics/Screen";
 import { GameMap } from "./map/GameMap";
-import { RelPoint } from "./graphics/Point";
+import { RelPoint, currLocation } from "./graphics/Point";
 import { Tile } from "./map/Tile";
+import { Config } from "./Config";
 
 export function main() {
-    var ls = new GameMap(3, ctx);
+    var ls = new GameMap(Config.getN(), ctx);
     
     ls.drawMap();
 
@@ -32,8 +33,6 @@ export function main() {
         }
     }
 }
-
-
 
 main();
 

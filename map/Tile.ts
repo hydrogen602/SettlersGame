@@ -46,6 +46,14 @@ export class Tile {
         ctx.fillStyle = this.landType.getColor();
         
         Hex.fillHex(this.p.y, this.p.x, ctx);
+
+        var relCenter = this.center.toRelPoint();
+
+        ctx.font = "20px Arial";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = "black";
+        ctx.fillText(this.diceValue.toString(), relCenter.x, relCenter.y);
     }
 
     strokeTile(ctx: CanvasRenderingContext2D) {
