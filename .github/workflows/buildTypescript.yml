@@ -4,6 +4,7 @@ on: [push]
 
 jobs:
   build:
+    name: Build TS
 
     runs-on: ubuntu-latest
 
@@ -11,7 +12,6 @@ jobs:
     - uses: actions/checkout@v1
       with:
         fetch-depth: 1
-    - name: Build typescript
     - run: npm install
     - run: npm run build
         
