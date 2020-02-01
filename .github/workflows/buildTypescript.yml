@@ -10,7 +10,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build typescript
-      run:
+      run: |
         echo "building..."
         tsc
         echo "done"
