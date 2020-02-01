@@ -1,10 +1,5 @@
-import { Point } from "../graphics/Point"
-import screen = require("../screen");
-
+import { Point } from "../graphics/Point";
 import { Tile } from "./Tile";
-
-var ctx = screen.ctx;
-
 
 export class GameMap {
     private sz: number;

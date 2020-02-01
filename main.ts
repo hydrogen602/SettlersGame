@@ -1,10 +1,10 @@
 
-import { ctx, canvas } from "./screen";
+import { ctx, canvas } from "./graphics/Screen";
 import { GameMap } from "./map/GameMap";
 import { Hex } from "./graphics/Hex";
 
 export function main() {
-    var ls = new GameMap(2);
+    var ls = new GameMap(3);
     
     ls.drawMap(ctx);
 }
