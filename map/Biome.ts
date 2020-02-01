@@ -73,7 +73,7 @@ biomes.forEach((e: Biome) => {
         tmp_biomeDistributionArray.push(e);
     }
 });
-console.log(tmp_biomeDistributionArray)
+
 export const biomeDistributionArray = tmp_biomeDistributionArray;
 tmp_biomeDistributionArray = undefined;
 

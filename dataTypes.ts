@@ -1,7 +1,4 @@
 
-import grid = require("./grid");
-import { assert } from "./util";
-
 export enum ResourceType {
     NoResource = 0,
     Sheep,
@@ -10,4 +7,3 @@ export enum ResourceType {
     Wheat,
     Brick
 }
-

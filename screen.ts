@@ -34,8 +34,9 @@ var myCanvas = createHiDPICanvas(windowWidth, windowHeight, undefined);
 
 var box = document.getElementById("box");
 
-box.appendChild(myCanvas)
+box.appendChild(myCanvas);
 
+export const canvas = myCanvas;
 
 export const ctx = myCanvas.getContext("2d");
 

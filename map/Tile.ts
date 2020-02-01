@@ -36,7 +36,6 @@ export class Tile {
         assert(Boolean(this.diceValue))
         assert(Boolean(this.landType))
         assert(Boolean(this.p))
-        console.log(this)
     }
 
     strokeTile(ctx: CanvasRenderingContext2D) {
