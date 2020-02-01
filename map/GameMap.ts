@@ -24,7 +24,7 @@ export class GameMap {
             var addition: number = - Math.abs(j - nP) + nP;
             
             for (var i = -addition; i < size + addition; i++) {
-                tiles.push(new Tile(new grid.Point(2*j, 2*i), Biomes.Forest, 0));
+                tiles.push(new Tile(new grid.Point(2*j, 2*i)));
             }
         }
 
@@ -34,7 +34,7 @@ export class GameMap {
             var addition: number = - Math.abs(j - nP2) + nP2;
 
             for (var i = -addition; i <= size + addition; i++) {
-                tiles.push(new Tile(new grid.Point(2*j + 1, 2*i - 1), Biomes.Quarry, 0));
+                tiles.push(new Tile(new grid.Point(2*j + 1, 2*i - 1)));
             }
         }
 

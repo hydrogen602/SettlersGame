@@ -18,6 +18,25 @@ export enum Biomes {
     Quarry      // 3
 }
 
+export const biomeDistribution = new Map(
+    [
+        [Biomes.Desert, 1],
+        [Biomes.Grassland, 4],
+        [Biomes.Forest, 4],
+        [Biomes.Mountain, 3],
+        [Biomes.Farmland, 4],
+        [Biomes.Quarry, 3]
+    ]
+);
+
+var tmp_biomeDistributionArray: Array<Biomes> = [];
+biomeDistribution.forEach(e => {
+    tmp_biomeDistributionArray.push(e);
+});
+export const biomeDistributionArray = tmp_biomeDistributionArray;
+tmp_biomeDistributionArray = undefined;
+
+
 export enum ResourceType {
     NoResource = 0,
     Sheep,
