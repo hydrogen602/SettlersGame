@@ -1,7 +1,7 @@
 
 import grid = require("./grid");
 import screen = require("./screen");
-import { Tile, ResourceType } from "./dataTypes";
+import { Tile, Biomes, ResourceType } from "./dataTypes";
 var ctx = screen.ctx;
 
 
@@ -23,7 +23,7 @@ class GameMap {
             var addition: number = - Math.abs(j - nP) + nP;
             
             for (var i = -addition; i < size + addition; i++) {
-                tiles.push(new Tile(new grid.Point(2*j, 2*i), ResourceType.Forest, 0));
+                tiles.push(new Tile(new grid.Point(2*j, 2*i), Biomes.Forest, 0));
             }
         }
 
@@ -33,7 +33,7 @@ class GameMap {
             var addition: number = - Math.abs(j - nP2) + nP2;
 
             for (var i = -addition; i <= size + addition; i++) {
-                tiles.push(new Tile(new grid.Point(2*j + 1, 2*i - 1), ResourceType.Quarry, 0));
+                tiles.push(new Tile(new grid.Point(2*j + 1, 2*i - 1), Biomes.Quarry, 0));
             }
         }
 
