@@ -1,18 +1,19 @@
 
 import { ctx, canvas } from "./screen";
 import { GameMap } from "./map/GameMap";
-import { fillHex } from "./grid";
+import { Hex } from "./graphics/Hex";
 
 export function main() {
-    //var ls = new GameMap(3);
+    var ls = new GameMap(2);
     
-    //ls.drawMap(ctx);
+    ls.drawMap(ctx);
 }
 
-canvas.onmousemove = function(e: MouseEvent) {
+canvas.onmousedown = function(e: MouseEvent) {
     console.log(e.clientX, e.clientY);
 }
 
-fillHex(2, 2, ctx);
-
 main();
+
+ctx.fillStyle = 'black';
+Hex.fillHex(2, 2, ctx);

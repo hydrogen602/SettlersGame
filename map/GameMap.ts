@@ -1,4 +1,4 @@
-import grid = require("../grid");
+import { Point } from "../graphics/Point"
 import screen = require("../screen");
 
 import { Tile } from "./Tile";
@@ -23,7 +23,7 @@ export class GameMap {
             var addition: number = - Math.abs(j - nP) + nP;
             
             for (var i = -addition; i < size + addition; i++) {
-                tiles.push(new Tile(new grid.Point(2*j, 2*i)));
+                tiles.push(new Tile(new Point(2*j, 2*i)));
             }
         }
 
@@ -32,7 +32,7 @@ export class GameMap {
             var addition: number = - Math.abs(j - nP2) + nP2;
 
             for (var i = -addition; i <= size + addition; i++) {
-                tiles.push(new Tile(new grid.Point(2*j + 1, 2*i - 1)));
+                tiles.push(new Tile(new Point(2*j + 1, 2*i - 1)));
             }
         }
 

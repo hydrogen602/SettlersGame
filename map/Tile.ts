@@ -1,13 +1,14 @@
-import { Biome, biomes, biomeDistributionArray } from "./Biome";
+import { Biome, biomeDistributionArray } from "./Biome";
 import { assert } from "../util";
-import grid = require("../grid");
+import { Point } from "../graphics/Point"
+import { Hex } from "../graphics/Hex"
 
 export class Tile {
-    private p: grid.Point;
+    private p: Point;
     private landType: Biome;
     private diceValue: number;
 
-    constructor(location: grid.Point, landType?: Biome, diceValue?: number) {
+    constructor(location: Point, landType?: Biome, diceValue?: number) {
         if (diceValue) {
             assert(parseInt(diceValue.toString()) == diceValue, "diceValue should be an integer");
             this.diceValue = diceValue;
@@ -41,6 +42,6 @@ export class Tile {
     strokeTile(ctx: CanvasRenderingContext2D) {
         ctx.fillStyle = this.landType.getColor();
         
-        grid.fillHex(this.p.y + grid.y, this.p.x + grid.x, ctx);
+        Hex.fillHex(this.p.y, this.p.x, ctx);
     }
 }
