@@ -1,10 +1,8 @@
 
 .PHONY = all clean run
 
-all: ${SRCS}
+all:
 	tsc
-
-#all: ${JSFILES}
 
 run:
 	@echo "Running localhost page server..."
