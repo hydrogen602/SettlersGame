@@ -4,3 +4,9 @@ export function assert(condition: boolean, message?: string) {
         throw message || "Assertion failed";
     }
 }
+
+export function defined(condition: any) {
+    if (!condition) {
+        throw "Variable undefined";
+    }
+}

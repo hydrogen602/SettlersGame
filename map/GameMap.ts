@@ -1,14 +1,14 @@
 import grid = require("../grid");
 import screen = require("../screen");
-import { Biomes, ResourceType } from "../dataTypes";
+
 import { Tile } from "./Tile";
 
 var ctx = screen.ctx;
 
 
 export class GameMap {
-    sz: number;
-    tilesArr: Array<Tile>;
+    private sz: number;
+    private tilesArr: Array<Tile>;
 
     constructor(size: number) {
         this.sz = size;
@@ -16,9 +16,8 @@ export class GameMap {
         var nP: number = (size - 1) / 2;
         var nP2: number = (size - 2) / 2;
 
-        var tiles = []
+        var tiles: Array<Tile> = []
         
-        ctx.strokeStyle = "red"
         for (var j = 0; j < size; j++) {
 
             var addition: number = - Math.abs(j - nP) + nP;
@@ -28,7 +27,6 @@ export class GameMap {
             }
         }
 
-        ctx.strokeStyle = "green"
         for (var j = 0; j < size - 1; j++) {
 
             var addition: number = - Math.abs(j - nP2) + nP2;

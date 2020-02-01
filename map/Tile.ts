@@ -1,13 +1,13 @@
-import { Biomes, biomeDistributionArray } from "../dataTypes";
+import { Biome, biomes, biomeDistributionArray } from "./Biome";
 import { assert } from "../util";
 import grid = require("../grid");
 
 export class Tile {
-    p: grid.Point;
-    landType: Biomes;
-    diceValue: number;
+    private p: grid.Point;
+    private landType: Biome;
+    private diceValue: number;
 
-    constructor(location: grid.Point, landType?: Biomes, diceValue?: number) {
+    constructor(location: grid.Point, landType?: Biome, diceValue?: number) {
         if (diceValue) {
             assert(parseInt(diceValue.toString()) == diceValue, "diceValue should be an integer");
             this.diceValue = diceValue;
@@ -28,6 +28,7 @@ export class Tile {
         } else {
             var r = parseInt(Math.random() * 19 + '');
             this.landType = biomeDistributionArray[r];
+
         }
 
         this.p = location;
@@ -35,15 +36,12 @@ export class Tile {
         assert(Boolean(this.diceValue))
         assert(Boolean(this.landType))
         assert(Boolean(this.p))
+        console.log(this)
     }
 
     strokeTile(ctx: CanvasRenderingContext2D) {
-        if (this.landType == Biomes.Forest) {
-            ctx.strokeStyle = "green";
-        }
-        if (this.landType == Biomes.Quarry) {
-            ctx.strokeStyle = "red";
-        }
-        grid.strokeHex(this.p.y + grid.y, this.p.x + grid.x, ctx);
+        ctx.fillStyle = this.landType.getColor();
+        
+        grid.fillHex(this.p.y + grid.y, this.p.x + grid.x, ctx);
     }
 }

@@ -32,7 +32,7 @@ function hexGridToPx(row: number, col: number): Point {
     return new Point(x, y);
 }
 
-export function drawHex(row: number, col: number, ctx: CanvasRenderingContext2D) {
+export function fillHex(row: number, col: number, ctx: CanvasRenderingContext2D) {
     var p = hexGridToPx(row, col);
     ctx.beginPath();
     ctx.moveTo(p.x, p.y);
