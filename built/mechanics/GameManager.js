@@ -13,6 +13,7 @@ define(["require", "exports", "../util", "../graphics/StatusBar", "../graphics/P
             this.players = players;
             this.msgBoard = new StatusBar_1.StatusBar(map.getCtx(), 3);
             this.errBoard = new StatusBar_1.StatusBar(map.getCtx(), 1, new Point_1.RelPoint(10, 10 + 90));
+            this.msgBoard.print("Press t for next turn");
             util_1.defined(this.map);
             util_1.defined(this.players);
             util_1.assert(this.players.length > 0, "Needs at least 1 player");

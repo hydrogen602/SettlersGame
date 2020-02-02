@@ -26,6 +26,8 @@ export class GameManager {
         this.msgBoard = new StatusBar(map.getCtx(), 3);
         this.errBoard = new StatusBar(map.getCtx(), 1, new RelPoint(10, 10 + 90));
 
+        this.msgBoard.print("Press t for next turn");
+
         defined(this.map);
         defined(this.players);
         assert(this.players.length > 0, "Needs at least 1 player");
