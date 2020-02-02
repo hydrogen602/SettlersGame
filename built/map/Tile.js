@@ -25,6 +25,7 @@ define(["require", "exports", "./Biome", "../util", "../graphics/Hex"], function
                 var r = parseInt(Math.random() * 19 + '');
                 this.landType = Biome_1.biomeDistributionArray[r];
             }
+            //if (this.landType == )
             this.p = location;
             this.center = Hex_1.Hex.getCenterOfHex(location.y, location.x); // flip on purpose
             util_1.assert(Boolean(this.diceValue));

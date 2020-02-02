@@ -26,8 +26,8 @@ var createHiDPICanvas = function(w: number, h: number, ratio: number) {
     return can;
 }
 
-var windowWidth = window.innerWidth-18-25
-var windowHeight = window.innerHeight-6 //-18-10
+var windowWidth = window.innerWidth //-18-25
+var windowHeight = window.innerHeight // -6 //-18-10
 
 //Create canvas with the device resolution.
 var myCanvas = createHiDPICanvas(windowWidth, windowHeight, undefined);

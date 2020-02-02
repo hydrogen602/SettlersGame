@@ -30,8 +30,9 @@ export class Tile {
         } else {
             var r = parseInt(Math.random() * 19 + '');
             this.landType = biomeDistributionArray[r];
-
         }
+
+        //if (this.landType == )
 
         this.p = location;
         this.center = Hex.getCenterOfHex(location.y, location.x); // flip on purpose

@@ -62,6 +62,9 @@ export class GameMap {
     }
 
     drawMap() {
+        this.ctx.fillStyle = 'blue';
+        this.ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+
         this.tilesArr.forEach(e => {
             e.fillTile(this.ctx);
         });
