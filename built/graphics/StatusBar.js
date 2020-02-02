@@ -2,16 +2,22 @@ define(["require", "exports", "./Point", "../util"], function (require, exports,
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class StatusBar {
-        constructor(ctx) {
+        constructor(ctx, size, location) {
             this.pos = new Point_1.RelPoint(10, 10);
-            this.sz = new Point_1.AbsPoint(250, 90);
             this.board = [];
             this.ctx = ctx;
+            this.maxMsgCount = size;
+            this.sz = new Point_1.AbsPoint(250, 30 * size);
             util_1.defined(this.ctx);
+            util_1.defined(this.maxMsgCount);
+            util_1.defined(this.sz);
+            if (location != undefined) {
+                this.pos = location;
+            }
         }
         print(msg) {
             this.board.push(msg);
-            if (this.board.length > 3) {
+            if (this.board.length > this.maxMsgCount) {
                 this.board.shift();
             }
             this.draw();

@@ -25,23 +25,25 @@ export class HexCorner {
             if (r < Hex.getSideLength() / 4) {
                 // clicked on a corner
                 var h = p.toHexPoint();
-                console.log("new settlement");
+                //console.log("new settlement");
 
                 var m = GameManager.instance.getMap();
 
                 if (m.isAllowedSettlement(h)) {
                     m.addSettlement(new Settlement(h, GameManager.instance.getCurrentPlayer()))
                     m.draw();
-                    console.log("success");
+                    //console.log("success");
+                    GameManager.instance.print("New Settlement created");
                     GameManager.instance.mayPlaceSettlement = false;
                 }
                 else {
                     console.log("not allowed position");
+                    GameManager.instance.printErr("Illegal Position");
                 }
             }
         }  
         else {
-            console.log("not allowed rn");
+            //console.log("not allowed rn");
         }
     }
 }

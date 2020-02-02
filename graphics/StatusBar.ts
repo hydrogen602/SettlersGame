@@ -5,19 +5,28 @@ export class StatusBar {
     private ctx: CanvasRenderingContext2D;
 
     private pos = new RelPoint(10, 10);
-    private sz = new AbsPoint(250, 90);
+    private sz: AbsPoint;
+    private maxMsgCount: number;
 
     private board: Array<string> = [];
 
-    constructor(ctx: CanvasRenderingContext2D) {
+    constructor(ctx: CanvasRenderingContext2D, size: number, location?: RelPoint) {
         this.ctx = ctx;
+        this.maxMsgCount = size;
+        this.sz = new AbsPoint(250, 30 * size);
 
         defined(this.ctx);
+        defined(this.maxMsgCount);
+        defined(this.sz);
+
+        if (location != undefined) {
+            this.pos = location;
+        }
     }
 
     print(msg: string) {
         this.board.push(msg);
-        if (this.board.length > 3) {
+        if (this.board.length > this.maxMsgCount) {
             this.board.shift();
         }
         this.draw()

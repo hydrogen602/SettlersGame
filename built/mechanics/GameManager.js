@@ -1,4 +1,4 @@
-define(["require", "exports", "../util", "../graphics/StatusBar"], function (require, exports, util_1, StatusBar_1) {
+define(["require", "exports", "../util", "../graphics/StatusBar", "../graphics/Point"], function (require, exports, util_1, StatusBar_1, Point_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class GameManager {
@@ -11,7 +11,8 @@ define(["require", "exports", "../util", "../graphics/StatusBar"], function (req
             this.mayPlaceRoad = false;
             this.map = map;
             this.players = players;
-            this.msgBoard = new StatusBar_1.StatusBar(map.getCtx());
+            this.msgBoard = new StatusBar_1.StatusBar(map.getCtx(), 3);
+            this.errBoard = new StatusBar_1.StatusBar(map.getCtx(), 1, new Point_1.RelPoint(10, 10 + 90));
             util_1.defined(this.map);
             util_1.defined(this.players);
             util_1.assert(this.players.length > 0, "Needs at least 1 player");
@@ -37,12 +38,12 @@ define(["require", "exports", "../util", "../graphics/StatusBar"], function (req
         playTurn() {
             this.nextTurn();
             const p = this.getCurrentPlayer();
+            this.msgBoard.clear();
             this.msgBoard.print("New turn: " + p.getName());
             if (this.rounds <= 2) {
                 // game start phase
                 // each player places one settlement
                 this.msgBoard.print("Place a settlement");
-                this.msgBoard.print("idk");
                 this.mayPlaceSettlement = true;
             }
         }
@@ -51,9 +52,16 @@ define(["require", "exports", "../util", "../graphics/StatusBar"], function (req
                 p.debug();
             });
         }
+        print(msg) {
+            this.msgBoard.print(msg);
+        }
+        printErr(msg) {
+            this.errBoard.print(msg);
+        }
         draw() {
             this.map.draw();
             this.msgBoard.draw();
+            this.errBoard.draw();
         }
     }
     exports.GameManager = GameManager;

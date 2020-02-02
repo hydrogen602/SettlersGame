@@ -17,21 +17,23 @@ define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex",
                 if (r < Hex_1.Hex.getSideLength() / 4) {
                     // clicked on a corner
                     var h = p.toHexPoint();
-                    console.log("new settlement");
+                    //console.log("new settlement");
                     var m = GameManager_1.GameManager.instance.getMap();
                     if (m.isAllowedSettlement(h)) {
                         m.addSettlement(new Settlement_1.Settlement(h, GameManager_1.GameManager.instance.getCurrentPlayer()));
                         m.draw();
-                        console.log("success");
+                        //console.log("success");
+                        GameManager_1.GameManager.instance.print("New Settlement created");
                         GameManager_1.GameManager.instance.mayPlaceSettlement = false;
                     }
                     else {
                         console.log("not allowed position");
+                        GameManager_1.GameManager.instance.printErr("Illegal Position");
                     }
                 }
             }
             else {
-                console.log("not allowed rn");
+                //console.log("not allowed rn");
             }
         }
     }

@@ -62,9 +62,9 @@ export class GameMap {
     }
 
     isAllowedSettlement(h: HexPoint): boolean {
-        console.log("new?", h)
+        // console.log("new?", h)
         var conflicts = this.settlementsArr.filter(s => {
-            console.log("check", s.getHexPoint())
+            // console.log("check", s.getHexPoint())
             var hp = s.getHexPoint();
             if (hp.x == h.x && hp.y == h.y) {
                 return true;
