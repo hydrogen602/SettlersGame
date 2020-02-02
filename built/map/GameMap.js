@@ -2,11 +2,15 @@ define(["require", "exports", "../graphics/Point", "./Tile", "../util", "../grap
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class GameMap {
-        constructor(size, ctx) {
+        constructor(size, ctx, players) {
+            this.indexOfCurrentPlayer = 0;
             this.sz = size;
             this.ctx = ctx;
+            this.players = players;
             util_1.defined(this.sz);
             util_1.defined(this.ctx);
+            util_1.defined(this.players);
+            util_1.assert(this.players.length > 0, "Needs at least 1 player");
             var nP = (size - 1) / 2;
             var nP2 = (size - 2) / 2;
             var tiles = [];
@@ -31,6 +35,23 @@ define(["require", "exports", "../graphics/Point", "./Tile", "../util", "../grap
         }
         getSettlements() {
             return this.settlementsArr;
+        }
+        getPlayers() {
+            return this.players;
+        }
+        getCurrentPlayer() {
+            return this.players[this.indexOfCurrentPlayer];
+        }
+        nextTurn() {
+            this.indexOfCurrentPlayer += 1;
+            if (this.indexOfCurrentPlayer >= this.players.length) {
+                this.indexOfCurrentPlayer = 0;
+            }
+        }
+        debugPlayers() {
+            this.players.forEach(p => {
+                p.debug();
+            });
         }
         addSettlement(s) {
             util_1.defined(s);

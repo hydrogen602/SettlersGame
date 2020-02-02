@@ -10,7 +10,7 @@ import { HexCorner } from "./mechanics/HexCorner";
 
 var ls: GameMap;
 export function main() {
-    ls = new GameMap(Config.getN(), ctx);
+    ls = new GameMap(Config.getN(), ctx, [new Player('blue')]);
     
     ls.drawMap();
 
@@ -43,11 +43,9 @@ main();
 ctx.fillStyle = 'black';
 // ctx.fillRect(currLocation.x, currLocation.y, 10, 10);
 
-ls.addSettlement(new Settlement(new HexPoint(1, 1), new Player('blue')));
-
 document.addEventListener("wheel", function (e) {
     const limit = 5;
-    
+
     currLocation.x -= Math.max(-limit, Math.min(e.deltaX, limit));
     currLocation.y -= Math.max(-limit, Math.min(e.deltaY, limit));
 
@@ -57,18 +55,13 @@ document.addEventListener("wheel", function (e) {
     ls.drawMap();
 });
 
-document.onmousedown = (e: MouseEvent) => {
-    var p = new RelPoint(e.clientX, e.clientY);
-    var r = HexCorner.distanceFromNearestHexCorner(p);
-    
-    var h = p.toHexPoint();
-    var back = h.toRelPoint();
+document.onmousedown = HexCorner.mouseHandler;
 
-    ctx.strokeStyle = 'black';
-    ctx.beginPath();
-    ctx.arc(back.x, back.y, r, 0, Math.PI * 2);
-
-    ctx.stroke();
+window.onkeypress = (e: KeyboardEvent) => {
+    if (e.key == 'p') {
+        console.log("Debug Players:")
+        ls.debugPlayers();
+    }
 }
 
 // ctx.fillStyle = 'black';
