@@ -1,13 +1,15 @@
 import { HexPoint, RelPoint } from "../graphics/Point";
 import { Tile } from "./Tile";
-import { defined, assert } from "../util";
+import { defined } from "../util";
 import { Settlement } from "./Settlement";
 import { canvas } from "../graphics/Screen";
+import { Road } from "./Road";
 
 export class GameMap {
     private sz: number;
     private tilesArr: Array<Tile>;
     private settlementsArr: Array<Settlement>;
+    private roadsArr: Array<Road>;
     private ctx: CanvasRenderingContext2D;
 
     // offset of map on screen in order to move around the map
@@ -47,6 +49,7 @@ export class GameMap {
         defined(this.tilesArr);
 
         this.settlementsArr = [];
+        this.roadsArr = [];
     }
 
     getTiles() {
@@ -55,6 +58,10 @@ export class GameMap {
 
     getSettlements() {
         return this.settlementsArr;
+    }
+
+    getRoads() {
+        return this.roadsArr;
     }
 
     getCtx() {
@@ -98,6 +105,11 @@ export class GameMap {
         this.settlementsArr.push(s);
     }
 
+    addRoad(r: Road) {
+        defined(r)
+        this.roadsArr.push(r);
+    }
+
     draw() {
         this.ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -112,6 +124,10 @@ export class GameMap {
         this.ctx.lineWidth = 1;
         this.tilesArr.forEach(e => {
             e.strokeTile(this.ctx);
+        })
+
+        this.roadsArr.forEach(r => {
+            r.draw(this.ctx);
         })
 
         this.settlementsArr.forEach(s => {

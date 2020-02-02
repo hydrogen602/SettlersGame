@@ -18,7 +18,6 @@ define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex",
                     var h = p.toHexPoint();
                     var m = GameManager_1.GameManager.instance.getMap();
                     if (m.isAllowedSettlement(h)) {
-                        console.log("hover");
                         var back = h.toRelPoint();
                         Screen_1.ctx.strokeStyle = "black";
                         Screen_1.ctx.lineWidth = 2;

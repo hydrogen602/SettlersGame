@@ -29,7 +29,6 @@ export class HexCorner {
                 var m = GameManager.instance.getMap();
 
                 if (m.isAllowedSettlement(h)) {
-                    console.log("hover");
                     var back = h.toRelPoint();
                     ctx.strokeStyle = "black";
                     ctx.lineWidth = 2;

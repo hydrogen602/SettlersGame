@@ -25,12 +25,16 @@ define(["require", "exports", "../graphics/Point", "./Tile", "../util", "../grap
             this.tilesArr = tiles;
             util_1.defined(this.tilesArr);
             this.settlementsArr = [];
+            this.roadsArr = [];
         }
         getTiles() {
             return this.tilesArr;
         }
         getSettlements() {
             return this.settlementsArr;
+        }
+        getRoads() {
+            return this.roadsArr;
         }
         getCtx() {
             return this.ctx;
@@ -69,6 +73,10 @@ define(["require", "exports", "../graphics/Point", "./Tile", "../util", "../grap
             util_1.defined(s);
             this.settlementsArr.push(s);
         }
+        addRoad(r) {
+            util_1.defined(r);
+            this.roadsArr.push(r);
+        }
         draw() {
             this.ctx.clearRect(0, 0, Screen_1.canvas.width, Screen_1.canvas.height);
             this.ctx.fillStyle = 'blue';
@@ -80,6 +88,9 @@ define(["require", "exports", "../graphics/Point", "./Tile", "../util", "../grap
             this.ctx.lineWidth = 1;
             this.tilesArr.forEach(e => {
                 e.strokeTile(this.ctx);
+            });
+            this.roadsArr.forEach(r => {
+                r.draw(this.ctx);
             });
             this.settlementsArr.forEach(s => {
                 s.draw(this.ctx);
