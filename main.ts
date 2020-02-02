@@ -46,10 +46,6 @@ window.onkeypress = (e: KeyboardEvent) => {
     }
 }
 
-GameManager.instance.getMap().addRoad(new Road(new HexPoint(2, 0), new HexPoint(2, 1), GameManager.instance.getPlayers()[0]));
-GameManager.instance.getMap().addRoad(new Road(new HexPoint(2, 1), new HexPoint(2, 2), GameManager.instance.getPlayers()[0]));
-
-
 // ctx.fillStyle = 'black';
 // var tmp = Hex.hexGridToPx(0, 0);
 // ctx.fillRect(tmp.x, tmp.y, 10, 10);

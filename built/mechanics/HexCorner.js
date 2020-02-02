@@ -30,14 +30,13 @@ define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex",
                 // if (this.roadTmpFirstEnd == undefined) {
                 var p = new Point_1.RelPoint(e.clientX, e.clientY);
                 var r = HexCorner.distanceFromNearestHexCorner(p);
-                if (r < Hex_1.Hex.getSideLength() / 4) {
-                    // hovering over a corner
+                var hArr = p.toDualHexPoint();
+                var m = GameManager_1.GameManager.instance.getMap();
+                if (hArr.length == 2 && m.isAllowedRoad(hArr[0], hArr[1])) { // hArr is empty if not over a line
+                    GameManager_1.GameManager.instance.draw();
+                    // hovering over a line
                     var h = p.toHexPoint();
-                    var m = GameManager_1.GameManager.instance.getMap();
-                    if (true && this.roadTmpFirstEnd != undefined) { // check for valid location
-                        var back = h.toRelPoint();
-                        Road_1.Road.stroke(back, this.roadTmpFirstEnd.toRelPoint(), Screen_1.ctx);
-                    }
+                    Road_1.Road.stroke(hArr[0].toRelPoint(), hArr[1].toRelPoint(), Screen_1.ctx);
                 }
                 else {
                     GameManager_1.GameManager.instance.draw();
@@ -45,6 +44,10 @@ define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex",
             }
         }
         static mouseHandler(e) {
+            var p = new Point_1.RelPoint(e.clientX, e.clientY);
+            var r = HexCorner.distanceFromNearestHexCorner(p);
+            var hArr = p.toDualHexPoint();
+            // console.log(hArr);
             // console.log("event", e);
             if (GameManager_1.GameManager.instance.mayPlaceSettlement) {
                 var p = new Point_1.RelPoint(e.clientX, e.clientY);
@@ -62,7 +65,7 @@ define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex",
                         GameManager_1.GameManager.instance.mayPlaceSettlement = false;
                     }
                     else {
-                        console.log("not allowed position");
+                        // console.log("not allowed position");
                         GameManager_1.GameManager.instance.printErr("Illegal Position");
                     }
                 }
@@ -70,18 +73,17 @@ define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex",
             else if (GameManager_1.GameManager.instance.mayPlaceRoad) {
                 var p = new Point_1.RelPoint(e.clientX, e.clientY);
                 var r = HexCorner.distanceFromNearestHexCorner(p);
-                if (r < Hex_1.Hex.getSideLength() / 4) {
-                    var h = p.toHexPoint();
-                    if (this.roadTmpFirstEnd == undefined) {
-                        GameManager_1.GameManager.instance.print("First end placed");
-                        this.roadTmpFirstEnd = h;
-                    }
-                    else {
-                        var m = GameManager_1.GameManager.instance.getMap();
-                        m.addRoad(new Road_1.Road(this.roadTmpFirstEnd, h, GameManager_1.GameManager.instance.getCurrentPlayer()));
+                var hArr = p.toDualHexPoint();
+                if (hArr.length == 2) { // hArr is empty if not over a line 
+                    var m = GameManager_1.GameManager.instance.getMap();
+                    if (m.isAllowedRoad(hArr[0], hArr[1])) { // check if road already there
+                        m.addRoad(new Road_1.Road(hArr[0], hArr[1], GameManager_1.GameManager.instance.getCurrentPlayer()));
+                        m.draw();
                         GameManager_1.GameManager.instance.print("New Road created");
                         GameManager_1.GameManager.instance.mayPlaceRoad = false;
-                        m.draw();
+                    }
+                    else {
+                        GameManager_1.GameManager.instance.printErr("Illegal Position");
                     }
                 }
             }

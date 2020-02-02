@@ -60,13 +60,17 @@ export class GameManager {
         const p = this.getCurrentPlayer();
 
         this.msgBoard.clear();
+        this.errBoard.clear();
         this.msgBoard.print("New turn: " + p.getName());
         if (this.rounds <= 2) {
             // game start phase
             // each player places one settlement
+
             this.msgBoard.print("Place a settlement");
+            this.msgBoard.print("Then place a road");
 
             this.mayPlaceSettlement = true;
+            this.mayPlaceRoad = true;
         }
 
     }
@@ -79,6 +83,7 @@ export class GameManager {
 
     print(msg: string) {
         this.msgBoard.print(msg);
+        this.errBoard.clear();
     }
 
     printErr(msg: string) {

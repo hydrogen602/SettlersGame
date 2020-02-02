@@ -40,6 +40,7 @@ define(["require", "exports", "../util", "../graphics/StatusBar", "../graphics/P
             this.nextTurn();
             const p = this.getCurrentPlayer();
             this.msgBoard.clear();
+            this.errBoard.clear();
             this.msgBoard.print("New turn: " + p.getName());
             if (this.rounds <= 2) {
                 // game start phase
@@ -57,6 +58,7 @@ define(["require", "exports", "../util", "../graphics/StatusBar", "../graphics/P
         }
         print(msg) {
             this.msgBoard.print(msg);
+            this.errBoard.clear();
         }
         printErr(msg) {
             this.errBoard.print(msg);

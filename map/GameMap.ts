@@ -73,31 +73,23 @@ export class GameMap {
         var conflicts = this.settlementsArr.filter(s => {
             // console.log("check", s.getHexPoint())
             var hp = s.getHexPoint();
-            if (hp.x == h.x && hp.y == h.y) {
-                return true;
-            }
-            if (hp.x == h.x && hp.y == h.y + 1) {
-                return true;
-            }
-            if (hp.x == h.x && hp.y == h.y - 1) {
-                return true;
-            }
-            if (h.x % 2 == h.y % 2) {
-                // check right
-                if (hp.x == h.x + 1 && hp.y == h.y) {
-                    return true;
-                }
-            }
-            else {
-                // check left
-                if (hp.x == h.x - 1 && hp.y == h.y) {
-                    return true;
-                }
-            }
-            return false;
+            return h.isNeighbor(hp) || h.isEqual(hp);
         });
 
         return conflicts.length == 0; // allowed if no conflicts
+    }
+
+    isAllowedRoad(p1: HexPoint, p2: HexPoint): boolean {
+        if (!p1.isNeighbor(p2) || p1.isEqual(p2)) {
+            // if the points aren't adjacent or are the same, do not allow
+            return false;
+        }
+
+        var conflicts = this.roadsArr.filter(r => {
+            return r.isEqual(p1, p2);
+        });
+
+        return conflicts.length == 0;
     }
 
     addSettlement(s: Settlement) {

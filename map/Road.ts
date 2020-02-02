@@ -19,6 +19,16 @@ export class Road {
         defined(owner);
     }
 
+    isEqual(p1: HexPoint, p2: HexPoint): boolean {
+        if (p1.isEqual(this.p1) && p2.isEqual(this.p2)) {
+            return true
+        }
+        if (p1.isEqual(this.p2) && p2.isEqual(this.p1)) {
+            return true
+        }
+        return false;
+    }
+
     draw(ctx: CanvasRenderingContext2D) {
         ctx.strokeStyle = "black";
         ctx.lineWidth = 14;

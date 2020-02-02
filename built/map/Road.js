@@ -10,6 +10,15 @@ define(["require", "exports", "../util"], function (require, exports, util_1) {
             util_1.defined(p2);
             util_1.defined(owner);
         }
+        isEqual(p1, p2) {
+            if (p1.isEqual(this.p1) && p2.isEqual(this.p2)) {
+                return true;
+            }
+            if (p1.isEqual(this.p2) && p2.isEqual(this.p1)) {
+                return true;
+            }
+            return false;
+        }
         draw(ctx) {
             ctx.strokeStyle = "black";
             ctx.lineWidth = 14;
