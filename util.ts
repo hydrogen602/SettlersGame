@@ -20,3 +20,16 @@ export function assertInt(n: number) {
         throw "TypeError: expected int";
     }
 }
+
+export function randomInt(high: number, low?: number) {
+    if (low == undefined) {
+        low = 0;
+    }
+    assertInt(high);
+    assertInt(low);
+    return Math.floor(Math.random() * (high - low) + low);
+}
+
+export function rollTwoDice() {
+    return randomInt(7, 1) + randomInt(7, 1) // high limit (7) is excluded
+}

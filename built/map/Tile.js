@@ -14,13 +14,13 @@ define(["require", "exports", "./Biome", "../util", "../graphics/Hex"], function
                 //      | | | | | | | | | | |  |  |  |  |  |  |  |  |
                 //      0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18
                 // out of 19
-                this.diceValue = Tile.diceValueChoices[parseInt(Math.random() * 19 + '')];
+                this.diceValue = Tile.diceValueChoices[util_1.randomInt(19)];
             }
             if (landType) {
                 this.landType = landType;
             }
             else {
-                this.landType = Biome_1.biomeDistributionArray[parseInt(Math.random() * 19 + '')];
+                this.landType = Biome_1.biomeDistributionArray[util_1.randomInt(19)];
             }
             if (this.landType == Biome_1.Desert) {
                 this.diceValue = 0;
