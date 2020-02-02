@@ -10,7 +10,7 @@ define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex",
             return Math.sqrt(util_1.square(abs.x - backConvertedHex.x) + util_1.square(abs.y - backConvertedHex.y));
         }
         static mouseHandler(e) {
-            console.log("event", e);
+            // console.log("event", e);
             if (GameManager_1.GameManager.instance.mayPlaceSettlement) {
                 var p = new Point_1.RelPoint(e.clientX, e.clientY);
                 var r = HexCorner.distanceFromNearestHexCorner(p);
