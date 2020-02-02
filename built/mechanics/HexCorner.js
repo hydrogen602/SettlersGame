@@ -1,4 +1,4 @@
-define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex"], function (require, exports, Point_1, util_1, Hex_1) {
+define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex", "./GameManager"], function (require, exports, Point_1, util_1, Hex_1, GameManager_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class HexCorner {
@@ -10,12 +10,18 @@ define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex"]
             return Math.sqrt(util_1.square(abs.x - backConvertedHex.x) + util_1.square(abs.y - backConvertedHex.y));
         }
         static mouseHandler(e) {
-            var p = new Point_1.RelPoint(e.clientX, e.clientY);
-            var r = HexCorner.distanceFromNearestHexCorner(p);
-            if (r < Hex_1.Hex.getSideLength() / 4) {
-                // clicked on a corner
-                var h = p.toHexPoint();
-                console.log("new settlement");
+            if (GameManager_1.GameManager.instance.mayPlaceSettlement) {
+                var p = new Point_1.RelPoint(e.clientX, e.clientY);
+                var r = HexCorner.distanceFromNearestHexCorner(p);
+                if (r < Hex_1.Hex.getSideLength() / 4) {
+                    // clicked on a corner
+                    var h = p.toHexPoint();
+                    console.log("new settlement");
+                    GameManager_1.GameManager.instance.mayPlaceSettlement = false;
+                }
+            }
+            else {
+                console.log("not allowed rn");
             }
         }
     }

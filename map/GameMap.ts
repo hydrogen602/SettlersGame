@@ -11,21 +11,15 @@ export class GameMap {
     private settlementsArr: Array<Settlement>;
     private ctx: CanvasRenderingContext2D;
 
-    private players: Array<Player>;
-    private indexOfCurrentPlayer = 0;
-
     // offset of map on screen in order to move around the map
     currLocation: RelPoint;
 
-    constructor(size: number, ctx: CanvasRenderingContext2D, players: Array<Player>) {
+    constructor(size: number, ctx: CanvasRenderingContext2D) {
         this.sz = size;
         this.ctx = ctx;
-        this.players = players;
 
         defined(this.sz);
         defined(this.ctx);
-        defined(this.players);
-        assert(this.players.length > 0, "Needs at least 1 player")
 
         var nP: number = (size - 1) / 2;
         var nP2: number = (size - 2) / 2;
@@ -62,27 +56,6 @@ export class GameMap {
 
     getSettlements() {
         return this.settlementsArr;
-    }
-
-    getPlayers() {
-        return this.players;
-    }
-
-    getCurrentPlayer() {
-        return this.players[this.indexOfCurrentPlayer];
-    }
-
-    nextTurn() {
-        this.indexOfCurrentPlayer += 1
-        if (this.indexOfCurrentPlayer >= this.players.length) {
-            this.indexOfCurrentPlayer = 0;
-        }
-    }
-
-    debugPlayers() {
-        this.players.forEach(p => {
-            p.debug();
-        });
     }
 
     addSettlement(s: Settlement) {

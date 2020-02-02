@@ -2,13 +2,18 @@ define(["require", "exports", "../util"], function (require, exports, util_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Player {
-        constructor(color) {
+        constructor(color, name) {
             this.color = color;
+            this.name = name;
             this.settlements = [];
             util_1.defined(color);
+            util_1.defined(name);
         }
         getColor() {
             return this.color;
+        }
+        getName() {
+            return this.name;
         }
         addSettlement(s) {
             this.settlements.push(s);
