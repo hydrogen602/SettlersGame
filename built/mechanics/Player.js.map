@@ -1,0 +1,1 @@
+{"version":3,"file":"Player.js","sourceRoot":"","sources":["../../mechanics/Player.ts"],"names":[],"mappings":";;;IAEA,MAAa,MAAM;QAGf,YAAY,KAAa;YACrB,IAAI,CAAC,KAAK,GAAG,KAAK,CAAC;YACnB,cAAO,CAAC,KAAK,CAAC,CAAC;QACnB,CAAC;QAED,QAAQ;YACJ,OAAO,IAAI,CAAC,KAAK,CAAC;QACtB,CAAC;KACJ;IAXD,wBAWC"}

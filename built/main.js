@@ -1,8 +1,9 @@
-define(["require", "exports", "./graphics/Screen", "./map/GameMap", "./graphics/Point", "./Config"], function (require, exports, Screen_1, GameMap_1, Point_1, Config_1) {
+define(["require", "exports", "./graphics/Screen", "./map/GameMap", "./graphics/Point", "./map/Settlement", "./Config", "./mechanics/Player"], function (require, exports, Screen_1, GameMap_1, Point_1, Settlement_1, Config_1, Player_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    var ls;
     function main() {
-        var ls = new GameMap_1.GameMap(Config_1.Config.getN(), Screen_1.ctx);
+        ls = new GameMap_1.GameMap(Config_1.Config.getN(), Screen_1.ctx);
         ls.drawMap();
         var lastTile = undefined;
         Screen_1.canvas.onmousemove = function (e) {
@@ -27,6 +28,7 @@ define(["require", "exports", "./graphics/Screen", "./map/GameMap", "./graphics/
     exports.main = main;
     main();
     Screen_1.ctx.fillStyle = 'black';
+    // ctx.fillRect(currLocation.x, currLocation.y, 10, 10);
+    ls.addSettlement(new Settlement_1.Settlement(new Point_1.HexPoint(1, 1), new Player_1.Player('blue')));
 });
-// ctx.fillRect(currLocation.x, currLocation.y, 10, 10);
 //# sourceMappingURL=main.js.map

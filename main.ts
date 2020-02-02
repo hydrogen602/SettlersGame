@@ -1,12 +1,15 @@
 
 import { ctx, canvas } from "./graphics/Screen";
 import { GameMap } from "./map/GameMap";
-import { RelPoint, currLocation } from "./graphics/Point";
+import { RelPoint, currLocation, HexPoint } from "./graphics/Point";
 import { Tile } from "./map/Tile";
+import { Settlement } from "./map/Settlement"
 import { Config } from "./Config";
+import { Player } from "./mechanics/Player";
 
+var ls: GameMap;
 export function main() {
-    var ls = new GameMap(Config.getN(), ctx);
+    ls = new GameMap(Config.getN(), ctx);
     
     ls.drawMap();
 
@@ -38,3 +41,5 @@ main();
 
 ctx.fillStyle = 'black';
 // ctx.fillRect(currLocation.x, currLocation.y, 10, 10);
+
+ls.addSettlement(new Settlement(new HexPoint(1, 1), new Player('blue')));

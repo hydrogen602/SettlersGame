@@ -24,9 +24,17 @@ define(["require", "exports", "../graphics/Point", "./Tile", "../util"], functio
             }
             this.tilesArr = tiles;
             util_1.defined(this.tilesArr);
+            this.settlementsArr = [];
         }
         getTiles() {
             return this.tilesArr;
+        }
+        getSettlements() {
+            return this.settlementsArr;
+        }
+        addSettlement(s) {
+            util_1.defined(s);
+            this.settlementsArr.push(s);
         }
         drawMap() {
             this.tilesArr.forEach(e => {
@@ -36,6 +44,9 @@ define(["require", "exports", "../graphics/Point", "./Tile", "../util"], functio
             this.ctx.lineWidth = 1;
             this.tilesArr.forEach(e => {
                 e.strokeTile(this.ctx);
+            });
+            this.settlementsArr.forEach(s => {
+                s.draw(this.ctx);
             });
         }
     }
