@@ -11,10 +11,11 @@ class Point {
     }
 }
 
+// offset x = 1.5x-0.5
 
 // offset of map on screen in order to move around the map
 export var currLocation = new Point(
-    window.innerWidth / 2 - Hex.getSideLength() * (Config.getN() + 1), 
+    window.innerWidth / 2 - Hex.getSideLength() * (1.5 * Config.getN() - 0.5), 
     window.innerHeight / 2 - Hex.getApothem() * Config.getN()); // in px
 
 export class HexPoint extends Point {

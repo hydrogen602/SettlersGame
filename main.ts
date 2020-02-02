@@ -36,5 +36,5 @@ export function main() {
 
 main();
 
-// ctx.fillStyle = 'black';
-// Hex.fillHex(2, 2, ctx);
+ctx.fillStyle = 'black';
+// ctx.fillRect(currLocation.x, currLocation.y, 10, 10);

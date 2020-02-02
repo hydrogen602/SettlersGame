@@ -26,7 +26,7 @@ define(["require", "exports", "./graphics/Screen", "./map/GameMap", "./graphics/
     }
     exports.main = main;
     main();
+    Screen_1.ctx.fillStyle = 'black';
 });
-// ctx.fillStyle = 'black';
-// Hex.fillHex(2, 2, ctx);
+// ctx.fillRect(currLocation.x, currLocation.y, 10, 10);
 //# sourceMappingURL=main.js.map
