@@ -1,4 +1,4 @@
-import { HexPoint } from "../graphics/Point";
+import { HexPoint, RelPoint } from "../graphics/Point";
 import { defined } from "../util";
 import { Player } from "../mechanics/Player";
 
@@ -20,7 +20,6 @@ export class Road {
     }
 
     draw(ctx: CanvasRenderingContext2D) {
-        console.log("drawing")
         ctx.strokeStyle = "black";
         ctx.lineWidth = 14;
         ctx.beginPath();
@@ -36,7 +35,15 @@ export class Road {
         ctx.moveTo(tmp1.x, tmp1.y);
         ctx.lineTo(tmp2.x, tmp2.y);
         ctx.stroke();
+    }
 
+    static stroke(tmp1: RelPoint, tmp2: RelPoint, ctx: CanvasRenderingContext2D) {
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 14;
+        ctx.beginPath();
+        ctx.moveTo(tmp1.x, tmp1.y);
+        ctx.lineTo(tmp2.x, tmp2.y);
+        ctx.stroke();
     }
 
 }

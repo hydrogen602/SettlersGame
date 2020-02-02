@@ -11,7 +11,6 @@ define(["require", "exports", "../util"], function (require, exports, util_1) {
             util_1.defined(owner);
         }
         draw(ctx) {
-            console.log("drawing");
             ctx.strokeStyle = "black";
             ctx.lineWidth = 14;
             ctx.beginPath();
@@ -22,6 +21,14 @@ define(["require", "exports", "../util"], function (require, exports, util_1) {
             ctx.stroke();
             ctx.strokeStyle = this.owner.getColor();
             ctx.lineWidth = 10;
+            ctx.beginPath();
+            ctx.moveTo(tmp1.x, tmp1.y);
+            ctx.lineTo(tmp2.x, tmp2.y);
+            ctx.stroke();
+        }
+        static stroke(tmp1, tmp2, ctx) {
+            ctx.strokeStyle = "black";
+            ctx.lineWidth = 14;
             ctx.beginPath();
             ctx.moveTo(tmp1.x, tmp1.y);
             ctx.lineTo(tmp2.x, tmp2.y);

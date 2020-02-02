@@ -45,7 +45,9 @@ define(["require", "exports", "../util", "../graphics/StatusBar", "../graphics/P
                 // game start phase
                 // each player places one settlement
                 this.msgBoard.print("Place a settlement");
+                this.msgBoard.print("Then place a road");
                 this.mayPlaceSettlement = true;
+                this.mayPlaceRoad = true;
             }
         }
         debugPlayers() {

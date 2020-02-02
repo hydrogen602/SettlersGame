@@ -1,4 +1,4 @@
-define(["require", "exports", "./graphics/Screen", "./map/GameMap", "./graphics/Point", "./Config", "./mechanics/Player", "./mechanics/HexCorner", "./mechanics/GameManager", "./map/Road"], function (require, exports, Screen_1, GameMap_1, Point_1, Config_1, Player_1, HexCorner_1, GameManager_1, Road_1) {
+define(["require", "exports", "./graphics/Screen", "./map/GameMap", "./graphics/Point", "./Config", "./mechanics/Player", "./mechanics/HexCorner", "./mechanics/GameManager"], function (require, exports, Screen_1, GameMap_1, Point_1, Config_1, Player_1, HexCorner_1, GameManager_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     function main() {
@@ -29,8 +29,6 @@ define(["require", "exports", "./graphics/Screen", "./map/GameMap", "./graphics/
             GameManager_1.GameManager.instance.playTurn();
         }
     };
-    GameManager_1.GameManager.instance.getMap().addRoad(new Road_1.Road(new Point_1.HexPoint(2, 0), new Point_1.HexPoint(2, 1), GameManager_1.GameManager.instance.getPlayers()[0]));
-    GameManager_1.GameManager.instance.getMap().addRoad(new Road_1.Road(new Point_1.HexPoint(2, 1), new Point_1.HexPoint(2, 2), GameManager_1.GameManager.instance.getPlayers()[0]));
 });
 // ctx.fillStyle = 'black';
 // var tmp = Hex.hexGridToPx(0, 0);

@@ -1,4 +1,4 @@
-define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex", "./GameManager", "../map/Settlement", "../graphics/Screen"], function (require, exports, Point_1, util_1, Hex_1, GameManager_1, Settlement_1, Screen_1) {
+define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex", "./GameManager", "../map/Settlement", "../graphics/Screen", "../map/Road"], function (require, exports, Point_1, util_1, Hex_1, GameManager_1, Settlement_1, Screen_1, Road_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class HexCorner {
@@ -19,11 +19,24 @@ define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex",
                     var m = GameManager_1.GameManager.instance.getMap();
                     if (m.isAllowedSettlement(h)) {
                         var back = h.toRelPoint();
-                        Screen_1.ctx.strokeStyle = "black";
-                        Screen_1.ctx.lineWidth = 2;
-                        Screen_1.ctx.beginPath();
-                        Screen_1.ctx.arc(back.x, back.y, Hex_1.Hex.getSideLength() / 4, 0, Math.PI * 2);
-                        Screen_1.ctx.stroke();
+                        Settlement_1.Settlement.stroke(back, Screen_1.ctx);
+                    }
+                }
+                else {
+                    GameManager_1.GameManager.instance.draw();
+                }
+            }
+            else if (GameManager_1.GameManager.instance.mayPlaceRoad) {
+                // if (this.roadTmpFirstEnd == undefined) {
+                var p = new Point_1.RelPoint(e.clientX, e.clientY);
+                var r = HexCorner.distanceFromNearestHexCorner(p);
+                if (r < Hex_1.Hex.getSideLength() / 4) {
+                    // hovering over a corner
+                    var h = p.toHexPoint();
+                    var m = GameManager_1.GameManager.instance.getMap();
+                    if (true && this.roadTmpFirstEnd != undefined) { // check for valid location
+                        var back = h.toRelPoint();
+                        Road_1.Road.stroke(back, this.roadTmpFirstEnd.toRelPoint(), Screen_1.ctx);
                     }
                 }
                 else {
@@ -54,8 +67,23 @@ define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex",
                     }
                 }
             }
-            else {
-                //console.log("not allowed rn");
+            else if (GameManager_1.GameManager.instance.mayPlaceRoad) {
+                var p = new Point_1.RelPoint(e.clientX, e.clientY);
+                var r = HexCorner.distanceFromNearestHexCorner(p);
+                if (r < Hex_1.Hex.getSideLength() / 4) {
+                    var h = p.toHexPoint();
+                    if (this.roadTmpFirstEnd == undefined) {
+                        GameManager_1.GameManager.instance.print("First end placed");
+                        this.roadTmpFirstEnd = h;
+                    }
+                    else {
+                        var m = GameManager_1.GameManager.instance.getMap();
+                        m.addRoad(new Road_1.Road(this.roadTmpFirstEnd, h, GameManager_1.GameManager.instance.getCurrentPlayer()));
+                        GameManager_1.GameManager.instance.print("New Road created");
+                        GameManager_1.GameManager.instance.mayPlaceRoad = false;
+                        m.draw();
+                    }
+                }
             }
         }
     }
