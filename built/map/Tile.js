@@ -25,22 +25,27 @@ define(["require", "exports", "./Biome", "../util", "../graphics/Hex"], function
                 var r = parseInt(Math.random() * 19 + '');
                 this.landType = Biome_1.biomeDistributionArray[r];
             }
+            if (this.landType == Biome_1.Desert) {
+                this.diceValue = 0;
+            }
             this.p = location;
             this.center = Hex_1.Hex.getCenterOfHex(location.y, location.x); // flip on purpose
-            util_1.assert(Boolean(this.diceValue));
-            util_1.assert(Boolean(this.landType));
-            util_1.assert(Boolean(this.p));
-            util_1.assert(Boolean(this.center));
+            util_1.defined(this.diceValue);
+            util_1.defined(this.landType);
+            util_1.defined(this.p);
+            util_1.defined(this.center);
         }
         fillTile(ctx) {
             ctx.fillStyle = this.landType.getColor();
             Hex_1.Hex.fillHex(this.p.y, this.p.x, ctx);
             var relCenter = this.center.toRelPoint();
-            ctx.font = "20px Arial";
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.fillStyle = "black";
-            ctx.fillText(this.diceValue.toString(), relCenter.x, relCenter.y);
+            if (this.landType != Biome_1.Desert) {
+                ctx.font = "20px Arial";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.fillStyle = "black";
+                ctx.fillText(this.diceValue.toString(), relCenter.x, relCenter.y);
+            }
         }
         strokeTile(ctx) {
             Hex_1.Hex.strokeHex(this.p.y, this.p.x, ctx);

@@ -23,8 +23,8 @@ define(["require", "exports"], function (require, exports) {
         can.id = "main";
         return can;
     };
-    var windowWidth = window.innerWidth - 18 - 25;
-    var windowHeight = window.innerHeight - 6; //-18-10
+    var windowWidth = window.innerWidth; //-18-25
+    var windowHeight = window.innerHeight; // -6 //-18-10
     //Create canvas with the device resolution.
     var myCanvas = createHiDPICanvas(windowWidth, windowHeight, undefined);
     var box = document.getElementById("box");

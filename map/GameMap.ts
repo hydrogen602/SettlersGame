@@ -1,10 +1,13 @@
 import { HexPoint, RelPoint } from "../graphics/Point";
 import { Tile } from "./Tile";
-import { defined } from "../util";
+import { defined, assert } from "../util";
+import { Settlement } from "./Settlement";
+import { canvas } from "../graphics/Screen";
 
 export class GameMap {
     private sz: number;
     private tilesArr: Array<Tile>;
+    private settlementsArr: Array<Settlement>;
     private ctx: CanvasRenderingContext2D;
 
     // offset of map on screen in order to move around the map
@@ -42,13 +45,65 @@ export class GameMap {
 
         this.tilesArr = tiles;
         defined(this.tilesArr);
+
+        this.settlementsArr = [];
     }
 
     getTiles() {
         return this.tilesArr;
     }
 
-    drawMap() {
+    getSettlements() {
+        return this.settlementsArr;
+    }
+
+    getCtx() {
+        return this.ctx;
+    }
+
+    isAllowedSettlement(h: HexPoint): boolean {
+        // console.log("new?", h)
+        var conflicts = this.settlementsArr.filter(s => {
+            // console.log("check", s.getHexPoint())
+            var hp = s.getHexPoint();
+            if (hp.x == h.x && hp.y == h.y) {
+                return true;
+            }
+            if (hp.x == h.x && hp.y == h.y + 1) {
+                return true;
+            }
+            if (hp.x == h.x && hp.y == h.y - 1) {
+                return true;
+            }
+            if (h.x % 2 == h.y % 2) {
+                // check right
+                if (hp.x == h.x + 1 && hp.y == h.y) {
+                    return true;
+                }
+            }
+            else {
+                // check left
+                if (hp.x == h.x - 1 && hp.y == h.y) {
+                    return true;
+                }
+            }
+            return false;
+        });
+
+        return conflicts.length == 0; // allowed if no conflicts
+    }
+
+    addSettlement(s: Settlement) {
+        defined(s);
+        this.settlementsArr.push(s);
+    }
+
+    draw() {
+        this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        this.ctx.fillStyle = 'blue';
+        this.ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+
         this.tilesArr.forEach(e => {
             e.fillTile(this.ctx);
         });
@@ -57,6 +112,10 @@ export class GameMap {
         this.ctx.lineWidth = 1;
         this.tilesArr.forEach(e => {
             e.strokeTile(this.ctx);
+        })
+
+        this.settlementsArr.forEach(s => {
+            s.draw(this.ctx);
         })
     }
 }

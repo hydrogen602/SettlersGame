@@ -1,4 +1,4 @@
-define(["require", "exports", "../graphics/Point", "./Tile", "../util"], function (require, exports, Point_1, Tile_1, util_1) {
+define(["require", "exports", "../graphics/Point", "./Tile", "../util", "../graphics/Screen"], function (require, exports, Point_1, Tile_1, util_1, Screen_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class GameMap {
@@ -24,11 +24,55 @@ define(["require", "exports", "../graphics/Point", "./Tile", "../util"], functio
             }
             this.tilesArr = tiles;
             util_1.defined(this.tilesArr);
+            this.settlementsArr = [];
         }
         getTiles() {
             return this.tilesArr;
         }
-        drawMap() {
+        getSettlements() {
+            return this.settlementsArr;
+        }
+        getCtx() {
+            return this.ctx;
+        }
+        isAllowedSettlement(h) {
+            // console.log("new?", h)
+            var conflicts = this.settlementsArr.filter(s => {
+                // console.log("check", s.getHexPoint())
+                var hp = s.getHexPoint();
+                if (hp.x == h.x && hp.y == h.y) {
+                    return true;
+                }
+                if (hp.x == h.x && hp.y == h.y + 1) {
+                    return true;
+                }
+                if (hp.x == h.x && hp.y == h.y - 1) {
+                    return true;
+                }
+                if (h.x % 2 == h.y % 2) {
+                    // check right
+                    if (hp.x == h.x + 1 && hp.y == h.y) {
+                        return true;
+                    }
+                }
+                else {
+                    // check left
+                    if (hp.x == h.x - 1 && hp.y == h.y) {
+                        return true;
+                    }
+                }
+                return false;
+            });
+            return conflicts.length == 0; // allowed if no conflicts
+        }
+        addSettlement(s) {
+            util_1.defined(s);
+            this.settlementsArr.push(s);
+        }
+        draw() {
+            this.ctx.clearRect(0, 0, Screen_1.canvas.width, Screen_1.canvas.height);
+            this.ctx.fillStyle = 'blue';
+            this.ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
             this.tilesArr.forEach(e => {
                 e.fillTile(this.ctx);
             });
@@ -36,6 +80,9 @@ define(["require", "exports", "../graphics/Point", "./Tile", "../util"], functio
             this.ctx.lineWidth = 1;
             this.tilesArr.forEach(e => {
                 e.strokeTile(this.ctx);
+            });
+            this.settlementsArr.forEach(s => {
+                s.draw(this.ctx);
             });
         }
     }

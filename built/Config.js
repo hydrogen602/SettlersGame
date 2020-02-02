@@ -12,6 +12,6 @@ define(["require", "exports"], function (require, exports) {
         }
     }
     exports.Config = Config;
-    Config.n = 6;
+    Config.n = 3;
 });
 //# sourceMappingURL=Config.js.map

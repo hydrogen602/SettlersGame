@@ -3,7 +3,7 @@
  */
 
 export class Config {
-    private static n = 6;
+    private static n = 3;
 
     static getN() {
         return this.n;

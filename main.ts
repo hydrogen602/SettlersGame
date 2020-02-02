@@ -1,40 +1,50 @@
 
 import { ctx, canvas } from "./graphics/Screen";
 import { GameMap } from "./map/GameMap";
-import { RelPoint, currLocation } from "./graphics/Point";
-import { Tile } from "./map/Tile";
+import { currLocation, maxDistance, centerOfScreen } from "./graphics/Point";
 import { Config } from "./Config";
+import { Player } from "./mechanics/Player";
+import { HexCorner } from "./mechanics/HexCorner";
+import { GameManager } from "./mechanics/GameManager";
 
 export function main() {
-    var ls = new GameMap(Config.getN(), ctx);
+    var m = new GameMap(Config.getN(), ctx);
+
+    GameManager.instance = new GameManager(m, [new Player('blue', 'Blue Team'), new Player('green', 'Green Team')]);
     
-    ls.drawMap();
-
-    var lastTile: Tile = undefined;
-    canvas.onmousemove = function(e: MouseEvent) {
-
-        //console.log(e.clientX, e.clientY);
-        var p = new RelPoint(e.clientX, e.clientY);
-
-        var currTile = ls.getTiles().filter(e => {
-            return (e.isInside(p.toAbsPoint()))
-        });
-
-        if (currTile.length && currTile[0] != lastTile) {
-            lastTile = currTile[0];
-            ls.drawMap();
-            ctx.strokeStyle = 'black';
-            ctx.lineWidth = 3;
-            lastTile.strokeTile(ctx);
-        }
-        if (currTile.length == 0) {
-            lastTile = undefined;
-            ls.drawMap();
-        }
-    }
+    GameManager.instance.draw();
 }
 
 main();
 
 ctx.fillStyle = 'black';
 // ctx.fillRect(currLocation.x, currLocation.y, 10, 10);
+
+document.addEventListener("wheel", function (e) {
+    const limit = 5;
+
+    currLocation.x -= Math.max(-limit, Math.min(e.deltaX, limit));
+    currLocation.y -= Math.max(-limit, Math.min(e.deltaY, limit));
+
+    currLocation.x = Math.max(-maxDistance, Math.min(currLocation.x - centerOfScreen.x, maxDistance)) + centerOfScreen.x;
+    currLocation.y = Math.max(-maxDistance, Math.min(currLocation.y - centerOfScreen.y, maxDistance)) + centerOfScreen.y;
+
+    GameManager.instance.draw();
+});
+
+document.onmousedown = HexCorner.mouseHandler;
+
+window.onkeypress = (e: KeyboardEvent) => {
+    if (e.key == 'p') {
+        console.log("Debug Players:")
+        GameManager.instance.debugPlayers();
+    }
+    if (e.key == 't') {
+        GameManager.instance.playTurn();
+    }
+}
+
+// ctx.fillStyle = 'black';
+// var tmp = Hex.hexGridToPx(0, 0);
+// ctx.fillRect(tmp.x, tmp.y, 10, 10);
+

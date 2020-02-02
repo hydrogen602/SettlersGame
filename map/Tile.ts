@@ -1,5 +1,5 @@
-import { Biome, biomeDistributionArray } from "./Biome";
-import { assert } from "../util";
+import { Biome, biomeDistributionArray, Desert } from "./Biome";
+import { assert, defined } from "../util";
 import { HexPoint, AbsPoint } from "../graphics/Point"
 import { Hex } from "../graphics/Hex"
 
@@ -30,30 +30,35 @@ export class Tile {
         } else {
             var r = parseInt(Math.random() * 19 + '');
             this.landType = biomeDistributionArray[r];
+        }
 
+        if (this.landType == Desert) {
+            this.diceValue = 0;
         }
 
         this.p = location;
         this.center = Hex.getCenterOfHex(location.y, location.x); // flip on purpose
 
-        assert(Boolean(this.diceValue));
-        assert(Boolean(this.landType));
-        assert(Boolean(this.p));
-        assert(Boolean(this.center));
+        defined(this.diceValue);
+        defined(this.landType);
+        defined(this.p);
+        defined(this.center);
     }
 
-    fillTile(ctx: CanvasRenderingContext2D) {
+    fillTile(ctx: CanvasRenderingContext2D) { // TODO: combine fillTile and strokeTile into one draw method
         ctx.fillStyle = this.landType.getColor();
         
         Hex.fillHex(this.p.y, this.p.x, ctx);
 
         var relCenter = this.center.toRelPoint();
 
-        ctx.font = "20px Arial";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillStyle = "black";
-        ctx.fillText(this.diceValue.toString(), relCenter.x, relCenter.y);
+        if (this.landType != Desert) {
+            ctx.font = "20px Arial";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillStyle = "black";
+            ctx.fillText(this.diceValue.toString(), relCenter.x, relCenter.y);
+        }
     }
 
     strokeTile(ctx: CanvasRenderingContext2D) {

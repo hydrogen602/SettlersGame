@@ -6,7 +6,11 @@ export function assert(condition: boolean, message?: string) {
 }
 
 export function defined(condition: any) {
-    if (!condition) {
+    if (condition == undefined) {
         throw "Variable undefined";
     }
+}
+
+export function square(n: number) {
+    return n * n
 }

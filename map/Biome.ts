@@ -29,37 +29,37 @@ export class Biome {
     }
 }
 
-const Desert = new (class Desert extends Biome {
+export const Desert = new (class Desert extends Biome {
     constructor() {
         super(1, ResourceType.NoResource, 'yellow');
     }
 })();
 
-const Grassland = new (class Grassland extends Biome {
+export const Grassland = new (class Grassland extends Biome {
     constructor() {
         super(4, ResourceType.Sheep, 'limegreen');
     }
 })();
 
-const Forest = new (class Forest extends Biome {
+export const Forest = new (class Forest extends Biome {
     constructor() {
         super(4, ResourceType.Lumber, 'forestgreen');
     }
 })();
 
-const Mountain = new (class Mountain extends Biome {
+export const Mountain = new (class Mountain extends Biome {
     constructor() {
         super(3, ResourceType.Ore, 'dimgray');
     }
 })();
 
-const Farmland = new (class Farmland extends Biome {
+export const Farmland = new (class Farmland extends Biome {
     constructor() {
         super(4, ResourceType.Wheat, 'goldenrod');
     }
 })();
 
-const Quarry = new (class Quarry extends Biome {
+export const Quarry = new (class Quarry extends Biome {
     constructor() {
         super(3, ResourceType.Brick, 'firebrick');
     }

@@ -21,37 +21,37 @@ define(["require", "exports", "../dataTypes", "../util"], function (require, exp
         }
     }
     exports.Biome = Biome;
-    const Desert = new (class Desert extends Biome {
+    exports.Desert = new (class Desert extends Biome {
         constructor() {
             super(1, dataTypes_1.ResourceType.NoResource, 'yellow');
         }
     })();
-    const Grassland = new (class Grassland extends Biome {
+    exports.Grassland = new (class Grassland extends Biome {
         constructor() {
             super(4, dataTypes_1.ResourceType.Sheep, 'limegreen');
         }
     })();
-    const Forest = new (class Forest extends Biome {
+    exports.Forest = new (class Forest extends Biome {
         constructor() {
             super(4, dataTypes_1.ResourceType.Lumber, 'forestgreen');
         }
     })();
-    const Mountain = new (class Mountain extends Biome {
+    exports.Mountain = new (class Mountain extends Biome {
         constructor() {
             super(3, dataTypes_1.ResourceType.Ore, 'dimgray');
         }
     })();
-    const Farmland = new (class Farmland extends Biome {
+    exports.Farmland = new (class Farmland extends Biome {
         constructor() {
             super(4, dataTypes_1.ResourceType.Wheat, 'goldenrod');
         }
     })();
-    const Quarry = new (class Quarry extends Biome {
+    exports.Quarry = new (class Quarry extends Biome {
         constructor() {
             super(3, dataTypes_1.ResourceType.Brick, 'firebrick');
         }
     })();
-    exports.biomes = [Desert, Grassland, Forest, Mountain, Farmland, Quarry];
+    exports.biomes = [exports.Desert, exports.Grassland, exports.Forest, exports.Mountain, exports.Farmland, exports.Quarry];
     var tmp_biomeDistributionArray = [];
     exports.biomes.forEach((e) => {
         for (var i = 0; i < e.getAbundance(); i++) {
