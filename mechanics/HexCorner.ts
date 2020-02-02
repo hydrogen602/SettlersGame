@@ -17,6 +17,7 @@ export class HexCorner {
     }
 
     static mouseHandler(e: MouseEvent) {
+        // console.log("event", e);
         if (GameManager.instance.mayPlaceSettlement) {            
             var p = new RelPoint(e.clientX, e.clientY);
             var r = HexCorner.distanceFromNearestHexCorner(p);
@@ -30,11 +31,12 @@ export class HexCorner {
 
                 if (m.isAllowedSettlement(h)) {
                     m.addSettlement(new Settlement(h, GameManager.instance.getCurrentPlayer()))
+                    m.drawMap();
                     console.log("success");
                     GameManager.instance.mayPlaceSettlement = false;
                 }
                 else {
-                    console.log("not allowed position")
+                    console.log("not allowed position");
                 }
             }
         }  

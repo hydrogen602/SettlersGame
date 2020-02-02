@@ -34,32 +34,33 @@ define(["require", "exports", "../graphics/Point", "./Tile", "../util", "../grap
         }
         isAllowedSettlement(h) {
             console.log("new?", h);
-            this.settlementsArr.forEach(s => {
+            var conflicts = this.settlementsArr.filter(s => {
                 console.log("check", s.getHexPoint());
                 var hp = s.getHexPoint();
                 if (hp.x == h.x && hp.y == h.y) {
-                    return false;
+                    return true;
                 }
                 if (hp.x == h.x && hp.y == h.y + 1) {
-                    return false;
+                    return true;
                 }
                 if (hp.x == h.x && hp.y == h.y - 1) {
-                    return false;
+                    return true;
                 }
                 if (h.x % 2 == h.y % 2) {
                     // check right
                     if (hp.x == h.x + 1 && hp.y == h.y) {
-                        return false;
+                        return true;
                     }
                 }
                 else {
                     // check left
-                    if (hp.x == h.x - 1 && hp.y == h.y - 1) {
-                        return false;
+                    if (hp.x == h.x - 1 && hp.y == h.y) {
+                        return true;
                     }
                 }
+                return false;
             });
-            return true;
+            return conflicts.length == 0; // allowed if no conflicts
         }
         addSettlement(s) {
             util_1.defined(s);
