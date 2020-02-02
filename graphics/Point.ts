@@ -18,6 +18,12 @@ export var currLocation = new Point(
     window.innerWidth / 2 - Hex.getSideLength() * (1.5 * Config.getN() - 0.5), 
     window.innerHeight / 2 - Hex.getApothem() * Config.getN()); // in px
 
+export const centerOfScreen = new Point(
+    window.innerWidth / 2 - Hex.getSideLength() * (1.5 * Config.getN() - 0.5), 
+    window.innerHeight / 2 - Hex.getApothem() * Config.getN()); // in px
+
+export const maxDistance = Hex.getSideLength() * (1.5 * Config.getN() - 0.5) * 1.5;
+
 export class HexPoint extends Point {
     constructor(x: number, y: number) {
         super(x, y);

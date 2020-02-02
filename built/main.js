@@ -34,6 +34,8 @@ define(["require", "exports", "./graphics/Screen", "./map/GameMap", "./graphics/
         const limit = 5;
         Point_1.currLocation.x -= Math.max(-limit, Math.min(e.deltaX, limit));
         Point_1.currLocation.y -= Math.max(-limit, Math.min(e.deltaY, limit));
+        Point_1.currLocation.x = Math.max(-Point_1.maxDistance, Math.min(Point_1.currLocation.x - Point_1.centerOfScreen.x, Point_1.maxDistance)) + Point_1.centerOfScreen.x;
+        Point_1.currLocation.y = Math.max(-Point_1.maxDistance, Math.min(Point_1.currLocation.y - Point_1.centerOfScreen.y, Point_1.maxDistance)) + Point_1.centerOfScreen.y;
         ls.drawMap();
     });
 });

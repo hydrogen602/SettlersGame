@@ -1,7 +1,7 @@
 
 import { ctx, canvas } from "./graphics/Screen";
 import { GameMap } from "./map/GameMap";
-import { RelPoint, HexPoint, currLocation } from "./graphics/Point";
+import { RelPoint, HexPoint, currLocation, maxDistance, centerOfScreen } from "./graphics/Point";
 import { Tile } from "./map/Tile";
 import { Settlement } from "./map/Settlement"
 import { Config } from "./Config";
@@ -49,5 +49,9 @@ document.addEventListener("wheel", function (e) {
     
     currLocation.x -= Math.max(-limit, Math.min(e.deltaX, limit));
     currLocation.y -= Math.max(-limit, Math.min(e.deltaY, limit));
+
+    currLocation.x = Math.max(-maxDistance, Math.min(currLocation.x - centerOfScreen.x, maxDistance)) + centerOfScreen.x;
+    currLocation.y = Math.max(-maxDistance, Math.min(currLocation.y - centerOfScreen.y, maxDistance)) + centerOfScreen.y;
+
     ls.drawMap();
 });

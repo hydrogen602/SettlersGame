@@ -10,6 +10,8 @@ define(["require", "exports", "./Hex", "../Config"], function (require, exports,
     // offset x = 1.5x-0.5
     // offset of map on screen in order to move around the map
     exports.currLocation = new Point(window.innerWidth / 2 - Hex_1.Hex.getSideLength() * (1.5 * Config_1.Config.getN() - 0.5), window.innerHeight / 2 - Hex_1.Hex.getApothem() * Config_1.Config.getN()); // in px
+    exports.centerOfScreen = new Point(window.innerWidth / 2 - Hex_1.Hex.getSideLength() * (1.5 * Config_1.Config.getN() - 0.5), window.innerHeight / 2 - Hex_1.Hex.getApothem() * Config_1.Config.getN()); // in px
+    exports.maxDistance = Hex_1.Hex.getSideLength() * (1.5 * Config_1.Config.getN() - 0.5) * 1.5;
     class HexPoint extends Point {
         constructor(x, y) {
             super(x, y);
