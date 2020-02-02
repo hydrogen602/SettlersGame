@@ -1,6 +1,6 @@
 import { Hex } from "./Hex";
 import { Config } from "../Config";
-import { assert } from "../util";
+import { assert, assertInt } from "../util";
 
 class Point {
     x: number;
@@ -15,7 +15,7 @@ class Point {
 // offset x = 1.5x-0.5
 
 // offset of map on screen in order to move around the map
-export var currLocation = new Point(
+export const currLocation = new Point(
     window.innerWidth / 2 - Hex.getSideLength() * (1.5 * Config.getN() - 0.5), 
     window.innerHeight / 2 - Hex.getApothem() * Config.getN()); // in px
 
@@ -25,20 +25,20 @@ export const centerOfScreen = new Point(
 
 export const maxDistance = Hex.getSideLength() * (1.5 * Config.getN() - 0.5) * 1.5;
 
+
 export class HexPoint extends Point {
     constructor(col: number, row: number) {
-        assert(parseInt(col + '') == col && parseInt(row + '') == row, "Must be integers");
+        assertInt(col);
+        assertInt(row);
         super(col, row);
     }
 
-    toAbsPoint() {
-        var p = Hex.hexGridToPxUnshifted(this.y, this.x);
-        return new AbsPoint(p.x, p.y);
+    toAbsPoint(): AbsPoint {
+        return Hex.hexGridToPxUnshifted(this.y, this.x);
     }
 
-    toRelPoint() {
-        var p = Hex.hexGridToPx(this.y, this.x);
-        return new RelPoint(p.x, p.y);
+    toRelPoint(): RelPoint {
+        return Hex.hexGridToPx(this.y, this.x);
     }
 
     isNeighbor(other: HexPoint): boolean {
@@ -74,16 +74,20 @@ export class AbsPoint extends Point {
         super(x, y);
     }
 
-    toRelPoint() {
+    toRelPoint(): RelPoint {
         return new RelPoint(this.x + currLocation.x, this.y + currLocation.y);
     }
 
-    toAbsPoint() {
+    toAbsPoint(): AbsPoint {
         return new AbsPoint(this.x, this.y);
     }
 
-    toHexPoint() {
+    toHexPoint(): HexPoint {
         return Hex.pxUnshiftedToHexGrid(this.x, this.y);
+    }
+
+    toDualHexPoint(): Array<HexPoint> {
+        return Hex.pxUnshiftedToDualHexGrid(this.x, this.y);
     }
 }
 
@@ -92,24 +96,22 @@ export class RelPoint extends Point {
         super(x, y);
     }
 
-    toRelPoint() {
+    toRelPoint(): RelPoint {
         return new RelPoint(this.x, this.y);
     }
 
-    toAbsPoint() {
+    toAbsPoint(): AbsPoint {
         return new AbsPoint(this.x - currLocation.x, this.y - currLocation.y);
     }
 
-    toHexPoint() {
-        var p = this.toAbsPoint();
+    toHexPoint(): HexPoint {
+        const p = this.toAbsPoint();
         return Hex.pxUnshiftedToHexGrid(p.x, p.y);
     }
 
     toDualHexPoint(): Array<HexPoint> {
-        var p = this.toAbsPoint();
-        var h = Hex.pxUnshiftedToDualHexGrid(p.x, p.y);
-
-        return h;
+        const p = this.toAbsPoint();
+        return Hex.pxUnshiftedToDualHexGrid(p.x, p.y);
     }
 }
 

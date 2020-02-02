@@ -9,7 +9,7 @@ import { GameManager } from "./mechanics/GameManager";
 import { Road } from "./map/Road";
 
 export function main() {
-    var m = new GameMap(Config.getN(), ctx);
+    const m = new GameMap(Config.getN(), ctx);
 
     GameManager.instance = new GameManager(m, [new Player('blue', 'Blue Team'), new Player('green', 'Green Team')]);
     

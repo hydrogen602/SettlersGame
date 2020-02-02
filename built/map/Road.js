@@ -23,8 +23,8 @@ define(["require", "exports", "../util"], function (require, exports, util_1) {
             ctx.strokeStyle = "black";
             ctx.lineWidth = 14;
             ctx.beginPath();
-            var tmp1 = this.p1.toRelPoint();
-            var tmp2 = this.p2.toRelPoint();
+            const tmp1 = this.p1.toRelPoint();
+            const tmp2 = this.p2.toRelPoint();
             ctx.moveTo(tmp1.x, tmp1.y);
             ctx.lineTo(tmp2.x, tmp2.y);
             ctx.stroke();

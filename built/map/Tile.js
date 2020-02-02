@@ -4,7 +4,7 @@ define(["require", "exports", "./Biome", "../util", "../graphics/Hex"], function
     class Tile {
         constructor(location, landType, diceValue) {
             if (diceValue) {
-                util_1.assert(parseInt(diceValue.toString()) == diceValue, "diceValue should be an integer");
+                util_1.assertInt(diceValue);
                 this.diceValue = diceValue;
             }
             else {
@@ -14,16 +14,13 @@ define(["require", "exports", "./Biome", "../util", "../graphics/Hex"], function
                 //      | | | | | | | | | | |  |  |  |  |  |  |  |  |
                 //      0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18
                 // out of 19
-                var r = parseInt(Math.random() * 19 + '');
-                var choices = [2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 9, 10, 10, 11, 11, 12];
-                this.diceValue = choices[r];
+                this.diceValue = Tile.diceValueChoices[parseInt(Math.random() * 19 + '')];
             }
             if (landType) {
                 this.landType = landType;
             }
             else {
-                var r = parseInt(Math.random() * 19 + '');
-                this.landType = Biome_1.biomeDistributionArray[r];
+                this.landType = Biome_1.biomeDistributionArray[parseInt(Math.random() * 19 + '')];
             }
             if (this.landType == Biome_1.Desert) {
                 this.diceValue = 0;
@@ -38,7 +35,7 @@ define(["require", "exports", "./Biome", "../util", "../graphics/Hex"], function
         draw(ctx) {
             ctx.fillStyle = this.landType.getColor();
             Hex_1.Hex.fillHex(this.p.y, this.p.x, ctx);
-            var relCenter = this.center.toRelPoint();
+            const relCenter = this.center.toRelPoint();
             if (this.landType != Biome_1.Desert) {
                 ctx.font = "20px Arial";
                 ctx.textAlign = "center";
@@ -50,5 +47,6 @@ define(["require", "exports", "./Biome", "../util", "../graphics/Hex"], function
         }
     }
     exports.Tile = Tile;
+    Tile.diceValueChoices = [2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 9, 10, 10, 11, 11, 12];
 });
 //# sourceMappingURL=Tile.js.map

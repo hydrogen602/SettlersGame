@@ -22,30 +22,27 @@ export class GameMap {
         defined(this.sz);
         defined(this.ctx);
 
-        var nP: number = (size - 1) / 2;
-        var nP2: number = (size - 2) / 2;
-
-        var tiles: Array<Tile> = []
+        const nP: number = (size - 1) / 2;
+        const nP2: number = (size - 2) / 2;
         
-        for (var j = 0; j < size; j++) {
+        for (let j = 0; j < size; j++) {
 
-            var addition: number = - Math.abs(j - nP) + nP;
+            const addition: number = - Math.abs(j - nP) + nP;
             
-            for (var i = -addition; i < size + addition; i++) {
-                tiles.push(new Tile(new HexPoint(2*j, 2*i)));
+            for (let i = -addition; i < size + addition; i++) {
+                this.tilesArr.push(new Tile(new HexPoint(2*j, 2*i)));
             }
         }
 
-        for (var j = 0; j < size - 1; j++) {
+        for (let j = 0; j < size - 1; j++) {
 
-            var addition: number = - Math.abs(j - nP2) + nP2;
+            const addition: number = - Math.abs(j - nP2) + nP2;
 
-            for (var i = -addition; i <= size + addition; i++) {
-                tiles.push(new Tile(new HexPoint(2*j + 1, 2*i - 1)));
+            for (let i = -addition; i <= size + addition; i++) {
+                this.tilesArr.push(new Tile(new HexPoint(2*j + 1, 2*i - 1)));
             }
         }
 
-        this.tilesArr = tiles;
         defined(this.tilesArr);
 
         this.settlementsArr = [];
@@ -70,9 +67,9 @@ export class GameMap {
 
     isAllowedSettlement(h: HexPoint): boolean {
         // console.log("new?", h)
-        var conflicts = this.settlementsArr.filter(s => {
+        const conflicts = this.settlementsArr.filter(s => {
             // console.log("check", s.getHexPoint())
-            var hp = s.getHexPoint();
+            const hp = s.getHexPoint();
             return h.isNeighbor(hp) || h.isEqual(hp);
         });
 
@@ -85,7 +82,7 @@ export class GameMap {
             return false;
         }
 
-        var conflicts = this.roadsArr.filter(r => {
+        const conflicts = this.roadsArr.filter(r => {
             return r.isEqual(p1, p2);
         });
 

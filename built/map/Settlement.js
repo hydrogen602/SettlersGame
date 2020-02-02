@@ -15,7 +15,7 @@ define(["require", "exports", "../util", "../graphics/Hex"], function (require, 
             ctx.strokeStyle = 'black';
             ctx.lineWidth = 4;
             ctx.beginPath();
-            var relLoc = this.p.toRelPoint();
+            const relLoc = this.p.toRelPoint();
             ctx.arc(relLoc.x, relLoc.y, Hex_1.Hex.getSideLength() / 4, 0, 2 * Math.PI);
             ctx.stroke();
             ctx.beginPath();

@@ -38,7 +38,7 @@ define(["require", "exports", "./Point", "../util"], function (require, exports,
             this.ctx.textAlign = "left";
             this.ctx.textBaseline = "top";
             this.ctx.fillStyle = "black";
-            for (var i = 0; i < this.board.length; i++) {
+            for (let i = 0; i < this.board.length; i++) {
                 this.ctx.fillText(this.board[i], this.pos.x + 5, this.pos.y + 10 + 26 * i);
             }
         }

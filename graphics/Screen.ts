@@ -1,7 +1,7 @@
 // https://stackoverflow.com/questions/15661339/how-do-i-fix-blurry-text-in-my-html5-canvas
 
-var PIXEL_RATIO = (function () {
-    var ctx: any = document.createElement("canvas").getContext("2d"),
+const PIXEL_RATIO = (function () {
+    const ctx: any = document.createElement("canvas").getContext("2d"),
         dpr = window.devicePixelRatio || 1,
         bsr: any = ctx["webkitBackingStorePixelRatio"] ||
               ctx["mozBackingStorePixelRatio"] ||
@@ -13,9 +13,9 @@ var PIXEL_RATIO = (function () {
 })();
 
 
-var createHiDPICanvas = function(w: number, h: number, ratio: number) {
+function createHiDPICanvas(w: number, h: number, ratio: number) {
     if (!ratio) { ratio = PIXEL_RATIO; }
-    var can = document.createElement("canvas");
+    const can = document.createElement("canvas");
     can.width = w * ratio;
     can.height = h * ratio;
     can.style.width = w + "px";
@@ -26,13 +26,13 @@ var createHiDPICanvas = function(w: number, h: number, ratio: number) {
     return can;
 }
 
-var windowWidth = window.innerWidth //-18-25
-var windowHeight = window.innerHeight // -6 //-18-10
+const windowWidth = window.innerWidth //-18-25
+const windowHeight = window.innerHeight // -6 //-18-10
 
 //Create canvas with the device resolution.
-var myCanvas = createHiDPICanvas(windowWidth, windowHeight, undefined);
+const myCanvas = createHiDPICanvas(windowWidth, windowHeight, undefined);
 
-var box = document.getElementById("box");
+const box = document.getElementById("box");
 
 box.appendChild(myCanvas);
 

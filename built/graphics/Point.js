@@ -14,16 +14,15 @@ define(["require", "exports", "./Hex", "../Config", "../util"], function (requir
     exports.maxDistance = Hex_1.Hex.getSideLength() * (1.5 * Config_1.Config.getN() - 0.5) * 1.5;
     class HexPoint extends Point {
         constructor(col, row) {
-            util_1.assert(parseInt(col + '') == col && parseInt(row + '') == row, "Must be integers");
+            util_1.assertInt(col);
+            util_1.assertInt(row);
             super(col, row);
         }
         toAbsPoint() {
-            var p = Hex_1.Hex.hexGridToPxUnshifted(this.y, this.x);
-            return new AbsPoint(p.x, p.y);
+            return Hex_1.Hex.hexGridToPxUnshifted(this.y, this.x);
         }
         toRelPoint() {
-            var p = Hex_1.Hex.hexGridToPx(this.y, this.x);
-            return new RelPoint(p.x, p.y);
+            return Hex_1.Hex.hexGridToPx(this.y, this.x);
         }
         isNeighbor(other) {
             if (other.x == this.x && other.y == this.y + 1) {
@@ -64,6 +63,9 @@ define(["require", "exports", "./Hex", "../Config", "../util"], function (requir
         toHexPoint() {
             return Hex_1.Hex.pxUnshiftedToHexGrid(this.x, this.y);
         }
+        toDualHexPoint() {
+            return Hex_1.Hex.pxUnshiftedToDualHexGrid(this.x, this.y);
+        }
     }
     exports.AbsPoint = AbsPoint;
     class RelPoint extends Point {
@@ -77,13 +79,12 @@ define(["require", "exports", "./Hex", "../Config", "../util"], function (requir
             return new AbsPoint(this.x - exports.currLocation.x, this.y - exports.currLocation.y);
         }
         toHexPoint() {
-            var p = this.toAbsPoint();
+            const p = this.toAbsPoint();
             return Hex_1.Hex.pxUnshiftedToHexGrid(p.x, p.y);
         }
         toDualHexPoint() {
-            var p = this.toAbsPoint();
-            var h = Hex_1.Hex.pxUnshiftedToDualHexGrid(p.x, p.y);
-            return h;
+            const p = this.toAbsPoint();
+            return Hex_1.Hex.pxUnshiftedToDualHexGrid(p.x, p.y);
         }
     }
     exports.RelPoint = RelPoint;

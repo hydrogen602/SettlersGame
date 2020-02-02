@@ -17,5 +17,11 @@ define(["require", "exports"], function (require, exports) {
         return n * n;
     }
     exports.square = square;
+    function assertInt(n) {
+        if (!Number.isInteger(n)) {
+            throw "TypeError: expected int";
+        }
+    }
+    exports.assertInt = assertInt;
 });
 //# sourceMappingURL=util.js.map

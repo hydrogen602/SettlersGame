@@ -96,4 +96,8 @@ export class GameManager {
         this.errBoard.draw();
     }
 
+    rollDice() {
+        // TODO something
+    }
+
 }

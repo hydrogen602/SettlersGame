@@ -11,26 +11,26 @@ export class EventManager {
     private constructor() {}
 
     static distanceFromNearestHexCorner(p: AbsPoint|RelPoint) {
-        var hexP = p.toHexPoint();
-        var abs = p.toAbsPoint(); // if already absolute, it returns a copy of itself
-        var backConvertedHex = hexP.toAbsPoint();
+        const hexP = p.toHexPoint();
+        const abs = p.toAbsPoint(); // if already absolute, it returns a copy of itself
+        const backConvertedHex = hexP.toAbsPoint();
 
         return Math.sqrt(square(abs.x - backConvertedHex.x) + square(abs.y - backConvertedHex.y));
     }
 
     static mouseHoverHandler(e: MouseEvent) {
         if (GameManager.instance.mayPlaceSettlement) {            
-            var p = new RelPoint(e.clientX, e.clientY);
-            var r = EventManager.distanceFromNearestHexCorner(p);
+            const p = new RelPoint(e.clientX, e.clientY);
+            const r = EventManager.distanceFromNearestHexCorner(p);
             
             if (r < Hex.getSideLength() / 4) {
                 // hovering over a corner
-                var h = p.toHexPoint();
+                const h = p.toHexPoint();
 
-                var m = GameManager.instance.getMap();
+                const m = GameManager.instance.getMap();
 
                 if (m.isAllowedSettlement(h)) {
-                    var back = h.toRelPoint();
+                    const back = h.toRelPoint();
                     Settlement.stroke(back, ctx);
                 }
             }
@@ -40,18 +40,15 @@ export class EventManager {
         }
         else if (GameManager.instance.mayPlaceRoad) {
             // if (this.roadTmpFirstEnd == undefined) {
-            var p = new RelPoint(e.clientX, e.clientY);
-            var r = EventManager.distanceFromNearestHexCorner(p);
-            var hArr = p.toDualHexPoint();
+            const p = new RelPoint(e.clientX, e.clientY);
+            const hArr = p.toDualHexPoint();
 
-            var m = GameManager.instance.getMap();
+            const m = GameManager.instance.getMap();
             
             if (hArr.length == 2 && m.isAllowedRoad(hArr[0], hArr[1])) { // hArr is empty if not over a line
                 GameManager.instance.draw();
 
                 // hovering over a line
-                var h = p.toHexPoint();
-
                 Road.stroke(hArr[0].toRelPoint(), hArr[1].toRelPoint(), ctx);
             }
             else {
@@ -61,22 +58,20 @@ export class EventManager {
     }
 
     static mouseHandler(e: MouseEvent) {
-        var p = new RelPoint(e.clientX, e.clientY);
-        var r = EventManager.distanceFromNearestHexCorner(p);
-        var hArr = p.toDualHexPoint();
+        const p = new RelPoint(e.clientX, e.clientY);
+        const r = EventManager.distanceFromNearestHexCorner(p);
+        
         // console.log(hArr);
 
         // console.log("event", e);
         if (GameManager.instance.mayPlaceSettlement) {            
-            var p = new RelPoint(e.clientX, e.clientY);
-            var r = EventManager.distanceFromNearestHexCorner(p);
             
             if (r < Hex.getSideLength() / 4) {
                 // clicked on a corner
-                var h = p.toHexPoint();
+                const h = p.toHexPoint();
                 //console.log("new settlement");
 
-                var m = GameManager.instance.getMap();
+                const m = GameManager.instance.getMap();
 
                 if (m.isAllowedSettlement(h)) {
                     m.addSettlement(new Settlement(h, GameManager.instance.getCurrentPlayer()))
@@ -92,12 +87,9 @@ export class EventManager {
             }
         }  
         else if (GameManager.instance.mayPlaceRoad) {
-            var p = new RelPoint(e.clientX, e.clientY);
-            var r = EventManager.distanceFromNearestHexCorner(p);
-            var hArr = p.toDualHexPoint();
-            
+            const hArr = p.toDualHexPoint();            
             if (hArr.length == 2) { // hArr is empty if not over a line 
-                var m = GameManager.instance.getMap();
+                const m = GameManager.instance.getMap();
 
                 if (m.isAllowedRoad(hArr[0], hArr[1])) { // check if road already there
                     m.addRoad(new Road(hArr[0], hArr[1], GameManager.instance.getCurrentPlayer()));

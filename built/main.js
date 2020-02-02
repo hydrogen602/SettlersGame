@@ -2,7 +2,7 @@ define(["require", "exports", "./graphics/Screen", "./map/GameMap", "./graphics/
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     function main() {
-        var m = new GameMap_1.GameMap(Config_1.Config.getN(), Screen_1.ctx);
+        const m = new GameMap_1.GameMap(Config_1.Config.getN(), Screen_1.ctx);
         GameManager_1.GameManager.instance = new GameManager_1.GameManager(m, [new Player_1.Player('blue', 'Blue Team'), new Player_1.Player('green', 'Green Team')]);
         GameManager_1.GameManager.instance.draw();
     }

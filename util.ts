@@ -14,3 +14,9 @@ export function defined(condition: any) {
 export function square(n: number) {
     return n * n
 }
+
+export function assertInt(n: number) {
+    if (!Number.isInteger(n)) {
+        throw "TypeError: expected int";
+    }
+}

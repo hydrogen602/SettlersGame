@@ -4,21 +4,21 @@ define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex",
     class EventManager {
         constructor() { }
         static distanceFromNearestHexCorner(p) {
-            var hexP = p.toHexPoint();
-            var abs = p.toAbsPoint(); // if already absolute, it returns a copy of itself
-            var backConvertedHex = hexP.toAbsPoint();
+            const hexP = p.toHexPoint();
+            const abs = p.toAbsPoint(); // if already absolute, it returns a copy of itself
+            const backConvertedHex = hexP.toAbsPoint();
             return Math.sqrt(util_1.square(abs.x - backConvertedHex.x) + util_1.square(abs.y - backConvertedHex.y));
         }
         static mouseHoverHandler(e) {
             if (GameManager_1.GameManager.instance.mayPlaceSettlement) {
-                var p = new Point_1.RelPoint(e.clientX, e.clientY);
-                var r = EventManager.distanceFromNearestHexCorner(p);
+                const p = new Point_1.RelPoint(e.clientX, e.clientY);
+                const r = EventManager.distanceFromNearestHexCorner(p);
                 if (r < Hex_1.Hex.getSideLength() / 4) {
                     // hovering over a corner
-                    var h = p.toHexPoint();
-                    var m = GameManager_1.GameManager.instance.getMap();
+                    const h = p.toHexPoint();
+                    const m = GameManager_1.GameManager.instance.getMap();
                     if (m.isAllowedSettlement(h)) {
-                        var back = h.toRelPoint();
+                        const back = h.toRelPoint();
                         Settlement_1.Settlement.stroke(back, Screen_1.ctx);
                     }
                 }
@@ -28,14 +28,12 @@ define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex",
             }
             else if (GameManager_1.GameManager.instance.mayPlaceRoad) {
                 // if (this.roadTmpFirstEnd == undefined) {
-                var p = new Point_1.RelPoint(e.clientX, e.clientY);
-                var r = EventManager.distanceFromNearestHexCorner(p);
-                var hArr = p.toDualHexPoint();
-                var m = GameManager_1.GameManager.instance.getMap();
+                const p = new Point_1.RelPoint(e.clientX, e.clientY);
+                const hArr = p.toDualHexPoint();
+                const m = GameManager_1.GameManager.instance.getMap();
                 if (hArr.length == 2 && m.isAllowedRoad(hArr[0], hArr[1])) { // hArr is empty if not over a line
                     GameManager_1.GameManager.instance.draw();
                     // hovering over a line
-                    var h = p.toHexPoint();
                     Road_1.Road.stroke(hArr[0].toRelPoint(), hArr[1].toRelPoint(), Screen_1.ctx);
                 }
                 else {
@@ -44,19 +42,16 @@ define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex",
             }
         }
         static mouseHandler(e) {
-            var p = new Point_1.RelPoint(e.clientX, e.clientY);
-            var r = EventManager.distanceFromNearestHexCorner(p);
-            var hArr = p.toDualHexPoint();
+            const p = new Point_1.RelPoint(e.clientX, e.clientY);
+            const r = EventManager.distanceFromNearestHexCorner(p);
             // console.log(hArr);
             // console.log("event", e);
             if (GameManager_1.GameManager.instance.mayPlaceSettlement) {
-                var p = new Point_1.RelPoint(e.clientX, e.clientY);
-                var r = EventManager.distanceFromNearestHexCorner(p);
                 if (r < Hex_1.Hex.getSideLength() / 4) {
                     // clicked on a corner
-                    var h = p.toHexPoint();
+                    const h = p.toHexPoint();
                     //console.log("new settlement");
-                    var m = GameManager_1.GameManager.instance.getMap();
+                    const m = GameManager_1.GameManager.instance.getMap();
                     if (m.isAllowedSettlement(h)) {
                         m.addSettlement(new Settlement_1.Settlement(h, GameManager_1.GameManager.instance.getCurrentPlayer()));
                         m.draw();
@@ -71,11 +66,9 @@ define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex",
                 }
             }
             else if (GameManager_1.GameManager.instance.mayPlaceRoad) {
-                var p = new Point_1.RelPoint(e.clientX, e.clientY);
-                var r = EventManager.distanceFromNearestHexCorner(p);
-                var hArr = p.toDualHexPoint();
+                const hArr = p.toDualHexPoint();
                 if (hArr.length == 2) { // hArr is empty if not over a line 
-                    var m = GameManager_1.GameManager.instance.getMap();
+                    const m = GameManager_1.GameManager.instance.getMap();
                     if (m.isAllowedRoad(hArr[0], hArr[1])) { // check if road already there
                         m.addRoad(new Road_1.Road(hArr[0], hArr[1], GameManager_1.GameManager.instance.getCurrentPlayer()));
                         m.draw();

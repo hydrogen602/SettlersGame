@@ -67,13 +67,12 @@ export const Quarry = new (class Quarry extends Biome {
 
 export const biomes: Array<Biome> = [Desert, Grassland, Forest, Mountain, Farmland, Quarry];
 
-var tmp_biomeDistributionArray: Array<Biome> = [];
-biomes.forEach((e: Biome) => {
-    for (var i = 0; i < e.getAbundance(); i++) {
-        tmp_biomeDistributionArray.push(e);
-    }
-});
-
-export const biomeDistributionArray = tmp_biomeDistributionArray;
-tmp_biomeDistributionArray = undefined;
-
+export const biomeDistributionArray = function() {
+    let tmp_biomeDistributionArray: Array<Biome> = [];
+    biomes.forEach((e: Biome) => {
+        for (let i = 0; i < e.getAbundance(); i++) {
+            tmp_biomeDistributionArray.push(e);
+        }
+    });
+    return tmp_biomeDistributionArray;
+}();

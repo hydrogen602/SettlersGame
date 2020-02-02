@@ -68,6 +68,9 @@ define(["require", "exports", "../util", "../graphics/StatusBar", "../graphics/P
             this.msgBoard.draw();
             this.errBoard.draw();
         }
+        rollDice() {
+            // TODO something
+        }
     }
     exports.GameManager = GameManager;
 });
