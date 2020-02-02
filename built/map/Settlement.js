@@ -23,6 +23,13 @@ define(["require", "exports", "../util", "../graphics/Hex"], function (require, 
             ctx.arc(relLoc.x, relLoc.y, Hex_1.Hex.getSideLength() / 4 - 2, 0, 2 * Math.PI);
             ctx.fill();
         }
+        static stroke(loc, ctx) {
+            ctx.strokeStyle = 'black';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.arc(loc.x, loc.y, Hex_1.Hex.getSideLength() / 4, 0, 2 * Math.PI);
+            ctx.stroke();
+        }
     }
     exports.Settlement = Settlement;
 });

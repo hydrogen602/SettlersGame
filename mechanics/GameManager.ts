@@ -26,6 +26,8 @@ export class GameManager {
         this.msgBoard = new StatusBar(map.getCtx(), 3);
         this.errBoard = new StatusBar(map.getCtx(), 1, new RelPoint(10, 10 + 90));
 
+        this.msgBoard.print("Press t for next turn");
+
         defined(this.map);
         defined(this.players);
         assert(this.players.length > 0, "Needs at least 1 player");
@@ -58,13 +60,17 @@ export class GameManager {
         const p = this.getCurrentPlayer();
 
         this.msgBoard.clear();
+        this.errBoard.clear();
         this.msgBoard.print("New turn: " + p.getName());
         if (this.rounds <= 2) {
             // game start phase
             // each player places one settlement
+
             this.msgBoard.print("Place a settlement");
+            this.msgBoard.print("Then place a road");
 
             this.mayPlaceSettlement = true;
+            this.mayPlaceRoad = true;
         }
 
     }
@@ -77,6 +83,7 @@ export class GameManager {
 
     print(msg: string) {
         this.msgBoard.print(msg);
+        this.errBoard.clear();
     }
 
     printErr(msg: string) {

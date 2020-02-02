@@ -13,6 +13,7 @@ define(["require", "exports", "../util", "../graphics/StatusBar", "../graphics/P
             this.players = players;
             this.msgBoard = new StatusBar_1.StatusBar(map.getCtx(), 3);
             this.errBoard = new StatusBar_1.StatusBar(map.getCtx(), 1, new Point_1.RelPoint(10, 10 + 90));
+            this.msgBoard.print("Press t for next turn");
             util_1.defined(this.map);
             util_1.defined(this.players);
             util_1.assert(this.players.length > 0, "Needs at least 1 player");
@@ -39,12 +40,15 @@ define(["require", "exports", "../util", "../graphics/StatusBar", "../graphics/P
             this.nextTurn();
             const p = this.getCurrentPlayer();
             this.msgBoard.clear();
+            this.errBoard.clear();
             this.msgBoard.print("New turn: " + p.getName());
             if (this.rounds <= 2) {
                 // game start phase
                 // each player places one settlement
                 this.msgBoard.print("Place a settlement");
+                this.msgBoard.print("Then place a road");
                 this.mayPlaceSettlement = true;
+                this.mayPlaceRoad = true;
             }
         }
         debugPlayers() {
@@ -54,6 +58,7 @@ define(["require", "exports", "../util", "../graphics/StatusBar", "../graphics/P
         }
         print(msg) {
             this.msgBoard.print(msg);
+            this.errBoard.clear();
         }
         printErr(msg) {
             this.errBoard.print(msg);

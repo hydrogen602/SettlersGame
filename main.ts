@@ -1,11 +1,12 @@
 
 import { ctx, canvas } from "./graphics/Screen";
 import { GameMap } from "./map/GameMap";
-import { currLocation, maxDistance, centerOfScreen } from "./graphics/Point";
+import { currLocation, maxDistance, centerOfScreen, HexPoint } from "./graphics/Point";
 import { Config } from "./Config";
 import { Player } from "./mechanics/Player";
 import { HexCorner } from "./mechanics/HexCorner";
 import { GameManager } from "./mechanics/GameManager";
+import { Road } from "./map/Road";
 
 export function main() {
     var m = new GameMap(Config.getN(), ctx);
@@ -33,6 +34,7 @@ document.addEventListener("wheel", function (e) {
 });
 
 document.onmousedown = HexCorner.mouseHandler;
+document.onmousemove = HexCorner.mouseHoverHandler;
 
 window.onkeypress = (e: KeyboardEvent) => {
     if (e.key == 'p') {

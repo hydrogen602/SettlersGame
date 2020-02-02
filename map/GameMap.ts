@@ -1,13 +1,15 @@
 import { HexPoint, RelPoint } from "../graphics/Point";
 import { Tile } from "./Tile";
-import { defined, assert } from "../util";
+import { defined } from "../util";
 import { Settlement } from "./Settlement";
 import { canvas } from "../graphics/Screen";
+import { Road } from "./Road";
 
 export class GameMap {
     private sz: number;
     private tilesArr: Array<Tile>;
     private settlementsArr: Array<Settlement>;
+    private roadsArr: Array<Road>;
     private ctx: CanvasRenderingContext2D;
 
     // offset of map on screen in order to move around the map
@@ -47,6 +49,7 @@ export class GameMap {
         defined(this.tilesArr);
 
         this.settlementsArr = [];
+        this.roadsArr = [];
     }
 
     getTiles() {
@@ -55,6 +58,10 @@ export class GameMap {
 
     getSettlements() {
         return this.settlementsArr;
+    }
+
+    getRoads() {
+        return this.roadsArr;
     }
 
     getCtx() {
@@ -66,36 +73,33 @@ export class GameMap {
         var conflicts = this.settlementsArr.filter(s => {
             // console.log("check", s.getHexPoint())
             var hp = s.getHexPoint();
-            if (hp.x == h.x && hp.y == h.y) {
-                return true;
-            }
-            if (hp.x == h.x && hp.y == h.y + 1) {
-                return true;
-            }
-            if (hp.x == h.x && hp.y == h.y - 1) {
-                return true;
-            }
-            if (h.x % 2 == h.y % 2) {
-                // check right
-                if (hp.x == h.x + 1 && hp.y == h.y) {
-                    return true;
-                }
-            }
-            else {
-                // check left
-                if (hp.x == h.x - 1 && hp.y == h.y) {
-                    return true;
-                }
-            }
-            return false;
+            return h.isNeighbor(hp) || h.isEqual(hp);
         });
 
         return conflicts.length == 0; // allowed if no conflicts
     }
 
+    isAllowedRoad(p1: HexPoint, p2: HexPoint): boolean {
+        if (!p1.isNeighbor(p2) || p1.isEqual(p2)) {
+            // if the points aren't adjacent or are the same, do not allow
+            return false;
+        }
+
+        var conflicts = this.roadsArr.filter(r => {
+            return r.isEqual(p1, p2);
+        });
+
+        return conflicts.length == 0;
+    }
+
     addSettlement(s: Settlement) {
         defined(s);
         this.settlementsArr.push(s);
+    }
+
+    addRoad(r: Road) {
+        defined(r)
+        this.roadsArr.push(r);
     }
 
     draw() {
@@ -112,6 +116,10 @@ export class GameMap {
         this.ctx.lineWidth = 1;
         this.tilesArr.forEach(e => {
             e.strokeTile(this.ctx);
+        })
+
+        this.roadsArr.forEach(r => {
+            r.draw(this.ctx);
         })
 
         this.settlementsArr.forEach(s => {

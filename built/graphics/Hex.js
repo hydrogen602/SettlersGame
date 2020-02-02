@@ -14,8 +14,54 @@ define(["require", "exports", "./Point"], function (require, exports, Point_1) {
             var row = Math.round(y / Hex.apothem);
             // x has to be unshifted
             var col = x / (Hex.sectionLength * 1.5);
-            col = col - (1 / 6); // (1/3) * (1/2); offset is 0 or 1/3, so subtract middle and round
-            return new Point_1.HexPoint(Math.round(col), Math.round(row));
+            // col = col - (1/6); // (1/3) * (1/2); offset is 0 or 1/3, so subtract middle and round
+            // return new HexPoint(Math.round(col), Math.round(row));
+            // new approach -> look for which one is closer
+            var colR = Math.ceil(col);
+            var colL = Math.floor(col);
+            var pR = Hex.hexGridToPxUnshifted(row, colR).x;
+            var pL = Hex.hexGridToPxUnshifted(row, colL).x;
+            if (Math.abs(x - pR) < Math.abs(x - pL)) {
+                // closer to right point than left
+                return new Point_1.HexPoint(colR, row);
+            }
+            else {
+                return new Point_1.HexPoint(colL, row);
+            }
+        }
+        static pxUnshiftedToDualHexGrid(x, y) {
+            var row = Math.round(y / Hex.apothem);
+            // x has to be unshifted
+            var col = x / (Hex.sectionLength * 1.5);
+            var colR = Math.ceil(col);
+            var colL = Math.floor(col);
+            var rowErr = Math.abs((y / Hex.apothem) % 1);
+            if (rowErr < 0.15 || rowErr > 0.85) {
+                // horizontal mode
+                var p1 = new Point_1.HexPoint(colL, row);
+                var p2 = new Point_1.HexPoint(colR, row);
+                if (p1.isNeighbor(p2)) {
+                    return [p1, p2];
+                }
+                else {
+                    return [];
+                }
+            }
+            else if ((col % 1) > 0 && (col % 1) < 1 / 3) {
+                // check for sloped lines
+                var rowTop = Math.floor(y / Hex.apothem);
+                var rowBottom = Math.ceil(y / Hex.apothem);
+                var col = Hex.pxUnshiftedToHexGrid(x, y).x;
+                var p1 = new Point_1.HexPoint(col, rowTop);
+                var p2 = new Point_1.HexPoint(col, rowBottom);
+                if (p1.isNeighbor(p2)) {
+                    return [p1, p2];
+                }
+                else {
+                    return [];
+                }
+            }
+            return [];
         }
         static hexGridToPxUnshifted(row, col) {
             //

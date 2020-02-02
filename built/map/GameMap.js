@@ -25,12 +25,16 @@ define(["require", "exports", "../graphics/Point", "./Tile", "../util", "../grap
             this.tilesArr = tiles;
             util_1.defined(this.tilesArr);
             this.settlementsArr = [];
+            this.roadsArr = [];
         }
         getTiles() {
             return this.tilesArr;
         }
         getSettlements() {
             return this.settlementsArr;
+        }
+        getRoads() {
+            return this.roadsArr;
         }
         getCtx() {
             return this.ctx;
@@ -40,34 +44,27 @@ define(["require", "exports", "../graphics/Point", "./Tile", "../util", "../grap
             var conflicts = this.settlementsArr.filter(s => {
                 // console.log("check", s.getHexPoint())
                 var hp = s.getHexPoint();
-                if (hp.x == h.x && hp.y == h.y) {
-                    return true;
-                }
-                if (hp.x == h.x && hp.y == h.y + 1) {
-                    return true;
-                }
-                if (hp.x == h.x && hp.y == h.y - 1) {
-                    return true;
-                }
-                if (h.x % 2 == h.y % 2) {
-                    // check right
-                    if (hp.x == h.x + 1 && hp.y == h.y) {
-                        return true;
-                    }
-                }
-                else {
-                    // check left
-                    if (hp.x == h.x - 1 && hp.y == h.y) {
-                        return true;
-                    }
-                }
-                return false;
+                return h.isNeighbor(hp) || h.isEqual(hp);
             });
             return conflicts.length == 0; // allowed if no conflicts
+        }
+        isAllowedRoad(p1, p2) {
+            if (!p1.isNeighbor(p2) || p1.isEqual(p2)) {
+                // if the points aren't adjacent or are the same, do not allow
+                return false;
+            }
+            var conflicts = this.roadsArr.filter(r => {
+                return r.isEqual(p1, p2);
+            });
+            return conflicts.length == 0;
         }
         addSettlement(s) {
             util_1.defined(s);
             this.settlementsArr.push(s);
+        }
+        addRoad(r) {
+            util_1.defined(r);
+            this.roadsArr.push(r);
         }
         draw() {
             this.ctx.clearRect(0, 0, Screen_1.canvas.width, Screen_1.canvas.height);
@@ -80,6 +77,9 @@ define(["require", "exports", "../graphics/Point", "./Tile", "../util", "../grap
             this.ctx.lineWidth = 1;
             this.tilesArr.forEach(e => {
                 e.strokeTile(this.ctx);
+            });
+            this.roadsArr.forEach(r => {
+                r.draw(this.ctx);
             });
             this.settlementsArr.forEach(s => {
                 s.draw(this.ctx);

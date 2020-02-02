@@ -40,6 +40,33 @@ export class HexPoint extends Point {
         var p = Hex.hexGridToPx(this.y, this.x);
         return new RelPoint(p.x, p.y);
     }
+
+    isNeighbor(other: HexPoint): boolean {
+        if (other.x == this.x && other.y == this.y + 1) {
+            return true;
+        }
+        if (other.x == this.x && other.y == this.y - 1) {
+            return true;
+        }
+        if (Math.abs(this.x % 2) == Math.abs(this.y % 2)) {
+            // check right
+            if (other.x == this.x + 1 && other.y == this.y) {
+                return true;
+            }
+        }
+        else {
+            // check left
+            if (other.x == this.x - 1 && other.y == this.y) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    isEqual(other: HexPoint): boolean {
+        return (other.x == this.x && other.y == this.y);
+    }
 }
 
 export class AbsPoint extends Point {
@@ -76,6 +103,13 @@ export class RelPoint extends Point {
     toHexPoint() {
         var p = this.toAbsPoint();
         return Hex.pxUnshiftedToHexGrid(p.x, p.y);
+    }
+
+    toDualHexPoint(): Array<HexPoint> {
+        var p = this.toAbsPoint();
+        var h = Hex.pxUnshiftedToDualHexGrid(p.x, p.y);
+
+        return h;
     }
 }
 
