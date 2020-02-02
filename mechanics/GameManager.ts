@@ -1,6 +1,7 @@
 import { Player } from "./Player";
 import { GameMap } from "../map/GameMap";
 import { defined, assert } from "../util";
+import { StatusBar } from "../graphics/StatusBar";
 
 export class GameManager {
 
@@ -8,6 +9,7 @@ export class GameManager {
     private indexOfCurrentPlayer = -1; // -1 cause first thing 1 is added
     private map: GameMap;
     private rounds: number = 1;
+    private msgBoard: StatusBar;
 
     static instance: GameManager;
 
@@ -19,10 +21,12 @@ export class GameManager {
     constructor(map: GameMap, players: Array<Player>) {
         this.map = map;
         this.players = players;
+        this.msgBoard = new StatusBar(map.getCtx());
 
         defined(this.map);
         defined(this.players);
-        assert(this.players.length > 0, "Needs at least 1 player")
+        assert(this.players.length > 0, "Needs at least 1 player");
+        defined(this.msgBoard);
     }
 
     getPlayers() {
@@ -50,11 +54,13 @@ export class GameManager {
         this.nextTurn();
         const p = this.getCurrentPlayer();
 
-        console.info("New turn: ", p.getName());
+        this.msgBoard.print("New turn: " + p.getName());
         if (this.rounds <= 2) {
             // game start phase
             // each player places one settlement
-            console.info("Place a settlement");
+            this.msgBoard.print("Place a settlement");
+            this.msgBoard.print("idk");
+
             this.mayPlaceSettlement = true;
         }
 
@@ -66,8 +72,9 @@ export class GameManager {
         });
     }
 
-    drawMap() {
-        this.map.drawMap()
+    draw() {
+        this.map.draw();
+        this.msgBoard.draw();
     }
 
 }

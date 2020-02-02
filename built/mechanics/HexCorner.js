@@ -21,7 +21,7 @@ define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex",
                     var m = GameManager_1.GameManager.instance.getMap();
                     if (m.isAllowedSettlement(h)) {
                         m.addSettlement(new Settlement_1.Settlement(h, GameManager_1.GameManager.instance.getCurrentPlayer()));
-                        m.drawMap();
+                        m.draw();
                         console.log("success");
                         GameManager_1.GameManager.instance.mayPlaceSettlement = false;
                     }

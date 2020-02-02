@@ -3,7 +3,6 @@ import { Tile } from "./Tile";
 import { defined, assert } from "../util";
 import { Settlement } from "./Settlement";
 import { canvas } from "../graphics/Screen";
-import { Player } from "../mechanics/Player";
 
 export class GameMap {
     private sz: number;
@@ -58,6 +57,10 @@ export class GameMap {
         return this.settlementsArr;
     }
 
+    getCtx() {
+        return this.ctx;
+    }
+
     isAllowedSettlement(h: HexPoint): boolean {
         console.log("new?", h)
         var conflicts = this.settlementsArr.filter(s => {
@@ -95,7 +98,7 @@ export class GameMap {
         this.settlementsArr.push(s);
     }
 
-    drawMap() {
+    draw() {
         this.ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         this.ctx.fillStyle = 'blue';

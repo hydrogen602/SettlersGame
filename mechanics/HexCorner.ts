@@ -31,7 +31,7 @@ export class HexCorner {
 
                 if (m.isAllowedSettlement(h)) {
                     m.addSettlement(new Settlement(h, GameManager.instance.getCurrentPlayer()))
-                    m.drawMap();
+                    m.draw();
                     console.log("success");
                     GameManager.instance.mayPlaceSettlement = false;
                 }

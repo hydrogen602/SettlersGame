@@ -4,7 +4,7 @@ define(["require", "exports", "./graphics/Screen", "./map/GameMap", "./graphics/
     function main() {
         var m = new GameMap_1.GameMap(Config_1.Config.getN(), Screen_1.ctx);
         GameManager_1.GameManager.instance = new GameManager_1.GameManager(m, [new Player_1.Player('blue', 'Blue Team'), new Player_1.Player('green', 'Green Team')]);
-        m.drawMap();
+        GameManager_1.GameManager.instance.draw();
     }
     exports.main = main;
     main();
@@ -16,7 +16,7 @@ define(["require", "exports", "./graphics/Screen", "./map/GameMap", "./graphics/
         Point_1.currLocation.y -= Math.max(-limit, Math.min(e.deltaY, limit));
         Point_1.currLocation.x = Math.max(-Point_1.maxDistance, Math.min(Point_1.currLocation.x - Point_1.centerOfScreen.x, Point_1.maxDistance)) + Point_1.centerOfScreen.x;
         Point_1.currLocation.y = Math.max(-Point_1.maxDistance, Math.min(Point_1.currLocation.y - Point_1.centerOfScreen.y, Point_1.maxDistance)) + Point_1.centerOfScreen.y;
-        GameManager_1.GameManager.instance.drawMap();
+        GameManager_1.GameManager.instance.draw();
     });
     document.onmousedown = HexCorner_1.HexCorner.mouseHandler;
     window.onkeypress = (e) => {

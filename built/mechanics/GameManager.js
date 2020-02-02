@@ -1,4 +1,4 @@
-define(["require", "exports", "../util"], function (require, exports, util_1) {
+define(["require", "exports", "../util", "../graphics/StatusBar"], function (require, exports, util_1, StatusBar_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class GameManager {
@@ -11,9 +11,11 @@ define(["require", "exports", "../util"], function (require, exports, util_1) {
             this.mayPlaceRoad = false;
             this.map = map;
             this.players = players;
+            this.msgBoard = new StatusBar_1.StatusBar(map.getCtx());
             util_1.defined(this.map);
             util_1.defined(this.players);
             util_1.assert(this.players.length > 0, "Needs at least 1 player");
+            util_1.defined(this.msgBoard);
         }
         getPlayers() {
             return this.players;
@@ -35,11 +37,12 @@ define(["require", "exports", "../util"], function (require, exports, util_1) {
         playTurn() {
             this.nextTurn();
             const p = this.getCurrentPlayer();
-            console.info("New turn: ", p.getName());
+            this.msgBoard.print("New turn: " + p.getName());
             if (this.rounds <= 2) {
                 // game start phase
                 // each player places one settlement
-                console.info("Place a settlement");
+                this.msgBoard.print("Place a settlement");
+                this.msgBoard.print("idk");
                 this.mayPlaceSettlement = true;
             }
         }
@@ -48,8 +51,9 @@ define(["require", "exports", "../util"], function (require, exports, util_1) {
                 p.debug();
             });
         }
-        drawMap() {
-            this.map.drawMap();
+        draw() {
+            this.map.draw();
+            this.msgBoard.draw();
         }
     }
     exports.GameManager = GameManager;

@@ -12,7 +12,7 @@ export function main() {
 
     GameManager.instance = new GameManager(m, [new Player('blue', 'Blue Team'), new Player('green', 'Green Team')]);
     
-    m.drawMap();
+    GameManager.instance.draw();
 }
 
 main();
@@ -29,7 +29,7 @@ document.addEventListener("wheel", function (e) {
     currLocation.x = Math.max(-maxDistance, Math.min(currLocation.x - centerOfScreen.x, maxDistance)) + centerOfScreen.x;
     currLocation.y = Math.max(-maxDistance, Math.min(currLocation.y - centerOfScreen.y, maxDistance)) + centerOfScreen.y;
 
-    GameManager.instance.drawMap();
+    GameManager.instance.draw();
 });
 
 document.onmousedown = HexCorner.mouseHandler;

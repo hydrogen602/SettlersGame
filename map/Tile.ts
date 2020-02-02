@@ -45,7 +45,7 @@ export class Tile {
         defined(this.center);
     }
 
-    fillTile(ctx: CanvasRenderingContext2D) {
+    fillTile(ctx: CanvasRenderingContext2D) { // TODO: combine fillTile and strokeTile into one draw method
         ctx.fillStyle = this.landType.getColor();
         
         Hex.fillHex(this.p.y, this.p.x, ctx);

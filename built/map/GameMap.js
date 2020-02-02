@@ -32,6 +32,9 @@ define(["require", "exports", "../graphics/Point", "./Tile", "../util", "../grap
         getSettlements() {
             return this.settlementsArr;
         }
+        getCtx() {
+            return this.ctx;
+        }
         isAllowedSettlement(h) {
             console.log("new?", h);
             var conflicts = this.settlementsArr.filter(s => {
@@ -66,7 +69,7 @@ define(["require", "exports", "../graphics/Point", "./Tile", "../util", "../grap
             util_1.defined(s);
             this.settlementsArr.push(s);
         }
-        drawMap() {
+        draw() {
             this.ctx.clearRect(0, 0, Screen_1.canvas.width, Screen_1.canvas.height);
             this.ctx.fillStyle = 'blue';
             this.ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
