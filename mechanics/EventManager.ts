@@ -6,9 +6,7 @@ import { Settlement } from "../map/Settlement";
 import { ctx } from "../graphics/Screen";
 import { Road } from "../map/Road";
 
-export class HexCorner {
-
-    private static roadTmpFirstEnd: HexPoint;
+export class EventManager {
 
     private constructor() {}
 
@@ -23,7 +21,7 @@ export class HexCorner {
     static mouseHoverHandler(e: MouseEvent) {
         if (GameManager.instance.mayPlaceSettlement) {            
             var p = new RelPoint(e.clientX, e.clientY);
-            var r = HexCorner.distanceFromNearestHexCorner(p);
+            var r = EventManager.distanceFromNearestHexCorner(p);
             
             if (r < Hex.getSideLength() / 4) {
                 // hovering over a corner
@@ -43,7 +41,7 @@ export class HexCorner {
         else if (GameManager.instance.mayPlaceRoad) {
             // if (this.roadTmpFirstEnd == undefined) {
             var p = new RelPoint(e.clientX, e.clientY);
-            var r = HexCorner.distanceFromNearestHexCorner(p);
+            var r = EventManager.distanceFromNearestHexCorner(p);
             var hArr = p.toDualHexPoint();
 
             var m = GameManager.instance.getMap();
@@ -64,14 +62,14 @@ export class HexCorner {
 
     static mouseHandler(e: MouseEvent) {
         var p = new RelPoint(e.clientX, e.clientY);
-        var r = HexCorner.distanceFromNearestHexCorner(p);
+        var r = EventManager.distanceFromNearestHexCorner(p);
         var hArr = p.toDualHexPoint();
         // console.log(hArr);
 
         // console.log("event", e);
         if (GameManager.instance.mayPlaceSettlement) {            
             var p = new RelPoint(e.clientX, e.clientY);
-            var r = HexCorner.distanceFromNearestHexCorner(p);
+            var r = EventManager.distanceFromNearestHexCorner(p);
             
             if (r < Hex.getSideLength() / 4) {
                 // clicked on a corner
@@ -95,7 +93,7 @@ export class HexCorner {
         }  
         else if (GameManager.instance.mayPlaceRoad) {
             var p = new RelPoint(e.clientX, e.clientY);
-            var r = HexCorner.distanceFromNearestHexCorner(p);
+            var r = EventManager.distanceFromNearestHexCorner(p);
             var hArr = p.toDualHexPoint();
             
             if (hArr.length == 2) { // hArr is empty if not over a line 

@@ -45,7 +45,7 @@ export class Tile {
         defined(this.center);
     }
 
-    fillTile(ctx: CanvasRenderingContext2D) { // TODO: combine fillTile and strokeTile into one draw method
+    draw(ctx: CanvasRenderingContext2D) { // TODO: combine fillTile and strokeTile into one draw method
         ctx.fillStyle = this.landType.getColor();
         
         Hex.fillHex(this.p.y, this.p.x, ctx);
@@ -59,23 +59,7 @@ export class Tile {
             ctx.fillStyle = "black";
             ctx.fillText(this.diceValue.toString(), relCenter.x, relCenter.y);
         }
-    }
-
-    strokeTile(ctx: CanvasRenderingContext2D) {
+        
         Hex.strokeHex(this.p.y, this.p.x, ctx);
-    }
-
-    // this method is from http://www.playchilla.com/how-to-check-if-a-point-is-inside-a-hexagon
-    isInside(pos: AbsPoint): boolean
-    {
-        // vertical = apothem
-        const q2x: number = Math.abs(pos.x - this.center.x);
-        const q2y: number = Math.abs(pos.y - this.center.y);
-
-        const vert = Hex.getApothem();
-        const hori = Hex.getSideLength() / 2;
-
-        if (q2x > hori*2 || q2y > vert) return false;
-        return vert * 2 * hori - vert * q2x - 2* hori * q2y >= 0;
     }
 }

@@ -108,14 +108,10 @@ export class GameMap {
         this.ctx.fillStyle = 'blue';
         this.ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
-        this.tilesArr.forEach(e => {
-            e.fillTile(this.ctx);
-        });
-
         this.ctx.strokeStyle = 'black';
         this.ctx.lineWidth = 1;
         this.tilesArr.forEach(e => {
-            e.strokeTile(this.ctx);
+            e.draw(this.ctx);
         })
 
         this.roadsArr.forEach(r => {

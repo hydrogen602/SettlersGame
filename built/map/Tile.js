@@ -35,7 +35,7 @@ define(["require", "exports", "./Biome", "../util", "../graphics/Hex"], function
             util_1.defined(this.p);
             util_1.defined(this.center);
         }
-        fillTile(ctx) {
+        draw(ctx) {
             ctx.fillStyle = this.landType.getColor();
             Hex_1.Hex.fillHex(this.p.y, this.p.x, ctx);
             var relCenter = this.center.toRelPoint();
@@ -46,20 +46,7 @@ define(["require", "exports", "./Biome", "../util", "../graphics/Hex"], function
                 ctx.fillStyle = "black";
                 ctx.fillText(this.diceValue.toString(), relCenter.x, relCenter.y);
             }
-        }
-        strokeTile(ctx) {
             Hex_1.Hex.strokeHex(this.p.y, this.p.x, ctx);
-        }
-        // this method is from http://www.playchilla.com/how-to-check-if-a-point-is-inside-a-hexagon
-        isInside(pos) {
-            // vertical = apothem
-            const q2x = Math.abs(pos.x - this.center.x);
-            const q2y = Math.abs(pos.y - this.center.y);
-            const vert = Hex_1.Hex.getApothem();
-            const hori = Hex_1.Hex.getSideLength() / 2;
-            if (q2x > hori * 2 || q2y > vert)
-                return false;
-            return vert * 2 * hori - vert * q2x - 2 * hori * q2y >= 0;
         }
     }
     exports.Tile = Tile;

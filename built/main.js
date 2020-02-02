@@ -1,4 +1,4 @@
-define(["require", "exports", "./graphics/Screen", "./map/GameMap", "./graphics/Point", "./Config", "./mechanics/Player", "./mechanics/HexCorner", "./mechanics/GameManager"], function (require, exports, Screen_1, GameMap_1, Point_1, Config_1, Player_1, HexCorner_1, GameManager_1) {
+define(["require", "exports", "./graphics/Screen", "./map/GameMap", "./graphics/Point", "./Config", "./mechanics/Player", "./mechanics/EventManager", "./mechanics/GameManager"], function (require, exports, Screen_1, GameMap_1, Point_1, Config_1, Player_1, EventManager_1, GameManager_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     function main() {
@@ -18,8 +18,8 @@ define(["require", "exports", "./graphics/Screen", "./map/GameMap", "./graphics/
         Point_1.currLocation.y = Math.max(-Point_1.maxDistance, Math.min(Point_1.currLocation.y - Point_1.centerOfScreen.y, Point_1.maxDistance)) + Point_1.centerOfScreen.y;
         GameManager_1.GameManager.instance.draw();
     });
-    document.onmousedown = HexCorner_1.HexCorner.mouseHandler;
-    document.onmousemove = HexCorner_1.HexCorner.mouseHoverHandler;
+    document.onmousedown = EventManager_1.EventManager.mouseHandler;
+    document.onmousemove = EventManager_1.EventManager.mouseHoverHandler;
     window.onkeypress = (e) => {
         if (e.key == 'p') {
             console.log("Debug Players:");
@@ -30,7 +30,4 @@ define(["require", "exports", "./graphics/Screen", "./map/GameMap", "./graphics/
         }
     };
 });
-// ctx.fillStyle = 'black';
-// var tmp = Hex.hexGridToPx(0, 0);
-// ctx.fillRect(tmp.x, tmp.y, 10, 10);
 //# sourceMappingURL=main.js.map
