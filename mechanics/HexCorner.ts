@@ -3,6 +3,7 @@ import { square } from "../util";
 import { Hex } from "../graphics/Hex";
 import { GameManager } from "./GameManager";
 import { Settlement } from "../map/Settlement";
+import { ctx } from "../graphics/Screen";
 
 export class HexCorner {
 
@@ -14,6 +15,33 @@ export class HexCorner {
         var backConvertedHex = hexP.toAbsPoint();
 
         return Math.sqrt(square(abs.x - backConvertedHex.x) + square(abs.y - backConvertedHex.y));
+    }
+
+    static mouseHoverHandler(e: MouseEvent) {
+        if (GameManager.instance.mayPlaceSettlement) {            
+            var p = new RelPoint(e.clientX, e.clientY);
+            var r = HexCorner.distanceFromNearestHexCorner(p);
+            
+            if (r < Hex.getSideLength() / 4) {
+                // hovering over a corner
+                var h = p.toHexPoint();
+
+                var m = GameManager.instance.getMap();
+
+                if (m.isAllowedSettlement(h)) {
+                    console.log("hover");
+                    var back = h.toRelPoint();
+                    ctx.strokeStyle = "black";
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.arc(back.x, back.y, Hex.getSideLength() / 4, 0, Math.PI * 2);
+                    ctx.stroke();
+                }
+            }
+            else {
+                GameManager.instance.draw();
+            }
+        }  
     }
 
     static mouseHandler(e: MouseEvent) {

@@ -33,6 +33,7 @@ document.addEventListener("wheel", function (e) {
 });
 
 document.onmousedown = HexCorner.mouseHandler;
+document.onmousemove = HexCorner.mouseHoverHandler;
 
 window.onkeypress = (e: KeyboardEvent) => {
     if (e.key == 'p') {

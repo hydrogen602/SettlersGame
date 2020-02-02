@@ -19,6 +19,7 @@ define(["require", "exports", "./graphics/Screen", "./map/GameMap", "./graphics/
         GameManager_1.GameManager.instance.draw();
     });
     document.onmousedown = HexCorner_1.HexCorner.mouseHandler;
+    document.onmousemove = HexCorner_1.HexCorner.mouseHoverHandler;
     window.onkeypress = (e) => {
         if (e.key == 'p') {
             console.log("Debug Players:");

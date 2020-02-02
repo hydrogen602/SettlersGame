@@ -1,4 +1,4 @@
-define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex", "./GameManager", "../map/Settlement"], function (require, exports, Point_1, util_1, Hex_1, GameManager_1, Settlement_1) {
+define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex", "./GameManager", "../map/Settlement", "../graphics/Screen"], function (require, exports, Point_1, util_1, Hex_1, GameManager_1, Settlement_1, Screen_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class HexCorner {
@@ -8,6 +8,29 @@ define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex",
             var abs = p.toAbsPoint(); // if already absolute, it returns a copy of itself
             var backConvertedHex = hexP.toAbsPoint();
             return Math.sqrt(util_1.square(abs.x - backConvertedHex.x) + util_1.square(abs.y - backConvertedHex.y));
+        }
+        static mouseHoverHandler(e) {
+            if (GameManager_1.GameManager.instance.mayPlaceSettlement) {
+                var p = new Point_1.RelPoint(e.clientX, e.clientY);
+                var r = HexCorner.distanceFromNearestHexCorner(p);
+                if (r < Hex_1.Hex.getSideLength() / 4) {
+                    // hovering over a corner
+                    var h = p.toHexPoint();
+                    var m = GameManager_1.GameManager.instance.getMap();
+                    if (m.isAllowedSettlement(h)) {
+                        console.log("hover");
+                        var back = h.toRelPoint();
+                        Screen_1.ctx.strokeStyle = "black";
+                        Screen_1.ctx.lineWidth = 2;
+                        Screen_1.ctx.beginPath();
+                        Screen_1.ctx.arc(back.x, back.y, Hex_1.Hex.getSideLength() / 4, 0, Math.PI * 2);
+                        Screen_1.ctx.stroke();
+                    }
+                }
+                else {
+                    GameManager_1.GameManager.instance.draw();
+                }
+            }
         }
         static mouseHandler(e) {
             // console.log("event", e);
