@@ -1,4 +1,4 @@
-define(["require", "exports", "./graphics/Screen", "./map/GameMap", "./graphics/Point", "./map/Settlement", "./Config", "./mechanics/Player"], function (require, exports, Screen_1, GameMap_1, Point_1, Settlement_1, Config_1, Player_1) {
+define(["require", "exports", "./graphics/Screen", "./map/GameMap", "./graphics/Point", "./map/Settlement", "./Config", "./mechanics/Player", "./graphics/Hex"], function (require, exports, Screen_1, GameMap_1, Point_1, Settlement_1, Config_1, Player_1, Hex_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var ls;
@@ -38,5 +38,19 @@ define(["require", "exports", "./graphics/Screen", "./map/GameMap", "./graphics/
         Point_1.currLocation.y = Math.max(-Point_1.maxDistance, Math.min(Point_1.currLocation.y - Point_1.centerOfScreen.y, Point_1.maxDistance)) + Point_1.centerOfScreen.y;
         ls.drawMap();
     });
+    document.onmousedown = (e) => {
+        var rel = new Point_1.RelPoint(e.clientX, e.clientY);
+        var abs = rel.toAbsPoint();
+        var p2 = Hex_1.Hex.pxUnshiftedToHexGrid(abs.x, abs.y);
+        p2.x = Math.round(p2.x);
+        p2.y = Math.round(p2.y);
+        //console.log(p2);
+        var tmp = p2.toRelPoint();
+        Screen_1.ctx.fillStyle = 'black';
+        Screen_1.ctx.fillRect(Math.round(tmp.x), Math.round(tmp.y), 10, 10);
+    };
+    Screen_1.ctx.fillStyle = 'black';
+    var tmp = Hex_1.Hex.hexGridToPx(0, 0);
+    Screen_1.ctx.fillRect(tmp.x, tmp.y, 10, 10);
 });
 //# sourceMappingURL=main.js.map

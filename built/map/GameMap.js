@@ -1,4 +1,4 @@
-define(["require", "exports", "../graphics/Point", "./Tile", "../util"], function (require, exports, Point_1, Tile_1, util_1) {
+define(["require", "exports", "../graphics/Point", "./Tile", "../util", "../graphics/Screen"], function (require, exports, Point_1, Tile_1, util_1, Screen_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class GameMap {
@@ -37,6 +37,7 @@ define(["require", "exports", "../graphics/Point", "./Tile", "../util"], functio
             this.settlementsArr.push(s);
         }
         drawMap() {
+            this.ctx.clearRect(0, 0, Screen_1.canvas.width, Screen_1.canvas.height);
             this.ctx.fillStyle = 'blue';
             this.ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
             this.tilesArr.forEach(e => {

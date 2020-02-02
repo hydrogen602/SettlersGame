@@ -2,6 +2,7 @@ import { HexPoint, RelPoint } from "../graphics/Point";
 import { Tile } from "./Tile";
 import { defined } from "../util";
 import { Settlement } from "./Settlement";
+import { canvas } from "../graphics/Screen";
 
 export class GameMap {
     private sz: number;
@@ -62,6 +63,8 @@ export class GameMap {
     }
 
     drawMap() {
+        this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+
         this.ctx.fillStyle = 'blue';
         this.ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 

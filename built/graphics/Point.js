@@ -13,8 +13,8 @@ define(["require", "exports", "./Hex", "../Config"], function (require, exports,
     exports.centerOfScreen = new Point(window.innerWidth / 2 - Hex_1.Hex.getSideLength() * (1.5 * Config_1.Config.getN() - 0.5), window.innerHeight / 2 - Hex_1.Hex.getApothem() * Config_1.Config.getN()); // in px
     exports.maxDistance = Hex_1.Hex.getSideLength() * (1.5 * Config_1.Config.getN() - 0.5) * 1.5;
     class HexPoint extends Point {
-        constructor(x, y) {
-            super(x, y);
+        constructor(col, row) {
+            super(col, row);
         }
         toAbsPoint() {
             var p = Hex_1.Hex.hexGridToPxUnshifted(this.y, this.x);
@@ -33,14 +33,27 @@ define(["require", "exports", "./Hex", "../Config"], function (require, exports,
         toRelPoint() {
             return new RelPoint(this.x + exports.currLocation.x, this.y + exports.currLocation.y);
         }
+        toAbsPoint() {
+            return new AbsPoint(this.x, this.y);
+        }
+        toHexPoint() {
+            return Hex_1.Hex.pxUnshiftedToHexGrid(this.x, this.y);
+        }
     }
     exports.AbsPoint = AbsPoint;
     class RelPoint extends Point {
         constructor(x, y) {
             super(x, y);
         }
+        toRelPoint() {
+            return new RelPoint(this.x, this.y);
+        }
         toAbsPoint() {
             return new AbsPoint(this.x - exports.currLocation.x, this.y - exports.currLocation.y);
+        }
+        toHexPoint() {
+            var p = this.toAbsPoint();
+            return Hex_1.Hex.pxUnshiftedToHexGrid(p.x, p.y);
         }
     }
     exports.RelPoint = RelPoint;

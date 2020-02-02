@@ -10,18 +10,25 @@ define(["require", "exports", "./Point"], function (require, exports, Point_1) {
         static getApothem() {
             return Hex.apothem;
         }
+        static pxUnshiftedToHexGrid(x, y) {
+            var row = Math.round(y / Hex.apothem);
+            // x has to be unshifted
+            var col = x / (Hex.sectionLength * 1.5);
+            col = col - (1 / 6); // (1/3) * (1/2); offset is 0 or 1/3, so subtract middle and round
+            return new Point_1.HexPoint(Math.round(col), Math.round(row));
+        }
         static hexGridToPxUnshifted(row, col) {
             //
             //  /--\
             //  \--/
             //  
-            var x = col * (Hex.sectionLength + Hex.sectionLength * Math.sin(Math.PI / 6));
+            // var x = col * (Hex.sectionLength + Hex.sectionLength * Math.sin(Math.PI/6));
+            // Math.sin(Math.PI / 6) == 0.5 so...
+            var x = col * Hex.sectionLength * 1.5;
             if (Math.abs(row % 2) == Math.abs(col % 2)) {
-                x = x + Hex.sectionLength * Math.sin(Math.PI / 6);
+                x = x + Hex.sectionLength * 0.5; //Math.sin(Math.PI/6);
             }
-            // if (row == 0) { console.log(row, col); console.log(row % 2 == col % 2) }
-            var hexHeight = Math.cos(Math.PI / 6) * Hex.sectionLength; // * 2;
-            var y = hexHeight * row;
+            var y = Hex.apothem * row;
             return new Point_1.AbsPoint(x, y);
         }
         static hexGridToPx(row, col) {

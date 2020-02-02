@@ -25,8 +25,8 @@ export const centerOfScreen = new Point(
 export const maxDistance = Hex.getSideLength() * (1.5 * Config.getN() - 0.5) * 1.5;
 
 export class HexPoint extends Point {
-    constructor(x: number, y: number) {
-        super(x, y);
+    constructor(col: number, row: number) {
+        super(col, row);
     }
 
     toAbsPoint() {
@@ -48,6 +48,14 @@ export class AbsPoint extends Point {
     toRelPoint() {
         return new RelPoint(this.x + currLocation.x, this.y + currLocation.y);
     }
+
+    toAbsPoint() {
+        return new AbsPoint(this.x, this.y);
+    }
+
+    toHexPoint() {
+        return Hex.pxUnshiftedToHexGrid(this.x, this.y);
+    }
 }
 
 export class RelPoint extends Point {
@@ -55,8 +63,17 @@ export class RelPoint extends Point {
         super(x, y);
     }
 
+    toRelPoint() {
+        return new RelPoint(this.x, this.y);
+    }
+
     toAbsPoint() {
         return new AbsPoint(this.x - currLocation.x, this.y - currLocation.y);
+    }
+
+    toHexPoint() {
+        var p = this.toAbsPoint();
+        return Hex.pxUnshiftedToHexGrid(p.x, p.y);
     }
 }
 

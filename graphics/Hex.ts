@@ -1,4 +1,4 @@
-import { currLocation, RelPoint, AbsPoint } from "./Point";
+import { currLocation, RelPoint, AbsPoint, HexPoint } from "./Point";
 
 export class Hex {
 
@@ -23,22 +23,33 @@ export class Hex {
 
     private constructor() {}
 
+    static pxUnshiftedToHexGrid(x: number, y: number): HexPoint {
+        var row = Math.round(y / Hex.apothem);
+        
+        // x has to be unshifted
+        var col = x / (Hex.sectionLength * 1.5);
+
+        col = col - (1/6); // (1/3) * (1/2); offset is 0 or 1/3, so subtract middle and round
+
+        return new HexPoint(Math.round(col), Math.round(row));
+    }
+
     static hexGridToPxUnshifted(row: number, col: number): AbsPoint {
         //
         //  /--\
         //  \--/
         //  
-        var x = col * (Hex.sectionLength + Hex.sectionLength * Math.sin(Math.PI/6));
+
+        // var x = col * (Hex.sectionLength + Hex.sectionLength * Math.sin(Math.PI/6));
+        // Math.sin(Math.PI / 6) == 0.5 so...
+        
+        var x = col * Hex.sectionLength * 1.5;
     
         if (Math.abs(row % 2) == Math.abs(col % 2)) {
-            x = x + Hex.sectionLength * Math.sin(Math.PI/6);
+            x = x + Hex.sectionLength * 0.5; //Math.sin(Math.PI/6);
         }
-
-        // if (row == 0) { console.log(row, col); console.log(row % 2 == col % 2) }
     
-        var hexHeight = Math.cos(Math.PI/6) * Hex.sectionLength; // * 2;
-    
-        var y = hexHeight * row;
+        var y = Hex.apothem * row;
     
         return new AbsPoint(x, y);
     }
