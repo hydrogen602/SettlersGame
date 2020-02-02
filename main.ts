@@ -6,7 +6,7 @@ import { Tile } from "./map/Tile";
 import { Settlement } from "./map/Settlement"
 import { Config } from "./Config";
 import { Player } from "./mechanics/Player";
-import { Hex } from "./graphics/Hex";
+import { HexCorner } from "./mechanics/HexCorner";
 
 var ls: GameMap;
 export function main() {
@@ -58,19 +58,20 @@ document.addEventListener("wheel", function (e) {
 });
 
 document.onmousedown = (e: MouseEvent) => {
-    var rel = new RelPoint(e.clientX, e.clientY);
-    var abs = rel.toAbsPoint();
+    var p = new RelPoint(e.clientX, e.clientY);
+    var r = HexCorner.distanceFromNearestHexCorner(p);
     
-    var p2 = Hex.pxUnshiftedToHexGrid(abs.x, abs.y);
-    p2.x = Math.round(p2.x);
-    p2.y = Math.round(p2.y);
-    //console.log(p2);
-    var tmp = p2.toRelPoint();
-    ctx.fillStyle = 'black';
-    ctx.fillRect(Math.round(tmp.x), Math.round(tmp.y), 10, 10);
+    var h = p.toHexPoint();
+    var back = h.toRelPoint();
+
+    ctx.strokeStyle = 'black';
+    ctx.beginPath();
+    ctx.arc(back.x, back.y, r, 0, Math.PI * 2);
+
+    ctx.stroke();
 }
 
-ctx.fillStyle = 'black';
-var tmp = Hex.hexGridToPx(0, 0);
-ctx.fillRect(tmp.x, tmp.y, 10, 10);
+// ctx.fillStyle = 'black';
+// var tmp = Hex.hexGridToPx(0, 0);
+// ctx.fillRect(tmp.x, tmp.y, 10, 10);
 
