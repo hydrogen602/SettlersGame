@@ -8,6 +8,9 @@ define(["require", "exports", "../util", "../graphics/Hex"], function (require, 
             util_1.defined(this.p);
             util_1.defined(this.owner);
         }
+        getHexPoint() {
+            return this.p;
+        }
         draw(ctx) {
             ctx.strokeStyle = 'black';
             ctx.lineWidth = 4;

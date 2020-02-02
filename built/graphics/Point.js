@@ -1,4 +1,4 @@
-define(["require", "exports", "./Hex", "../Config"], function (require, exports, Hex_1, Config_1) {
+define(["require", "exports", "./Hex", "../Config", "../util"], function (require, exports, Hex_1, Config_1, util_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Point {
@@ -14,6 +14,7 @@ define(["require", "exports", "./Hex", "../Config"], function (require, exports,
     exports.maxDistance = Hex_1.Hex.getSideLength() * (1.5 * Config_1.Config.getN() - 0.5) * 1.5;
     class HexPoint extends Point {
         constructor(col, row) {
+            util_1.assert(parseInt(col + '') == col && parseInt(row + '') == row, "Must be integers");
             super(col, row);
         }
         toAbsPoint() {

@@ -14,6 +14,10 @@ export class Settlement {
         defined(this.owner);
     }
 
+    getHexPoint() {
+        return this.p;
+    }
+
     draw(ctx: CanvasRenderingContext2D) {
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 4;

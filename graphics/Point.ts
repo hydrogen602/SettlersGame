@@ -1,5 +1,6 @@
 import { Hex } from "./Hex";
 import { Config } from "../Config";
+import { assert } from "../util";
 
 class Point {
     x: number;
@@ -26,6 +27,7 @@ export const maxDistance = Hex.getSideLength() * (1.5 * Config.getN() - 0.5) * 1
 
 export class HexPoint extends Point {
     constructor(col: number, row: number) {
+        assert(parseInt(col + '') == col && parseInt(row + '') == row, "Must be integers");
         super(col, row);
     }
 

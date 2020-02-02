@@ -58,6 +58,37 @@ export class GameMap {
         return this.settlementsArr;
     }
 
+    isAllowedSettlement(h: HexPoint): boolean {
+        console.log("new?", h)
+        this.settlementsArr.forEach(s => {
+            console.log("check", s.getHexPoint())
+            var hp = s.getHexPoint();
+            if (hp.x == h.x && hp.y == h.y) {
+                return false;
+            }
+            if (hp.x == h.x && hp.y == h.y + 1) {
+                return false;
+            }
+            if (hp.x == h.x && hp.y == h.y - 1) {
+                return false;
+            }
+            if (h.x % 2 == h.y % 2) {
+                // check right
+                if (hp.x == h.x + 1 && hp.y == h.y) {
+                    return false;
+                }
+            }
+            else {
+                // check left
+                if (hp.x == h.x - 1 && hp.y == h.y - 1) {
+                    return false;
+                }
+            }
+        });
+
+        return true;
+    }
+
     addSettlement(s: Settlement) {
         defined(s);
         this.settlementsArr.push(s);

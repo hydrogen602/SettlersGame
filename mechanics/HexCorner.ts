@@ -1,6 +1,8 @@
 import { AbsPoint, RelPoint } from "../graphics/Point";
 import { square } from "../util";
 import { Hex } from "../graphics/Hex";
+import { GameManager } from "./GameManager";
+import { Settlement } from "../map/Settlement";
 
 export class HexCorner {
 
@@ -15,15 +17,29 @@ export class HexCorner {
     }
 
     static mouseHandler(e: MouseEvent) {
-        var p = new RelPoint(e.clientX, e.clientY);
-        var r = HexCorner.distanceFromNearestHexCorner(p);
-        
-        if (r < Hex.getSideLength() / 4) {
-            // clicked on a corner
-            var h = p.toHexPoint();  
-            console.log("new settlement")
+        if (GameManager.instance.mayPlaceSettlement) {            
+            var p = new RelPoint(e.clientX, e.clientY);
+            var r = HexCorner.distanceFromNearestHexCorner(p);
+            
+            if (r < Hex.getSideLength() / 4) {
+                // clicked on a corner
+                var h = p.toHexPoint();
+                console.log("new settlement");
+
+                var m = GameManager.instance.getMap();
+
+                if (m.isAllowedSettlement(h)) {
+                    m.addSettlement(new Settlement(h, GameManager.instance.getCurrentPlayer()))
+                    console.log("success");
+                    GameManager.instance.mayPlaceSettlement = false;
+                }
+                else {
+                    console.log("not allowed position")
+                }
+            }
+        }  
+        else {
+            console.log("not allowed rn");
         }
-    
-         
     }
 }

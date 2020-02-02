@@ -1,4 +1,4 @@
-define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex", "./GameManager"], function (require, exports, Point_1, util_1, Hex_1, GameManager_1) {
+define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex", "./GameManager", "../map/Settlement"], function (require, exports, Point_1, util_1, Hex_1, GameManager_1, Settlement_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class HexCorner {
@@ -17,7 +17,15 @@ define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex",
                     // clicked on a corner
                     var h = p.toHexPoint();
                     console.log("new settlement");
-                    GameManager_1.GameManager.instance.mayPlaceSettlement = false;
+                    var m = GameManager_1.GameManager.instance.getMap();
+                    if (m.isAllowedSettlement(h)) {
+                        m.addSettlement(new Settlement_1.Settlement(h, GameManager_1.GameManager.instance.getCurrentPlayer()));
+                        console.log("success");
+                        GameManager_1.GameManager.instance.mayPlaceSettlement = false;
+                    }
+                    else {
+                        console.log("not allowed position");
+                    }
                 }
             }
             else {

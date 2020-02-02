@@ -18,6 +18,9 @@ define(["require", "exports", "../util"], function (require, exports, util_1) {
         getPlayers() {
             return this.players;
         }
+        getMap() {
+            return this.map;
+        }
         getCurrentPlayer() {
             util_1.defined(this.players[this.indexOfCurrentPlayer]);
             return this.players[this.indexOfCurrentPlayer];
