@@ -44,3 +44,6 @@ window.onkeypress = (e: KeyboardEvent) => {
         GameManager.instance.playTurn();
     }
 }
+
+console.info("Starting Game");
+GameManager.instance.playTurn();

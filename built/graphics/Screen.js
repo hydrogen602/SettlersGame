@@ -1,7 +1,7 @@
-// https://stackoverflow.com/questions/15661339/how-do-i-fix-blurry-text-in-my-html5-canvas
-define(["require", "exports"], function (require, exports) {
+define(["require", "exports", "../mechanics/EventManager"], function (require, exports, EventManager_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    // https://stackoverflow.com/questions/15661339/how-do-i-fix-blurry-text-in-my-html5-canvas
     const PIXEL_RATIO = (function () {
         const ctx = document.createElement("canvas").getContext("2d"), dpr = window.devicePixelRatio || 1, bsr = ctx["webkitBackingStorePixelRatio"] ||
             ctx["mozBackingStorePixelRatio"] ||
@@ -50,6 +50,20 @@ define(["require", "exports"], function (require, exports) {
         }
         return tmp;
     }();
+    // end of stackoverflow code
+    // my html interaction code
+    const x = document.createElement('button');
+    x.id = "newRoad";
+    x.innerText = "Purchase New Road";
+    x.classList.add("purchase");
+    x.onclick = EventManager_1.EventManager.purchaseRoad;
+    const controlBox = function () {
+        const tmp = document.getElementById("control");
+        if (tmp == null) {
+            throw "Could not find element with id control";
+        }
+        return tmp;
+    }();
+    controlBox.appendChild(x);
 });
-// end of stackoverflow code
 //# sourceMappingURL=Screen.js.map

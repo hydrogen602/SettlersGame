@@ -81,6 +81,9 @@ define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex",
                 }
             }
         }
+        static purchaseRoad() {
+            GameManager_1.GameManager.instance.getCurrentPlayer().purchaseRoad();
+        }
     }
     exports.EventManager = EventManager;
 });

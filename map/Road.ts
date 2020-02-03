@@ -31,6 +31,13 @@ export class Road {
         return false;
     }
 
+    isAdjacent(p: HexPoint): boolean {
+        if (p.isEqual(this.p1) || p.isEqual(this.p2)) {
+            return true;
+        }
+        return false;
+    }
+
     draw(ctx: CanvasRenderingContext2D) {
         ctx.strokeStyle = "black";
         ctx.lineWidth = 14;

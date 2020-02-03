@@ -1,4 +1,4 @@
-define(["require", "exports", "../graphics/Point", "./Tile", "../util", "../graphics/Screen"], function (require, exports, Point_1, Tile_1, util_1, Screen_1) {
+define(["require", "exports", "../graphics/Point", "./Tile", "../util", "../graphics/Screen", "../mechanics/GameManager"], function (require, exports, Point_1, Tile_1, util_1, Screen_1, GameManager_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class GameMap {
@@ -52,6 +52,25 @@ define(["require", "exports", "../graphics/Point", "./Tile", "../util", "../grap
         isAllowedRoad(p1, p2) {
             if (!p1.isNeighbor(p2) || p1.isEqual(p2)) {
                 // if the points aren't adjacent or are the same, do not allow
+                return false;
+            }
+            // next to road or settlement owned
+            const currPlayer = GameManager_1.GameManager.instance.getCurrentPlayer();
+            let permitted = false;
+            currPlayer.getSettlements().forEach(s => {
+                const settlementLoc = s.getHexPoint();
+                if (settlementLoc.isEqual(p1) || settlementLoc.isEqual(p2)) {
+                    permitted = true;
+                }
+            });
+            if (!permitted) {
+                currPlayer.getRoads().forEach(r => {
+                    if (r.isAdjacent(p1) || r.isAdjacent(p2)) {
+                        permitted = true;
+                    }
+                });
+            }
+            if (!permitted) {
                 return false;
             }
             const conflicts = this.roadsArr.filter(r => {

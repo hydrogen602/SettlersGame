@@ -103,4 +103,8 @@ export class EventManager {
             }
         }
     }
+
+    static purchaseRoad() {
+        GameManager.instance.getCurrentPlayer().purchaseRoad();
+    }
 }
