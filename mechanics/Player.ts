@@ -2,7 +2,7 @@ import { defined, assertInt } from "../util";
 import { Settlement } from "../map/Settlement";
 import { ResourceType } from "../dataTypes";
 import { Road } from "../map/Road";
-import { StatusBar } from "../graphics/StatusBar";
+import { MessageBoard } from "../graphics/MessageBoard";
 import { ctx } from "../graphics/Screen";
 import { RelPoint } from "../graphics/Point";
 import { GameManager } from "./GameManager";
@@ -14,7 +14,7 @@ export class Player {
     private name: string;
     private inventory: Map<ResourceType, number>;
 
-    private invBoard: StatusBar;
+    private invBoard: MessageBoard;
 
     private static playerCount = 0;
 
@@ -36,7 +36,7 @@ export class Player {
             }
         }
 
-        this.invBoard = new StatusBar(ctx, 6, new RelPoint(window.innerWidth - 250 - 5, 5 + 6 * 30 * Player.playerCount));
+        this.invBoard = new MessageBoard(ctx, 6, new RelPoint(window.innerWidth - 250 - 5, 5 + 6 * 30 * Player.playerCount));
         Player.playerCount += 1;
 
         defined(this.invBoard);
@@ -78,14 +78,23 @@ export class Player {
     }
 
     purchaseRoad() {
-        console.log(1)
+        if (GameManager.instance.mayPlaceRoad) {
+            GameManager.instance.printErr("Place road before buying another");
+            return;
+        }
         if (GameManager.instance.getCurrentPlayer() != this) {
             throw "Not this player's turn";
         }
         // requires brick and lumber
-        if (this.getFromInv(ResourceType.Brick) >= 1 && this.getFromInv(ResourceType.Lumber)) {
+        const brick = this.getFromInv(ResourceType.Brick);
+        const lumber= this.getFromInv(ResourceType.Lumber);
+        if (brick >= 1 && lumber >= 1) {
             // new road!
-
+            this.inventory.set(ResourceType.Brick, brick - 1);
+            this.inventory.set(ResourceType.Lumber, lumber - 1);
+            GameManager.instance.mayPlaceRoad = true;
+            GameManager.instance.print("Place new road");
+            this.updateInvBoard();
         }
         else {
             GameManager.instance.printErr("Can't afford road");

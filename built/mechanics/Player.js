@@ -1,4 +1,4 @@
-define(["require", "exports", "../util", "../dataTypes", "../graphics/StatusBar", "../graphics/Screen", "../graphics/Point", "./GameManager"], function (require, exports, util_1, dataTypes_1, StatusBar_1, Screen_1, Point_1, GameManager_1) {
+define(["require", "exports", "../util", "../dataTypes", "../graphics/MessageBoard", "../graphics/Screen", "../graphics/Point", "./GameManager"], function (require, exports, util_1, dataTypes_1, MessageBoard_1, Screen_1, Point_1, GameManager_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Player {
@@ -20,7 +20,7 @@ define(["require", "exports", "../util", "../dataTypes", "../graphics/StatusBar"
                     this.inventory.set(Number(i), 0);
                 }
             }
-            this.invBoard = new StatusBar_1.StatusBar(Screen_1.ctx, 6, new Point_1.RelPoint(window.innerWidth - 250 - 5, 5 + 6 * 30 * Player.playerCount));
+            this.invBoard = new MessageBoard_1.MessageBoard(Screen_1.ctx, 6, new Point_1.RelPoint(window.innerWidth - 250 - 5, 5 + 6 * 30 * Player.playerCount));
             Player.playerCount += 1;
             util_1.defined(this.invBoard);
             this.updateInvBoard();
@@ -51,13 +51,23 @@ define(["require", "exports", "../util", "../dataTypes", "../graphics/StatusBar"
             this.updateInvBoard();
         }
         purchaseRoad() {
-            console.log(1);
+            if (GameManager_1.GameManager.instance.mayPlaceRoad) {
+                GameManager_1.GameManager.instance.printErr("Place road before buying another");
+                return;
+            }
             if (GameManager_1.GameManager.instance.getCurrentPlayer() != this) {
                 throw "Not this player's turn";
             }
             // requires brick and lumber
-            if (this.getFromInv(dataTypes_1.ResourceType.Brick) >= 1 && this.getFromInv(dataTypes_1.ResourceType.Lumber)) {
+            const brick = this.getFromInv(dataTypes_1.ResourceType.Brick);
+            const lumber = this.getFromInv(dataTypes_1.ResourceType.Lumber);
+            if (brick >= 1 && lumber >= 1) {
                 // new road!
+                this.inventory.set(dataTypes_1.ResourceType.Brick, brick - 1);
+                this.inventory.set(dataTypes_1.ResourceType.Lumber, lumber - 1);
+                GameManager_1.GameManager.instance.mayPlaceRoad = true;
+                GameManager_1.GameManager.instance.print("Place new road");
+                this.updateInvBoard();
             }
             else {
                 GameManager_1.GameManager.instance.printErr("Can't afford road");

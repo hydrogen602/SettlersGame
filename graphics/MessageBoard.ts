@@ -1,7 +1,7 @@
 import { RelPoint, AbsPoint } from "./Point";
 import { defined } from "../util";
 
-export class StatusBar {
+export class MessageBoard {
     private ctx: CanvasRenderingContext2D;
 
     private pos = new RelPoint(10, 10);
@@ -13,7 +13,7 @@ export class StatusBar {
     constructor(ctx: CanvasRenderingContext2D, size: number, location?: RelPoint) {
         this.ctx = ctx;
         this.maxMsgCount = size;
-        this.sz = new AbsPoint(250, 30 * size);
+        this.sz = new AbsPoint(350, 30 * size);
 
         defined(this.ctx);
         defined(this.maxMsgCount);
