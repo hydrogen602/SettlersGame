@@ -1,7 +1,7 @@
 import { Player } from "./Player";
 import { GameMap } from "../map/GameMap";
 import { defined, assert, rollTwoDice } from "../util";
-import { StatusBar } from "../graphics/StatusBar";
+import { MessageBoard } from "../graphics/MessageBoard";
 import { RelPoint } from "../graphics/Point";
 
 export class GameManager {
@@ -10,8 +10,8 @@ export class GameManager {
     private indexOfCurrentPlayer = -1; // -1 cause first thing 1 is added
     private map: GameMap;
     private rounds: number = 1;
-    private msgBoard: StatusBar;
-    private errBoard: StatusBar;
+    private msgBoard: MessageBoard;
+    private errBoard: MessageBoard;
 
     static instance: GameManager;
 
@@ -23,8 +23,8 @@ export class GameManager {
     constructor(map: GameMap, players: Array<Player>) {
         this.map = map;
         this.players = players;
-        this.msgBoard = new StatusBar(map.getCtx(), 3);
-        this.errBoard = new StatusBar(map.getCtx(), 1, new RelPoint(10, 10 + 90));
+        this.msgBoard = new MessageBoard(map.getCtx(), 3);
+        this.errBoard = new MessageBoard(map.getCtx(), 1, new RelPoint(10, 10 + 90));
 
         this.msgBoard.print("Press t for next turn");
 
@@ -56,6 +56,11 @@ export class GameManager {
     }
 
     playTurn() {
+        if (this.mayPlaceCity || this.mayPlaceRoad || this.mayPlaceSettlement) {
+            this.printErr("Unplaced Infrastructure");
+            return;
+        }
+
         this.nextTurn();
         const p = this.getCurrentPlayer();
 

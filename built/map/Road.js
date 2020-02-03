@@ -20,6 +20,12 @@ define(["require", "exports", "../util"], function (require, exports, util_1) {
             }
             return false;
         }
+        isAdjacent(p) {
+            if (p.isEqual(this.p1) || p.isEqual(this.p2)) {
+                return true;
+            }
+            return false;
+        }
         draw(ctx) {
             ctx.strokeStyle = "black";
             ctx.lineWidth = 14;

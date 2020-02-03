@@ -1,7 +1,7 @@
 define(["require", "exports", "./Point", "../util"], function (require, exports, Point_1, util_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    class StatusBar {
+    class MessageBoard {
         constructor(ctx, size, location) {
             this.pos = new Point_1.RelPoint(10, 10);
             this.board = [];
@@ -43,6 +43,6 @@ define(["require", "exports", "./Point", "../util"], function (require, exports,
             }
         }
     }
-    exports.StatusBar = StatusBar;
+    exports.MessageBoard = MessageBoard;
 });
-//# sourceMappingURL=StatusBar.js.map
+//# sourceMappingURL=MessageBoard.js.map

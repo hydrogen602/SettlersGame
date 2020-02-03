@@ -29,5 +29,7 @@ define(["require", "exports", "./graphics/Screen", "./map/GameMap", "./graphics/
             GameManager_1.GameManager.instance.playTurn();
         }
     };
+    console.info("Starting Game");
+    GameManager_1.GameManager.instance.playTurn();
 });
 //# sourceMappingURL=main.js.map

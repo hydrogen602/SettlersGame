@@ -1,4 +1,4 @@
-define(["require", "exports", "../util", "../graphics/StatusBar", "../graphics/Point"], function (require, exports, util_1, StatusBar_1, Point_1) {
+define(["require", "exports", "../util", "../graphics/MessageBoard", "../graphics/Point"], function (require, exports, util_1, MessageBoard_1, Point_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class GameManager {
@@ -11,8 +11,8 @@ define(["require", "exports", "../util", "../graphics/StatusBar", "../graphics/P
             this.mayPlaceRoad = false;
             this.map = map;
             this.players = players;
-            this.msgBoard = new StatusBar_1.StatusBar(map.getCtx(), 3);
-            this.errBoard = new StatusBar_1.StatusBar(map.getCtx(), 1, new Point_1.RelPoint(10, 10 + 90));
+            this.msgBoard = new MessageBoard_1.MessageBoard(map.getCtx(), 3);
+            this.errBoard = new MessageBoard_1.MessageBoard(map.getCtx(), 1, new Point_1.RelPoint(10, 10 + 90));
             this.msgBoard.print("Press t for next turn");
             util_1.defined(this.map);
             util_1.defined(this.players);
@@ -37,6 +37,10 @@ define(["require", "exports", "../util", "../graphics/StatusBar", "../graphics/P
             }
         }
         playTurn() {
+            if (this.mayPlaceCity || this.mayPlaceRoad || this.mayPlaceSettlement) {
+                this.printErr("Unplaced Infrastructure");
+                return;
+            }
             this.nextTurn();
             const p = this.getCurrentPlayer();
             this.msgBoard.clear();

@@ -1,3 +1,5 @@
+import { EventManager } from "../mechanics/EventManager";
+
 // https://stackoverflow.com/questions/15661339/how-do-i-fix-blurry-text-in-my-html5-canvas
 
 const PIXEL_RATIO = (function () {
@@ -62,3 +64,21 @@ export const ctx = function() {
 }();
 
 // end of stackoverflow code
+
+// my html interaction code
+
+const x = document.createElement('button')
+x.id = "newRoad";
+x.innerText = "Purchase New Road";
+x.classList.add("purchase");
+x.onclick = EventManager.purchaseRoad;
+
+const controlBox = function() {
+    const tmp = document.getElementById("control");
+    if (tmp == null) {
+        throw "Could not find element with id control";
+    }
+    return tmp;
+}();
+
+controlBox.appendChild(x);

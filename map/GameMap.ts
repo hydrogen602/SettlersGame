@@ -4,6 +4,7 @@ import { defined } from "../util";
 import { Settlement } from "./Settlement";
 import { canvas } from "../graphics/Screen";
 import { Road } from "./Road";
+import { GameManager } from "../mechanics/GameManager";
 
 export class GameMap {
     private sz: number;
@@ -84,6 +85,28 @@ export class GameMap {
             return false;
         }
 
+        // next to road or settlement owned
+        const currPlayer = GameManager.instance.getCurrentPlayer();
+        let permitted = false;
+        currPlayer.getSettlements().forEach(s => {
+            const settlementLoc = s.getHexPoint();
+            if (settlementLoc.isEqual(p1) || settlementLoc.isEqual(p2)) {
+                permitted = true;
+            }
+        });
+
+        if (!permitted) {
+            currPlayer.getRoads().forEach(r => {
+                if (r.isAdjacent(p1) || r.isAdjacent(p2)) {
+                    permitted = true;
+                }
+            });
+        }
+
+        if (!permitted) {
+            return false;
+        }
+        
         const conflicts = this.roadsArr.filter(r => {
             return r.isEqual(p1, p2);
         });
