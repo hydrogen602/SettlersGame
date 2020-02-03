@@ -67,7 +67,7 @@ define(["require", "exports", "../graphics/Point", "./Tile", "../util", "../grap
             util_1.defined(r);
             this.roadsArr.push(r);
         }
-        draw() {
+        draw_SHOULD_ONLY_BE_CALLED_BY_GAME_MANAGER() {
             this.ctx.clearRect(0, 0, Screen_1.canvas.width, Screen_1.canvas.height);
             this.ctx.fillStyle = 'blue';
             this.ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);

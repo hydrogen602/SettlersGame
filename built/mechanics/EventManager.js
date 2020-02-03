@@ -54,7 +54,7 @@ define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex",
                     const m = GameManager_1.GameManager.instance.getMap();
                     if (m.isAllowedSettlement(h)) {
                         m.addSettlement(new Settlement_1.Settlement(h, GameManager_1.GameManager.instance.getCurrentPlayer()));
-                        m.draw();
+                        GameManager_1.GameManager.instance.draw();
                         //console.log("success");
                         GameManager_1.GameManager.instance.print("New Settlement created");
                         GameManager_1.GameManager.instance.mayPlaceSettlement = false;
@@ -71,7 +71,7 @@ define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex",
                     const m = GameManager_1.GameManager.instance.getMap();
                     if (m.isAllowedRoad(hArr[0], hArr[1])) { // check if road already there
                         m.addRoad(new Road_1.Road(hArr[0], hArr[1], GameManager_1.GameManager.instance.getCurrentPlayer()));
-                        m.draw();
+                        GameManager_1.GameManager.instance.draw();
                         GameManager_1.GameManager.instance.print("New Road created");
                         GameManager_1.GameManager.instance.mayPlaceRoad = false;
                     }

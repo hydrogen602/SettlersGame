@@ -76,9 +76,12 @@ define(["require", "exports", "../util", "../graphics/StatusBar", "../graphics/P
             this.errBoard.print(msg);
         }
         draw() {
-            this.map.draw();
+            this.map.draw_SHOULD_ONLY_BE_CALLED_BY_GAME_MANAGER();
             this.msgBoard.draw();
             this.errBoard.draw();
+            this.players.forEach(p => {
+                p.draw();
+            });
         }
     }
     exports.GameManager = GameManager;

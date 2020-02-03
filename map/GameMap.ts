@@ -101,7 +101,7 @@ export class GameMap {
         this.roadsArr.push(r);
     }
 
-    draw() {
+    draw_SHOULD_ONLY_BE_CALLED_BY_GAME_MANAGER() {
         this.ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         this.ctx.fillStyle = 'blue';
@@ -111,18 +111,18 @@ export class GameMap {
         this.ctx.lineWidth = 1;
         this.tilesArr.forEach(e => {
             e.draw(this.ctx);
-        })
+        });
 
         this.tilesArr.forEach(e => {
             e.highlightIfActive(this.ctx);
-        })
+        });
 
         this.roadsArr.forEach(r => {
             r.draw(this.ctx);
-        })
+        });
 
         this.settlementsArr.forEach(s => {
             s.draw(this.ctx);
-        })
+        });
     }
 }
