@@ -1,7 +1,7 @@
 // https://stackoverflow.com/questions/15661339/how-do-i-fix-blurry-text-in-my-html5-canvas
 
-var PIXEL_RATIO = (function () {
-    var ctx: any = document.createElement("canvas").getContext("2d"),
+const PIXEL_RATIO = (function () {
+    const ctx: any = document.createElement("canvas").getContext("2d"),
         dpr = window.devicePixelRatio || 1,
         bsr: any = ctx["webkitBackingStorePixelRatio"] ||
               ctx["mozBackingStorePixelRatio"] ||
@@ -13,31 +13,52 @@ var PIXEL_RATIO = (function () {
 })();
 
 
-var createHiDPICanvas = function(w: number, h: number, ratio: number) {
+function createHiDPICanvas(w: number, h: number, ratio: number) {
     if (!ratio) { ratio = PIXEL_RATIO; }
-    var can = document.createElement("canvas");
+    const can = document.createElement("canvas");
     can.width = w * ratio;
     can.height = h * ratio;
     can.style.width = w + "px";
     can.style.height = h + "px";
-    can.getContext("2d").setTransform(ratio, 0, 0, ratio, 0, 0);
+
+    let context = function() {
+        const tmp = can.getContext("2d");
+        if (tmp == null) {
+            throw "CanvasRenderingContext2D is null";
+        }
+        return tmp;
+    }();
+    
+    context.setTransform(ratio, 0, 0, ratio, 0, 0);
 
     can.id = "main";
     return can;
 }
 
-var windowWidth = window.innerWidth //-18-25
-var windowHeight = window.innerHeight // -6 //-18-10
+const windowWidth = window.innerWidth //-18-25
+const windowHeight = window.innerHeight // -6 //-18-10
 
 //Create canvas with the device resolution.
-var myCanvas = createHiDPICanvas(windowWidth, windowHeight, undefined);
+const myCanvas = createHiDPICanvas(windowWidth, windowHeight, 0);
 
-var box = document.getElementById("box");
+const box = function() {
+    const tmp = document.getElementById("box");
+    if (tmp == null) {
+        throw "Could not find element with id box";
+    }
+    return tmp;
+}();
 
 box.appendChild(myCanvas);
 
 export const canvas = myCanvas;
 
-export const ctx = myCanvas.getContext("2d");
+export const ctx = function() {
+    const tmp = myCanvas.getContext("2d");
+    if (tmp == null) {
+        throw "CanvasRenderingContext2D is null";
+    }
+    return tmp;
+}();
 
 // end of stackoverflow code

@@ -3,8 +3,9 @@ define(["require", "exports", "./Biome", "../util", "../graphics/Hex"], function
     Object.defineProperty(exports, "__esModule", { value: true });
     class Tile {
         constructor(location, landType, diceValue) {
+            this.active = false; // whether this round's die roll matches this tile
             if (diceValue) {
-                util_1.assert(parseInt(diceValue.toString()) == diceValue, "diceValue should be an integer");
+                util_1.assertInt(diceValue);
                 this.diceValue = diceValue;
             }
             else {
@@ -14,16 +15,13 @@ define(["require", "exports", "./Biome", "../util", "../graphics/Hex"], function
                 //      | | | | | | | | | | |  |  |  |  |  |  |  |  |
                 //      0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18
                 // out of 19
-                var r = parseInt(Math.random() * 19 + '');
-                var choices = [2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 9, 10, 10, 11, 11, 12];
-                this.diceValue = choices[r];
+                this.diceValue = Tile.diceValueChoices[util_1.randomInt(19)];
             }
             if (landType) {
                 this.landType = landType;
             }
             else {
-                var r = parseInt(Math.random() * 19 + '');
-                this.landType = Biome_1.biomeDistributionArray[r];
+                this.landType = Biome_1.biomeDistributionArray[util_1.randomInt(19)];
             }
             if (this.landType == Biome_1.Desert) {
                 this.diceValue = 0;
@@ -35,10 +33,37 @@ define(["require", "exports", "./Biome", "../util", "../graphics/Hex"], function
             util_1.defined(this.p);
             util_1.defined(this.center);
         }
-        fillTile(ctx) {
+        getDiceValue() {
+            return this.diceValue;
+        }
+        activateIfDiceValueMatches(value, settlements) {
+            util_1.assertInt(value);
+            if (value == this.diceValue) {
+                this.active = true;
+                // find neighboring settlements and award resource
+                Hex_1.Hex.getHexCorners(this.p.y, this.p.x).forEach(c => {
+                    settlements.forEach(s => {
+                        if (s.isHere(c)) {
+                            s.production(this.landType.getResourceType());
+                        }
+                    });
+                });
+            }
+        }
+        deactivate() {
+            this.active = false;
+        }
+        highlightIfActive(ctx) {
+            if (this.active) {
+                ctx.strokeStyle = "white";
+                ctx.lineWidth = 4;
+                Hex_1.Hex.strokeHex(this.p.y, this.p.x, ctx);
+            }
+        }
+        draw(ctx) {
             ctx.fillStyle = this.landType.getColor();
             Hex_1.Hex.fillHex(this.p.y, this.p.x, ctx);
-            var relCenter = this.center.toRelPoint();
+            const relCenter = this.center.toRelPoint();
             if (this.landType != Biome_1.Desert) {
                 ctx.font = "20px Arial";
                 ctx.textAlign = "center";
@@ -46,22 +71,12 @@ define(["require", "exports", "./Biome", "../util", "../graphics/Hex"], function
                 ctx.fillStyle = "black";
                 ctx.fillText(this.diceValue.toString(), relCenter.x, relCenter.y);
             }
-        }
-        strokeTile(ctx) {
+            ctx.strokeStyle = "black";
+            ctx.lineWidth = 1;
             Hex_1.Hex.strokeHex(this.p.y, this.p.x, ctx);
-        }
-        // this method is from http://www.playchilla.com/how-to-check-if-a-point-is-inside-a-hexagon
-        isInside(pos) {
-            // vertical = apothem
-            const q2x = Math.abs(pos.x - this.center.x);
-            const q2y = Math.abs(pos.y - this.center.y);
-            const vert = Hex_1.Hex.getApothem();
-            const hori = Hex_1.Hex.getSideLength() / 2;
-            if (q2x > hori * 2 || q2y > vert)
-                return false;
-            return vert * 2 * hori - vert * q2x - 2 * hori * q2y >= 0;
         }
     }
     exports.Tile = Tile;
+    Tile.diceValueChoices = [2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 9, 10, 10, 11, 11, 12];
 });
 //# sourceMappingURL=Tile.js.map

@@ -13,7 +13,7 @@ export class GameMap {
     private ctx: CanvasRenderingContext2D;
 
     // offset of map on screen in order to move around the map
-    currLocation: RelPoint;
+    // currLocation: RelPoint;
 
     constructor(size: number, ctx: CanvasRenderingContext2D) {
         this.sz = size;
@@ -22,30 +22,29 @@ export class GameMap {
         defined(this.sz);
         defined(this.ctx);
 
-        var nP: number = (size - 1) / 2;
-        var nP2: number = (size - 2) / 2;
+        const nP: number = (size - 1) / 2;
+        const nP2: number = (size - 2) / 2;
 
-        var tiles: Array<Tile> = []
+        this.tilesArr = [];
         
-        for (var j = 0; j < size; j++) {
+        for (let j = 0; j < size; j++) {
 
-            var addition: number = - Math.abs(j - nP) + nP;
+            const addition: number = - Math.abs(j - nP) + nP;
             
-            for (var i = -addition; i < size + addition; i++) {
-                tiles.push(new Tile(new HexPoint(2*j, 2*i)));
+            for (let i = -addition; i < size + addition; i++) {
+                this.tilesArr.push(new Tile(new HexPoint(2*j, 2*i)));
             }
         }
 
-        for (var j = 0; j < size - 1; j++) {
+        for (let j = 0; j < size - 1; j++) {
 
-            var addition: number = - Math.abs(j - nP2) + nP2;
+            const addition: number = - Math.abs(j - nP2) + nP2;
 
-            for (var i = -addition; i <= size + addition; i++) {
-                tiles.push(new Tile(new HexPoint(2*j + 1, 2*i - 1)));
+            for (let i = -addition; i <= size + addition; i++) {
+                this.tilesArr.push(new Tile(new HexPoint(2*j + 1, 2*i - 1)));
             }
         }
 
-        this.tilesArr = tiles;
         defined(this.tilesArr);
 
         this.settlementsArr = [];
@@ -70,9 +69,9 @@ export class GameMap {
 
     isAllowedSettlement(h: HexPoint): boolean {
         // console.log("new?", h)
-        var conflicts = this.settlementsArr.filter(s => {
+        const conflicts = this.settlementsArr.filter(s => {
             // console.log("check", s.getHexPoint())
-            var hp = s.getHexPoint();
+            const hp = s.getHexPoint();
             return h.isNeighbor(hp) || h.isEqual(hp);
         });
 
@@ -85,7 +84,7 @@ export class GameMap {
             return false;
         }
 
-        var conflicts = this.roadsArr.filter(r => {
+        const conflicts = this.roadsArr.filter(r => {
             return r.isEqual(p1, p2);
         });
 
@@ -102,28 +101,28 @@ export class GameMap {
         this.roadsArr.push(r);
     }
 
-    draw() {
+    draw_SHOULD_ONLY_BE_CALLED_BY_GAME_MANAGER() {
         this.ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         this.ctx.fillStyle = 'blue';
         this.ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
-        this.tilesArr.forEach(e => {
-            e.fillTile(this.ctx);
-        });
-
         this.ctx.strokeStyle = 'black';
         this.ctx.lineWidth = 1;
         this.tilesArr.forEach(e => {
-            e.strokeTile(this.ctx);
-        })
+            e.draw(this.ctx);
+        });
+
+        this.tilesArr.forEach(e => {
+            e.highlightIfActive(this.ctx);
+        });
 
         this.roadsArr.forEach(r => {
             r.draw(this.ctx);
-        })
+        });
 
         this.settlementsArr.forEach(s => {
             s.draw(this.ctx);
-        })
+        });
     }
 }

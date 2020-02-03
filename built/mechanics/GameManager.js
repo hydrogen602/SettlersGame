@@ -41,6 +41,9 @@ define(["require", "exports", "../util", "../graphics/StatusBar", "../graphics/P
             const p = this.getCurrentPlayer();
             this.msgBoard.clear();
             this.errBoard.clear();
+            this.map.getTiles().forEach(t => {
+                t.deactivate();
+            });
             this.msgBoard.print("New turn: " + p.getName());
             if (this.rounds <= 2) {
                 // game start phase
@@ -49,6 +52,15 @@ define(["require", "exports", "../util", "../graphics/StatusBar", "../graphics/P
                 this.msgBoard.print("Then place a road");
                 this.mayPlaceSettlement = true;
                 this.mayPlaceRoad = true;
+            }
+            else {
+                // post init
+                const dieRoll = util_1.rollTwoDice();
+                this.msgBoard.print("Die Rolled: " + dieRoll);
+                this.map.getTiles().forEach(t => {
+                    t.activateIfDiceValueMatches(dieRoll, this.map.getSettlements());
+                });
+                this.draw();
             }
         }
         debugPlayers() {
@@ -64,9 +76,12 @@ define(["require", "exports", "../util", "../graphics/StatusBar", "../graphics/P
             this.errBoard.print(msg);
         }
         draw() {
-            this.map.draw();
+            this.map.draw_SHOULD_ONLY_BE_CALLED_BY_GAME_MANAGER();
             this.msgBoard.draw();
             this.errBoard.draw();
+            this.players.forEach(p => {
+                p.draw();
+            });
         }
     }
     exports.GameManager = GameManager;

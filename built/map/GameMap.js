@@ -2,27 +2,28 @@ define(["require", "exports", "../graphics/Point", "./Tile", "../util", "../grap
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class GameMap {
+        // offset of map on screen in order to move around the map
+        // currLocation: RelPoint;
         constructor(size, ctx) {
             this.sz = size;
             this.ctx = ctx;
             util_1.defined(this.sz);
             util_1.defined(this.ctx);
-            var nP = (size - 1) / 2;
-            var nP2 = (size - 2) / 2;
-            var tiles = [];
-            for (var j = 0; j < size; j++) {
-                var addition = -Math.abs(j - nP) + nP;
-                for (var i = -addition; i < size + addition; i++) {
-                    tiles.push(new Tile_1.Tile(new Point_1.HexPoint(2 * j, 2 * i)));
+            const nP = (size - 1) / 2;
+            const nP2 = (size - 2) / 2;
+            this.tilesArr = [];
+            for (let j = 0; j < size; j++) {
+                const addition = -Math.abs(j - nP) + nP;
+                for (let i = -addition; i < size + addition; i++) {
+                    this.tilesArr.push(new Tile_1.Tile(new Point_1.HexPoint(2 * j, 2 * i)));
                 }
             }
-            for (var j = 0; j < size - 1; j++) {
-                var addition = -Math.abs(j - nP2) + nP2;
-                for (var i = -addition; i <= size + addition; i++) {
-                    tiles.push(new Tile_1.Tile(new Point_1.HexPoint(2 * j + 1, 2 * i - 1)));
+            for (let j = 0; j < size - 1; j++) {
+                const addition = -Math.abs(j - nP2) + nP2;
+                for (let i = -addition; i <= size + addition; i++) {
+                    this.tilesArr.push(new Tile_1.Tile(new Point_1.HexPoint(2 * j + 1, 2 * i - 1)));
                 }
             }
-            this.tilesArr = tiles;
             util_1.defined(this.tilesArr);
             this.settlementsArr = [];
             this.roadsArr = [];
@@ -41,9 +42,9 @@ define(["require", "exports", "../graphics/Point", "./Tile", "../util", "../grap
         }
         isAllowedSettlement(h) {
             // console.log("new?", h)
-            var conflicts = this.settlementsArr.filter(s => {
+            const conflicts = this.settlementsArr.filter(s => {
                 // console.log("check", s.getHexPoint())
-                var hp = s.getHexPoint();
+                const hp = s.getHexPoint();
                 return h.isNeighbor(hp) || h.isEqual(hp);
             });
             return conflicts.length == 0; // allowed if no conflicts
@@ -53,7 +54,7 @@ define(["require", "exports", "../graphics/Point", "./Tile", "../util", "../grap
                 // if the points aren't adjacent or are the same, do not allow
                 return false;
             }
-            var conflicts = this.roadsArr.filter(r => {
+            const conflicts = this.roadsArr.filter(r => {
                 return r.isEqual(p1, p2);
             });
             return conflicts.length == 0;
@@ -66,17 +67,17 @@ define(["require", "exports", "../graphics/Point", "./Tile", "../util", "../grap
             util_1.defined(r);
             this.roadsArr.push(r);
         }
-        draw() {
+        draw_SHOULD_ONLY_BE_CALLED_BY_GAME_MANAGER() {
             this.ctx.clearRect(0, 0, Screen_1.canvas.width, Screen_1.canvas.height);
             this.ctx.fillStyle = 'blue';
             this.ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
-            this.tilesArr.forEach(e => {
-                e.fillTile(this.ctx);
-            });
             this.ctx.strokeStyle = 'black';
             this.ctx.lineWidth = 1;
             this.tilesArr.forEach(e => {
-                e.strokeTile(this.ctx);
+                e.draw(this.ctx);
+            });
+            this.tilesArr.forEach(e => {
+                e.highlightIfActive(this.ctx);
             });
             this.roadsArr.forEach(r => {
                 r.draw(this.ctx);

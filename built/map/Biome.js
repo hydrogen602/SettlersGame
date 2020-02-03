@@ -52,13 +52,14 @@ define(["require", "exports", "../dataTypes", "../util"], function (require, exp
         }
     })();
     exports.biomes = [exports.Desert, exports.Grassland, exports.Forest, exports.Mountain, exports.Farmland, exports.Quarry];
-    var tmp_biomeDistributionArray = [];
-    exports.biomes.forEach((e) => {
-        for (var i = 0; i < e.getAbundance(); i++) {
-            tmp_biomeDistributionArray.push(e);
-        }
-    });
-    exports.biomeDistributionArray = tmp_biomeDistributionArray;
-    tmp_biomeDistributionArray = undefined;
+    exports.biomeDistributionArray = function () {
+        let tmp_biomeDistributionArray = [];
+        exports.biomes.forEach((e) => {
+            for (let i = 0; i < e.getAbundance(); i++) {
+                tmp_biomeDistributionArray.push(e);
+            }
+        });
+        return tmp_biomeDistributionArray;
+    }();
 });
 //# sourceMappingURL=Biome.js.map

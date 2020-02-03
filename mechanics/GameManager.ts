@@ -1,6 +1,6 @@
 import { Player } from "./Player";
 import { GameMap } from "../map/GameMap";
-import { defined, assert } from "../util";
+import { defined, assert, rollTwoDice } from "../util";
 import { StatusBar } from "../graphics/StatusBar";
 import { RelPoint } from "../graphics/Point";
 
@@ -61,6 +61,10 @@ export class GameManager {
 
         this.msgBoard.clear();
         this.errBoard.clear();
+        this.map.getTiles().forEach(t => {
+            t.deactivate();
+        });
+
         this.msgBoard.print("New turn: " + p.getName());
         if (this.rounds <= 2) {
             // game start phase
@@ -71,6 +75,16 @@ export class GameManager {
 
             this.mayPlaceSettlement = true;
             this.mayPlaceRoad = true;
+        }
+        else {
+            // post init
+            const dieRoll = rollTwoDice();
+            this.msgBoard.print("Die Rolled: " + dieRoll);
+            this.map.getTiles().forEach(t => {
+                t.activateIfDiceValueMatches(dieRoll, this.map.getSettlements());
+            });
+
+            this.draw();
         }
 
     }
@@ -91,9 +105,12 @@ export class GameManager {
     }
 
     draw() {
-        this.map.draw();
+        this.map.draw_SHOULD_ONLY_BE_CALLED_BY_GAME_MANAGER();
         this.msgBoard.draw();
         this.errBoard.draw();
+        this.players.forEach(p => {
+            p.draw();
+        });
     }
 
 }
