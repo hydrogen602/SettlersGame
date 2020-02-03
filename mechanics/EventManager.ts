@@ -75,7 +75,7 @@ export class EventManager {
 
                 if (m.isAllowedSettlement(h)) {
                     m.addSettlement(new Settlement(h, GameManager.instance.getCurrentPlayer()))
-                    m.draw();
+                    GameManager.instance.draw();
                     //console.log("success");
                     GameManager.instance.print("New Settlement created");
                     GameManager.instance.mayPlaceSettlement = false;
@@ -93,7 +93,7 @@ export class EventManager {
 
                 if (m.isAllowedRoad(hArr[0], hArr[1])) { // check if road already there
                     m.addRoad(new Road(hArr[0], hArr[1], GameManager.instance.getCurrentPlayer()));
-                    m.draw();
+                    GameManager.instance.draw();
                     GameManager.instance.print("New Road created");
                     GameManager.instance.mayPlaceRoad = false;
                 }

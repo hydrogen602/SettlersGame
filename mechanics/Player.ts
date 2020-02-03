@@ -2,6 +2,9 @@ import { defined, assertInt } from "../util";
 import { Settlement } from "../map/Settlement";
 import { ResourceType } from "../dataTypes";
 import { Road } from "../map/Road";
+import { StatusBar } from "../graphics/StatusBar";
+import { ctx } from "../graphics/Screen";
+import { RelPoint } from "../graphics/Point";
 
 export class Player {
     private color: string;
@@ -9,6 +12,10 @@ export class Player {
     private roads: Array<Road> = [];
     private name: string;
     private inventory: Map<String, number>;
+
+    private invBoard: StatusBar;
+
+    private static playerCount = 0;
 
     constructor(color: string, name: string) {
         this.color = color;
@@ -27,6 +34,12 @@ export class Player {
                 this.inventory.set(i, 0);
             }
         }
+
+        this.invBoard = new StatusBar(ctx, 6, new RelPoint(window.innerWidth - 250 - 5, 5 + 6 * 30 * Player.playerCount));
+        Player.playerCount += 1;
+
+        defined(this.invBoard);
+        this.updateInvBoard();
     }
 
     getColor() {
@@ -52,6 +65,24 @@ export class Player {
         defined(currAmount);
 
         this.inventory.set(name, amount + <number>currAmount);
+
+        this.updateInvBoard();
+    }
+
+    private updateInvBoard() {
+        this.invBoard.clear();
+        this.invBoard.print(this.name);
+
+        const iterator = this.inventory.keys()
+        let k: IteratorResult<String, any>;
+        while ((x => { k = x.next(); return !k.done })(iterator)) {
+            console.log(k.value);
+            this.invBoard.print(k.value + ": " + this.inventory.get(k.value));
+        }     
+    }
+
+    draw() {
+        this.invBoard.draw();
     }
 
     debug() {
