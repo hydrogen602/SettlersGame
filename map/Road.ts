@@ -17,6 +17,8 @@ export class Road {
         defined(p1);
         defined(p2);
         defined(owner);
+
+        this.owner.addRoad(this);
     }
 
     isEqual(p1: HexPoint, p2: HexPoint): boolean {

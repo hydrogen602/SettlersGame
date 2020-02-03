@@ -9,6 +9,7 @@ define(["require", "exports", "../util"], function (require, exports, util_1) {
             util_1.defined(p1);
             util_1.defined(p2);
             util_1.defined(owner);
+            this.owner.addRoad(this);
         }
         isEqual(p1, p2) {
             if (p1.isEqual(this.p1) && p2.isEqual(this.p2)) {

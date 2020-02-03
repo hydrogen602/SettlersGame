@@ -7,9 +7,16 @@ define(["require", "exports", "../util", "../graphics/Hex"], function (require, 
             this.owner = owner;
             util_1.defined(this.p);
             util_1.defined(this.owner);
+            this.owner.addSettlement(this);
         }
         getHexPoint() {
             return this.p;
+        }
+        isHere(h) {
+            return h.isEqual(this.p);
+        }
+        production(r) {
+            this.owner.giveResource(r, 1); // 2 if city
         }
         draw(ctx) {
             ctx.strokeStyle = 'black';

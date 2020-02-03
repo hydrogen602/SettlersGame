@@ -2,6 +2,8 @@ define(["require", "exports", "../graphics/Point", "./Tile", "../util", "../grap
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class GameMap {
+        // offset of map on screen in order to move around the map
+        // currLocation: RelPoint;
         constructor(size, ctx) {
             this.sz = size;
             this.ctx = ctx;
@@ -9,6 +11,7 @@ define(["require", "exports", "../graphics/Point", "./Tile", "../util", "../grap
             util_1.defined(this.ctx);
             const nP = (size - 1) / 2;
             const nP2 = (size - 2) / 2;
+            this.tilesArr = [];
             for (let j = 0; j < size; j++) {
                 const addition = -Math.abs(j - nP) + nP;
                 for (let i = -addition; i < size + addition; i++) {
@@ -72,6 +75,9 @@ define(["require", "exports", "../graphics/Point", "./Tile", "../util", "../grap
             this.ctx.lineWidth = 1;
             this.tilesArr.forEach(e => {
                 e.draw(this.ctx);
+            });
+            this.tilesArr.forEach(e => {
+                e.highlightIfActive(this.ctx);
             });
             this.roadsArr.forEach(r => {
                 r.draw(this.ctx);

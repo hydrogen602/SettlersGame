@@ -1,7 +1,8 @@
 import { HexPoint, RelPoint } from "../graphics/Point";
-import { defined } from "../util";
+import { defined, assertInt } from "../util";
 import { Hex } from "../graphics/Hex";
 import { Player } from "../mechanics/Player";
+import { ResourceType } from "../dataTypes";
 
 export class Settlement {
     private p: HexPoint;
@@ -12,10 +13,20 @@ export class Settlement {
         this.owner = owner;
         defined(this.p);
         defined(this.owner);
+
+        this.owner.addSettlement(this);
     }
 
     getHexPoint() {
         return this.p;
+    }
+
+    isHere(h: HexPoint) {
+        return h.isEqual(this.p);
+    }
+
+    production(r: ResourceType) {
+        this.owner.giveResource(r, 1); // 2 if city
     }
 
     draw(ctx: CanvasRenderingContext2D) {

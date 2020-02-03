@@ -2,12 +2,15 @@ import { Biome, biomeDistributionArray, Desert } from "./Biome";
 import { assert, defined, assertInt, randomInt } from "../util";
 import { HexPoint, AbsPoint } from "../graphics/Point"
 import { Hex } from "../graphics/Hex"
+import { Settlement } from "./Settlement";
 
 export class Tile {
     private p: HexPoint;
     private landType: Biome;
     private diceValue: number;
     private center: AbsPoint;
+
+    private active: boolean = false; // whether this round's die roll matches this tile
 
     private static diceValueChoices = [2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 9, 10, 10, 11, 11, 12];
 
@@ -44,9 +47,42 @@ export class Tile {
         defined(this.center);
     }
 
+    getDiceValue() {
+        return this.diceValue;
+    }
+
+    activateIfDiceValueMatches(value: number, settlements: Array<Settlement>) {
+        assertInt(value);
+        if (value == this.diceValue) {
+            this.active = true;
+            
+            // find neighboring settlements and award resource
+            Hex.getHexCorners(this.p.y, this.p.x).forEach(c => {
+                settlements.forEach(s => {
+                    if (s.isHere(c)) {
+                        s.production(this.landType.getResourceType());
+                    }
+                })
+            })
+            
+        }
+    }
+
+    deactivate() {
+        this.active = false;
+    }
+
+    highlightIfActive(ctx: CanvasRenderingContext2D) {
+        if (this.active) {
+            ctx.strokeStyle = "white";
+            ctx.lineWidth = 4;
+            Hex.strokeHex(this.p.y, this.p.x, ctx);
+        }
+    }
+
     draw(ctx: CanvasRenderingContext2D) {
         ctx.fillStyle = this.landType.getColor();
-        
+
         Hex.fillHex(this.p.y, this.p.x, ctx);
 
         const relCenter = this.center.toRelPoint();
@@ -59,6 +95,10 @@ export class Tile {
             ctx.fillText(this.diceValue.toString(), relCenter.x, relCenter.y);
         }
         
+        
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 1;
+
         Hex.strokeHex(this.p.y, this.p.x, ctx);
     }
 }

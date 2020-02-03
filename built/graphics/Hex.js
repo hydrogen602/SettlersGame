@@ -89,10 +89,25 @@ define(["require", "exports", "./Point"], function (require, exports, Point_1) {
             p.y += Hex.apothem;
             return p;
         }
+        static getHexCorners(row, col) {
+            return [
+                new Point_1.HexPoint(col, row),
+                new Point_1.HexPoint(col + 1, row),
+                new Point_1.HexPoint(col + 1, row + 1),
+                new Point_1.HexPoint(col + 1, row + 2),
+                new Point_1.HexPoint(col, row + 2),
+                new Point_1.HexPoint(col, row + 1)
+            ];
+        }
         static fillHex(row, col, ctx) {
             let p = Hex.hexGridToPx(row, col);
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
+            // const ls = this.getHexCorners(row, col);
+            // ls.forEach(p => {
+            //     var tmp = p.toRelPoint();
+            //     ctx.lineTo(tmp.x, tmp.y);
+            // });
             p = Hex.hexGridToPx(row, col + 1);
             ctx.lineTo(p.x, p.y);
             p = Hex.hexGridToPx(row + 1, col + 1);

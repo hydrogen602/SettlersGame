@@ -19,18 +19,37 @@ define(["require", "exports"], function (require, exports) {
         can.height = h * ratio;
         can.style.width = w + "px";
         can.style.height = h + "px";
-        can.getContext("2d").setTransform(ratio, 0, 0, ratio, 0, 0);
+        let context = function () {
+            const tmp = can.getContext("2d");
+            if (tmp == null) {
+                throw "CanvasRenderingContext2D is null";
+            }
+            return tmp;
+        }();
+        context.setTransform(ratio, 0, 0, ratio, 0, 0);
         can.id = "main";
         return can;
     }
     const windowWidth = window.innerWidth; //-18-25
     const windowHeight = window.innerHeight; // -6 //-18-10
     //Create canvas with the device resolution.
-    const myCanvas = createHiDPICanvas(windowWidth, windowHeight, undefined);
-    const box = document.getElementById("box");
+    const myCanvas = createHiDPICanvas(windowWidth, windowHeight, 0);
+    const box = function () {
+        const tmp = document.getElementById("box");
+        if (tmp == null) {
+            throw "Could not find element with id box";
+        }
+        return tmp;
+    }();
     box.appendChild(myCanvas);
     exports.canvas = myCanvas;
-    exports.ctx = myCanvas.getContext("2d");
+    exports.ctx = function () {
+        const tmp = myCanvas.getContext("2d");
+        if (tmp == null) {
+            throw "CanvasRenderingContext2D is null";
+        }
+        return tmp;
+    }();
 });
 // end of stackoverflow code
 //# sourceMappingURL=Screen.js.map

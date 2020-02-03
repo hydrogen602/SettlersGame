@@ -125,10 +125,28 @@ export class Hex {
         return p;
     }
 
+    static getHexCorners(row: number, col: number): Array<HexPoint> {
+        return [
+            new HexPoint(col, row),
+            new HexPoint(col + 1, row),
+            new HexPoint(col + 1, row + 1),
+            new HexPoint(col + 1, row + 2),
+            new HexPoint(col, row + 2),
+            new HexPoint(col, row + 1)
+        ];
+    }
+
     static fillHex(row: number, col: number, ctx: CanvasRenderingContext2D) {
         let p = Hex.hexGridToPx(row, col);
+        
         ctx.beginPath();
         ctx.moveTo(p.x, p.y);
+
+        // const ls = this.getHexCorners(row, col);
+        // ls.forEach(p => {
+        //     var tmp = p.toRelPoint();
+        //     ctx.lineTo(tmp.x, tmp.y);
+        // });
 
         p = Hex.hexGridToPx(row, col + 1);
         ctx.lineTo(p.x, p.y);

@@ -13,7 +13,7 @@ export class GameMap {
     private ctx: CanvasRenderingContext2D;
 
     // offset of map on screen in order to move around the map
-    currLocation: RelPoint;
+    // currLocation: RelPoint;
 
     constructor(size: number, ctx: CanvasRenderingContext2D) {
         this.sz = size;
@@ -24,6 +24,8 @@ export class GameMap {
 
         const nP: number = (size - 1) / 2;
         const nP2: number = (size - 2) / 2;
+
+        this.tilesArr = [];
         
         for (let j = 0; j < size; j++) {
 
@@ -109,6 +111,10 @@ export class GameMap {
         this.ctx.lineWidth = 1;
         this.tilesArr.forEach(e => {
             e.draw(this.ctx);
+        })
+
+        this.tilesArr.forEach(e => {
+            e.highlightIfActive(this.ctx);
         })
 
         this.roadsArr.forEach(r => {

@@ -1,12 +1,11 @@
 
-import { ctx, canvas } from "./graphics/Screen";
+import { ctx } from "./graphics/Screen";
 import { GameMap } from "./map/GameMap";
-import { currLocation, maxDistance, centerOfScreen, HexPoint } from "./graphics/Point";
+import { currLocation, maxDistance, centerOfScreen } from "./graphics/Point";
 import { Config } from "./Config";
 import { Player } from "./mechanics/Player";
 import { EventManager } from "./mechanics/EventManager";
 import { GameManager } from "./mechanics/GameManager";
-import { Road } from "./map/Road";
 
 export function main() {
     const m = new GameMap(Config.getN(), ctx);
