@@ -64,7 +64,22 @@ define(["require", "exports", "../graphics/Point", "./Tile", "../util", "../grap
                 const hp = s.getHexPoint();
                 return h.isNeighbor(hp) || h.isEqual(hp);
             });
-            return conflicts.length == 0; // allowed if no conflicts
+            if (conflicts.length > 0) { // allowed if no conflicts
+                return false;
+            }
+            if (!GameManager_1.GameManager.instance.isEarlyRound()) {
+                const currPlayer = GameManager_1.GameManager.instance.getCurrentPlayer();
+                let permitted = false;
+                currPlayer.getRoads().forEach(r => {
+                    if (r.isAdjacent(h)) {
+                        permitted = true;
+                    }
+                });
+                if (!permitted) {
+                    return false;
+                }
+            }
+            return true;
         }
         isAllowedRoad(p1, p2) {
             if (!p1.isNeighbor(p2) || p1.isEqual(p2)) {

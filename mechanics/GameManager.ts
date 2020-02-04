@@ -47,6 +47,10 @@ export class GameManager {
         return this.players[this.indexOfCurrentPlayer];
     }
 
+    isEarlyRound(): boolean {
+        return this.rounds <= 2; // first two rounds are special initialization rounds
+    }
+
     private nextTurn() {
         this.indexOfCurrentPlayer += 1
         if (this.indexOfCurrentPlayer >= this.players.length) {
@@ -71,7 +75,7 @@ export class GameManager {
         });
 
         this.msgBoard.print("New turn: " + p.getName());
-        if (this.rounds <= 2) {
+        if (this.isEarlyRound()) {
             // game start phase
             // each player places one settlement
 

@@ -29,6 +29,9 @@ define(["require", "exports", "../util", "../graphics/MessageBoard", "../graphic
             util_1.defined(this.players[this.indexOfCurrentPlayer]);
             return this.players[this.indexOfCurrentPlayer];
         }
+        isEarlyRound() {
+            return this.rounds <= 2; // first two rounds are special initialization rounds
+        }
         nextTurn() {
             this.indexOfCurrentPlayer += 1;
             if (this.indexOfCurrentPlayer >= this.players.length) {
@@ -49,7 +52,7 @@ define(["require", "exports", "../util", "../graphics/MessageBoard", "../graphic
                 t.deactivate();
             });
             this.msgBoard.print("New turn: " + p.getName());
-            if (this.rounds <= 2) {
+            if (this.isEarlyRound()) {
                 // game start phase
                 // each player places one settlement
                 this.msgBoard.print("Place a settlement");
