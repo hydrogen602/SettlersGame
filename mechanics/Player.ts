@@ -101,6 +101,31 @@ export class Player {
         }
     }
 
+    purchaseCity() {
+        if (GameManager.instance.mayPlaceCity) {
+            GameManager.instance.printErr("Place city before buying another");
+            return;
+        }
+        if (GameManager.instance.getCurrentPlayer() != this) {
+            throw "Not this player's turn";
+        }
+        // requires 3 ore and 2 wheat
+        const wheat = this.getFromInv(ResourceType.Wheat);
+        const ore = this.getFromInv(ResourceType.Ore);
+
+        if (wheat >= 2 && ore >= 3) {
+            // new city!
+            this.inventory.set(ResourceType.Wheat, wheat - 2);
+            this.inventory.set(ResourceType.Ore, ore - 3);
+            GameManager.instance.mayPlaceCity = true;
+            GameManager.instance.print("Place new city");
+            this.updateInvBoard();
+        }
+        else {
+            GameManager.instance.printErr("Can't afford city");
+        }
+    }
+
     purchaseSettlement() {
         if (GameManager.instance.mayPlaceSettlement) {
             GameManager.instance.printErr("Place settlement before buying another");

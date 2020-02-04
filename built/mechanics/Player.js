@@ -73,6 +73,29 @@ define(["require", "exports", "../util", "../dataTypes", "../graphics/MessageBoa
                 GameManager_1.GameManager.instance.printErr("Can't afford road");
             }
         }
+        purchaseCity() {
+            if (GameManager_1.GameManager.instance.mayPlaceCity) {
+                GameManager_1.GameManager.instance.printErr("Place city before buying another");
+                return;
+            }
+            if (GameManager_1.GameManager.instance.getCurrentPlayer() != this) {
+                throw "Not this player's turn";
+            }
+            // requires 3 ore and 2 wheat
+            const wheat = this.getFromInv(dataTypes_1.ResourceType.Wheat);
+            const ore = this.getFromInv(dataTypes_1.ResourceType.Ore);
+            if (wheat >= 2 && ore >= 3) {
+                // new city!
+                this.inventory.set(dataTypes_1.ResourceType.Wheat, wheat - 2);
+                this.inventory.set(dataTypes_1.ResourceType.Ore, ore - 3);
+                GameManager_1.GameManager.instance.mayPlaceCity = true;
+                GameManager_1.GameManager.instance.print("Place new city");
+                this.updateInvBoard();
+            }
+            else {
+                GameManager_1.GameManager.instance.printErr("Can't afford city");
+            }
+        }
         purchaseSettlement() {
             if (GameManager_1.GameManager.instance.mayPlaceSettlement) {
                 GameManager_1.GameManager.instance.printErr("Place settlement before buying another");

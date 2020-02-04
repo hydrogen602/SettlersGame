@@ -91,3 +91,6 @@ newRd.onclick = EventManager.purchaseRoad;
 
 const newSet = newButton("Purchase New Settlement");
 newSet.onclick = EventManager.purchaseSettlement;
+
+const newCity = newButton("Purchase New City");
+newCity.onclick = EventManager.purchaseCity;

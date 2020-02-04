@@ -120,6 +120,20 @@ export class GameMap {
         return true;
     }
 
+    isAllowedCity(h: HexPoint) {
+        // at settlement
+        const currPlayer = GameManager.instance.getCurrentPlayer();
+        let permitted = false;
+        currPlayer.getSettlements().forEach(s => {
+            const settlementLoc = s.getHexPoint();
+            if (settlementLoc.isEqual(h) && !s.isCity()) {
+                permitted = true;
+            }
+        });
+
+        return permitted;
+    }
+
     isAllowedRoad(p1: HexPoint, p2: HexPoint): boolean {
         if (!p1.isNeighbor(p2) || p1.isEqual(p2)) {
             // if the points aren't adjacent or are the same, do not allow
@@ -165,6 +179,27 @@ export class GameMap {
     addSettlement(s: Settlement) {
         defined(s);
         this.settlementsArr.push(s);
+    }
+
+    addCity(h: HexPoint) {
+        defined(h);
+        const currPlayer = GameManager.instance.getCurrentPlayer();
+
+        const re = currPlayer.getSettlements().filter(s => {
+            const settlementLoc = s.getHexPoint();
+            return settlementLoc.isEqual(h);
+        });
+
+        if (re.length < 0 || re.length > 1) {
+            throw "Illegal Number of Settlements";
+        }
+
+        if (re.length == 1) {
+            re[0].upgrade();
+        }
+        else {
+            throw "Illegal Position";
+        }
     }
 
     addRoad(r: Road) {

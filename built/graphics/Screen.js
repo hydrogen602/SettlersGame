@@ -71,5 +71,7 @@ define(["require", "exports", "../mechanics/EventManager"], function (require, e
     newRd.onclick = EventManager_1.EventManager.purchaseRoad;
     const newSet = newButton("Purchase New Settlement");
     newSet.onclick = EventManager_1.EventManager.purchaseSettlement;
+    const newCity = newButton("Purchase New City");
+    newCity.onclick = EventManager_1.EventManager.purchaseCity;
 });
 //# sourceMappingURL=Screen.js.map

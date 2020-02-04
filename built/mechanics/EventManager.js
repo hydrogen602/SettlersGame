@@ -26,6 +26,21 @@ define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex",
                     GameManager_1.GameManager.instance.draw();
                 }
             }
+            else if (GameManager_1.GameManager.instance.mayPlaceCity) {
+                const p = new Point_1.RelPoint(e.clientX, e.clientY);
+                const r = EventManager.distanceFromNearestHexCorner(p);
+                // strokeCity
+                if (r < Hex_1.Hex.getSideLength() / 3.5) {
+                    const h = p.toHexPoint();
+                    const m = GameManager_1.GameManager.instance.getMap();
+                    if (m.isAllowedCity(h)) {
+                        Settlement_1.Settlement.strokeCity(h.toRelPoint(), Screen_1.ctx);
+                    }
+                }
+                else {
+                    GameManager_1.GameManager.instance.draw();
+                }
+            }
             else if (GameManager_1.GameManager.instance.mayPlaceRoad) {
                 // if (this.roadTmpFirstEnd == undefined) {
                 const p = new Point_1.RelPoint(e.clientX, e.clientY);
@@ -65,6 +80,23 @@ define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex",
                     }
                 }
             }
+            else if (GameManager_1.GameManager.instance.mayPlaceCity) {
+                // strokeCity
+                if (r < Hex_1.Hex.getSideLength() / 3.5) {
+                    const h = p.toHexPoint();
+                    const m = GameManager_1.GameManager.instance.getMap();
+                    if (m.isAllowedCity(h)) {
+                        m.addCity(h);
+                        GameManager_1.GameManager.instance.draw();
+                        GameManager_1.GameManager.instance.print("New City created");
+                        GameManager_1.GameManager.instance.mayPlaceCity = false;
+                    }
+                    else {
+                        // console.log("not allowed position");
+                        GameManager_1.GameManager.instance.printErr("Illegal Position");
+                    }
+                }
+            }
             else if (GameManager_1.GameManager.instance.mayPlaceRoad) {
                 const hArr = p.toDualHexPoint();
                 if (hArr.length == 2) { // hArr is empty if not over a line 
@@ -86,6 +118,10 @@ define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex",
         }
         static purchaseSettlement() {
             GameManager_1.GameManager.instance.getCurrentPlayer().purchaseSettlement();
+        }
+        static purchaseCity() {
+            console.log("new city requested");
+            GameManager_1.GameManager.instance.getCurrentPlayer().purchaseCity();
         }
     }
     exports.EventManager = EventManager;

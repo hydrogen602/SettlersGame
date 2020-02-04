@@ -38,6 +38,24 @@ export class EventManager {
                 GameManager.instance.draw();
             }
         }
+        else if (GameManager.instance.mayPlaceCity) {
+            const p = new RelPoint(e.clientX, e.clientY);
+            const r = EventManager.distanceFromNearestHexCorner(p);
+
+            // strokeCity
+            if (r < Hex.getSideLength() / 3.5) {
+                const h = p.toHexPoint();
+
+                const m = GameManager.instance.getMap();
+
+                if (m.isAllowedCity(h)) {
+                    Settlement.strokeCity(h.toRelPoint(), ctx);
+                }
+            }
+            else {
+                GameManager.instance.draw();
+            }
+        }
         else if (GameManager.instance.mayPlaceRoad) {
             // if (this.roadTmpFirstEnd == undefined) {
             const p = new RelPoint(e.clientX, e.clientY);
@@ -86,7 +104,25 @@ export class EventManager {
                 }
             }
         }
+        else if (GameManager.instance.mayPlaceCity) {
+            // strokeCity
+            if (r < Hex.getSideLength() / 3.5) {
+                const h = p.toHexPoint();
 
+                const m = GameManager.instance.getMap();
+
+                if (m.isAllowedCity(h)) {
+                    m.addCity(h);
+                    GameManager.instance.draw();
+                    GameManager.instance.print("New City created");
+                    GameManager.instance.mayPlaceCity = false;
+                }
+                else {
+                    // console.log("not allowed position");
+                    GameManager.instance.printErr("Illegal Position");
+                }
+            }
+        }
         else if (GameManager.instance.mayPlaceRoad) {
             const hArr = p.toDualHexPoint();            
             if (hArr.length == 2) { // hArr is empty if not over a line 
@@ -111,6 +147,11 @@ export class EventManager {
 
     static purchaseSettlement() {
         GameManager.instance.getCurrentPlayer().purchaseSettlement();
+    }
+
+    static purchaseCity() {
+        console.log("new city requested")
+        GameManager.instance.getCurrentPlayer().purchaseCity();
     }
 
 
