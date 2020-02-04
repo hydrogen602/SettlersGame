@@ -1,4 +1,4 @@
-define(["require", "exports", "../graphics/Point", "./Tile", "../util", "../graphics/Screen", "../mechanics/GameManager"], function (require, exports, Point_1, Tile_1, util_1, Screen_1, GameManager_1) {
+define(["require", "exports", "../graphics/Point", "./Tile", "../util", "../graphics/Screen", "../mechanics/GameManager", "../Config"], function (require, exports, Point_1, Tile_1, util_1, Screen_1, GameManager_1, Config_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class GameMap {
@@ -6,6 +6,9 @@ define(["require", "exports", "../graphics/Point", "./Tile", "../util", "../grap
         // currLocation: RelPoint;
         constructor(size, ctx) {
             this.sz = size;
+            if (size == 3) {
+                Tile_1.Tile.shuffle();
+            }
             this.ctx = ctx;
             util_1.defined(this.sz);
             util_1.defined(this.ctx);
@@ -40,7 +43,21 @@ define(["require", "exports", "../graphics/Point", "./Tile", "../util", "../grap
         getCtx() {
             return this.ctx;
         }
+        isWithinMap(h) {
+            const n = Config_1.Config.getN();
+            if (h.x < 0 || h.x > 2 * n - 1) {
+                return false;
+            }
+            const yAllowance = Math.abs(h.x - n + 0.5) - n + 0.5;
+            if (h.y < yAllowance || h.y > 2 * n - yAllowance) {
+                return false;
+            }
+            return true;
+        }
         isAllowedSettlement(h) {
+            if (!this.isWithinMap(h)) {
+                return false;
+            }
             // console.log("new?", h)
             const conflicts = this.settlementsArr.filter(s => {
                 // console.log("check", s.getHexPoint())
@@ -52,6 +69,12 @@ define(["require", "exports", "../graphics/Point", "./Tile", "../util", "../grap
         isAllowedRoad(p1, p2) {
             if (!p1.isNeighbor(p2) || p1.isEqual(p2)) {
                 // if the points aren't adjacent or are the same, do not allow
+                return false;
+            }
+            if (!this.isWithinMap(p1)) {
+                return false;
+            }
+            if (!this.isWithinMap(p2)) {
                 return false;
             }
             // next to road or settlement owned

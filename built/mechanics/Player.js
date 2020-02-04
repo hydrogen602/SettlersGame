@@ -73,6 +73,33 @@ define(["require", "exports", "../util", "../dataTypes", "../graphics/MessageBoa
                 GameManager_1.GameManager.instance.printErr("Can't afford road");
             }
         }
+        purchaseSettlement() {
+            if (GameManager_1.GameManager.instance.mayPlaceSettlement) {
+                GameManager_1.GameManager.instance.printErr("Place settlement before buying another");
+                return;
+            }
+            if (GameManager_1.GameManager.instance.getCurrentPlayer() != this) {
+                throw "Not this player's turn";
+            }
+            // requires brick and lumber
+            const brick = this.getFromInv(dataTypes_1.ResourceType.Brick);
+            const lumber = this.getFromInv(dataTypes_1.ResourceType.Lumber);
+            const sheep = this.getFromInv(dataTypes_1.ResourceType.Sheep);
+            const wheat = this.getFromInv(dataTypes_1.ResourceType.Wheat);
+            if (brick >= 1 && lumber >= 1 && sheep >= 1 && wheat >= 1) {
+                // new settlement!
+                this.inventory.set(dataTypes_1.ResourceType.Brick, brick - 1);
+                this.inventory.set(dataTypes_1.ResourceType.Lumber, lumber - 1);
+                this.inventory.set(dataTypes_1.ResourceType.Sheep, sheep - 1);
+                this.inventory.set(dataTypes_1.ResourceType.Wheat, wheat - 1);
+                GameManager_1.GameManager.instance.mayPlaceSettlement = true;
+                GameManager_1.GameManager.instance.print("Place new settlement");
+                this.updateInvBoard();
+            }
+            else {
+                GameManager_1.GameManager.instance.printErr("Can't afford settlement");
+            }
+        }
         getFromInv(r) {
             const x = this.inventory.get(r);
             util_1.defined(x);

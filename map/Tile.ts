@@ -1,8 +1,9 @@
 import { Biome, biomeDistributionArray, Desert } from "./Biome";
-import { assert, defined, assertInt, randomInt } from "../util";
+import { defined, assertInt, randomInt, shuffle } from "../util";
 import { HexPoint, AbsPoint } from "../graphics/Point"
 import { Hex } from "../graphics/Hex"
 import { Settlement } from "./Settlement";
+import { Config } from "../Config";
 
 export class Tile {
     private p: HexPoint;
@@ -13,6 +14,14 @@ export class Tile {
     private active: boolean = false; // whether this round's die roll matches this tile
 
     private static diceValueChoices = [2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 9, 10, 10, 11, 11, 12];
+
+    private static localBiomeDistributionArray = biomeDistributionArray.slice();
+    private static localDiceValueChoices = Tile.diceValueChoices.slice();
+
+    static shuffle() {
+        Tile.localDiceValueChoices = shuffle(Tile.localDiceValueChoices);
+        Tile.localBiomeDistributionArray = shuffle(Tile.localBiomeDistributionArray);
+    }
 
     constructor(location: HexPoint, landType?: Biome, diceValue?: number) {
         if (diceValue) {
@@ -25,13 +34,25 @@ export class Tile {
             //      | | | | | | | | | | |  |  |  |  |  |  |  |  |
             //      0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18
             // out of 19
-            this.diceValue = Tile.diceValueChoices[randomInt(19)];
+
+            if (Config.getN() == 3) {
+                this.diceValue = <number>Tile.localDiceValueChoices.pop();
+            }
+            else {
+                this.diceValue = Tile.diceValueChoices[randomInt(19)];
+            }
+            
         }
 
         if (landType) {
             this.landType = landType;
         } else {
-            this.landType = biomeDistributionArray[randomInt(19)];
+            if (Config.getN() == 3) {
+                this.landType = <Biome>Tile.localBiomeDistributionArray.pop();
+            }
+            else {
+                this.landType = biomeDistributionArray[randomInt(19)];
+            }
         }
 
         if (this.landType == Desert) {

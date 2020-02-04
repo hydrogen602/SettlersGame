@@ -101,6 +101,35 @@ export class Player {
         }
     }
 
+    purchaseSettlement() {
+        if (GameManager.instance.mayPlaceSettlement) {
+            GameManager.instance.printErr("Place settlement before buying another");
+            return;
+        }
+        if (GameManager.instance.getCurrentPlayer() != this) {
+            throw "Not this player's turn";
+        }
+        // requires brick and lumber
+        const brick = this.getFromInv(ResourceType.Brick);
+        const lumber = this.getFromInv(ResourceType.Lumber);
+        const sheep = this.getFromInv(ResourceType.Sheep);
+        const wheat = this.getFromInv(ResourceType.Wheat);
+        if (brick >= 1 && lumber >= 1 && sheep >= 1 && wheat >= 1) {
+            // new settlement!
+            this.inventory.set(ResourceType.Brick, brick - 1);
+            this.inventory.set(ResourceType.Lumber, lumber - 1);
+            this.inventory.set(ResourceType.Sheep, sheep - 1);
+            this.inventory.set(ResourceType.Wheat, wheat - 1);
+
+            GameManager.instance.mayPlaceSettlement = true;
+            GameManager.instance.print("Place new settlement");
+            this.updateInvBoard();
+        }
+        else {
+            GameManager.instance.printErr("Can't afford settlement");
+        }
+    }
+
     private getFromInv(r: ResourceType): number {
         const x = this.inventory.get(r);
         defined(x);

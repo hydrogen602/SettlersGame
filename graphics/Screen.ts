@@ -67,12 +67,6 @@ export const ctx = function() {
 
 // my html interaction code
 
-const x = document.createElement('button')
-x.id = "newRoad";
-x.innerText = "Purchase New Road";
-x.classList.add("purchase");
-x.onclick = EventManager.purchaseRoad;
-
 const controlBox = function() {
     const tmp = document.getElementById("control");
     if (tmp == null) {
@@ -81,4 +75,19 @@ const controlBox = function() {
     return tmp;
 }();
 
-controlBox.appendChild(x);
+function newButton(name: string) {
+    const x = document.createElement('button')
+    x.id = name.replace(' ', '-');
+    x.innerText = name;
+    x.classList.add("purchase");
+
+    controlBox.appendChild(x);
+
+    return x;
+}
+
+const newRd = newButton("Purchase New Road");
+newRd.onclick = EventManager.purchaseRoad;
+
+const newSet = newButton("Purchase New Settlement");
+newSet.onclick = EventManager.purchaseSettlement;

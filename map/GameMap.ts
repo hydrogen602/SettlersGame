@@ -5,6 +5,7 @@ import { Settlement } from "./Settlement";
 import { canvas } from "../graphics/Screen";
 import { Road } from "./Road";
 import { GameManager } from "../mechanics/GameManager";
+import { Config } from "../Config";
 
 export class GameMap {
     private sz: number;
@@ -18,6 +19,10 @@ export class GameMap {
 
     constructor(size: number, ctx: CanvasRenderingContext2D) {
         this.sz = size;
+        if (size == 3) {
+            Tile.shuffle();
+        }
+        
         this.ctx = ctx;
 
         defined(this.sz);
@@ -68,7 +73,23 @@ export class GameMap {
         return this.ctx;
     }
 
+    isWithinMap(h: HexPoint): boolean {
+        const n = Config.getN();
+        if (h.x < 0 || h.x > 2 * n - 1) {
+            return false;
+        }
+        const yAllowance = Math.abs(h.x - n + 0.5) - n + 0.5;
+        if (h.y < yAllowance || h.y > 2 * n - yAllowance) {
+            return false;
+        }
+        return true;
+    }
+
     isAllowedSettlement(h: HexPoint): boolean {
+        if (!this.isWithinMap(h)) {
+            return false;
+        }
+
         // console.log("new?", h)
         const conflicts = this.settlementsArr.filter(s => {
             // console.log("check", s.getHexPoint())
@@ -82,6 +103,13 @@ export class GameMap {
     isAllowedRoad(p1: HexPoint, p2: HexPoint): boolean {
         if (!p1.isNeighbor(p2) || p1.isEqual(p2)) {
             // if the points aren't adjacent or are the same, do not allow
+            return false;
+        }
+
+        if (!this.isWithinMap(p1)) {
+            return false;
+        }
+        if (!this.isWithinMap(p2)) {
             return false;
         }
 
@@ -106,7 +134,7 @@ export class GameMap {
         if (!permitted) {
             return false;
         }
-        
+
         const conflicts = this.roadsArr.filter(r => {
             return r.isEqual(p1, p2);
         });

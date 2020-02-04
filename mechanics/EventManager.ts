@@ -85,7 +85,8 @@ export class EventManager {
                     GameManager.instance.printErr("Illegal Position");
                 }
             }
-        }  
+        }
+
         else if (GameManager.instance.mayPlaceRoad) {
             const hArr = p.toDualHexPoint();            
             if (hArr.length == 2) { // hArr is empty if not over a line 
@@ -107,4 +108,10 @@ export class EventManager {
     static purchaseRoad() {
         GameManager.instance.getCurrentPlayer().purchaseRoad();
     }
+
+    static purchaseSettlement() {
+        GameManager.instance.getCurrentPlayer().purchaseSettlement();
+    }
+
+
 }

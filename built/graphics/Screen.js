@@ -52,11 +52,6 @@ define(["require", "exports", "../mechanics/EventManager"], function (require, e
     }();
     // end of stackoverflow code
     // my html interaction code
-    const x = document.createElement('button');
-    x.id = "newRoad";
-    x.innerText = "Purchase New Road";
-    x.classList.add("purchase");
-    x.onclick = EventManager_1.EventManager.purchaseRoad;
     const controlBox = function () {
         const tmp = document.getElementById("control");
         if (tmp == null) {
@@ -64,6 +59,17 @@ define(["require", "exports", "../mechanics/EventManager"], function (require, e
         }
         return tmp;
     }();
-    controlBox.appendChild(x);
+    function newButton(name) {
+        const x = document.createElement('button');
+        x.id = name.replace(' ', '-');
+        x.innerText = name;
+        x.classList.add("purchase");
+        controlBox.appendChild(x);
+        return x;
+    }
+    const newRd = newButton("Purchase New Road");
+    newRd.onclick = EventManager_1.EventManager.purchaseRoad;
+    const newSet = newButton("Purchase New Settlement");
+    newSet.onclick = EventManager_1.EventManager.purchaseSettlement;
 });
 //# sourceMappingURL=Screen.js.map
