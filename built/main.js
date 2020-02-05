@@ -6,10 +6,9 @@ define(["require", "exports", "./graphics/Screen", "./map/GameMap", "./graphics/
         GameManager_1.GameManager.instance = new GameManager_1.GameManager(m, [new Player_1.Player('blue', 'Blue Team'), new Player_1.Player('green', 'Green Team')]);
         GameManager_1.GameManager.instance.draw();
     }
-    exports.main = main;
     main();
     Screen_1.ctx.fillStyle = 'black';
-    // ctx.fillRect(currLocation.x, currLocation.y, 10, 10);
+    // ctx.fillRect(currLocation.x, currLocation.y, 10, 10); 
     document.addEventListener("wheel", function (e) {
         const limit = 5;
         Point_1.currLocation.x -= Math.max(-limit, Math.min(e.deltaX, limit));

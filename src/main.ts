@@ -7,7 +7,7 @@ import { Player } from "./mechanics/Player";
 import { EventManager } from "./mechanics/EventManager";
 import { GameManager } from "./mechanics/GameManager";
 
-export function main() {
+function main() {
     const m = new GameMap(Config.getN(), ctx);
 
     GameManager.instance = new GameManager(m, [new Player('blue', 'Blue Team'), new Player('green', 'Green Team')]);
@@ -18,7 +18,7 @@ export function main() {
 main();
 
 ctx.fillStyle = 'black';
-// ctx.fillRect(currLocation.x, currLocation.y, 10, 10);
+// ctx.fillRect(currLocation.x, currLocation.y, 10, 10); 
 
 document.addEventListener("wheel", function (e) {
     const limit = 5;

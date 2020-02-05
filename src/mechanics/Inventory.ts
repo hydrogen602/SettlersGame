@@ -7,7 +7,7 @@ import { defined, assertInt, assert } from "../util";
 // get - set - update
 // verify enough resources
 
-class Inventory {
+export class Inventory {
     
     private content: Map<ResourceType, number>;
 
@@ -62,7 +62,7 @@ class Inventory {
 
         // check if enough resources
         for (let i = 0; i < kArr.length; i++) {
-            console.log(kArr[i], costArr[i]);
+            // console.log(kArr[i], costArr[i]);
             if (!this.hasEnough(kArr[i], costArr[i])) {
                 return false;
             }
@@ -72,6 +72,6 @@ class Inventory {
         for (let i = 0; i < kArr.length; i++) {
             this.update(kArr[i], -costArr[i]);
         }
-        return false;
+        return true;
     }
 }
