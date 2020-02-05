@@ -25,6 +25,10 @@ export class Inventory {
         }
     }
 
+    keys() {
+        return this.content.keys();
+    }
+
     get(k: ResourceType): number {
         const tmp = this.content.get(k);
         defined(tmp);

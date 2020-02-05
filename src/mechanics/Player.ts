@@ -6,13 +6,14 @@ import { MessageBoard } from "../graphics/MessageBoard";
 import { ctx } from "../graphics/Screen";
 import { RelPoint } from "../graphics/Point";
 import { GameManager } from "./GameManager";
+import { Inventory } from "./Inventory";
 
 export class Player {
     private color: string;
     private settlements: Array<Settlement> = [];
     private roads: Array<Road> = [];
     private name: string;
-    private inventory: Map<ResourceType, number>;
+    private inventory: Inventory;
 
     private invBoard: MessageBoard;
 
@@ -25,16 +26,7 @@ export class Player {
         defined(color);
         defined(name);
 
-        this.inventory = new Map()
-        for (let i in ResourceType) {
-            if (Number(i).toString() != "NaN" && i != '0') { // '0' is Desert -> NoResource
-                // js is retarded    /\
-                // for thinking that ||
-                // NaN == NaN is false
-                //
-                this.inventory.set(Number(i), 0);
-            }
-        }
+        this.inventory = new Inventory();
 
         this.invBoard = new MessageBoard(ctx, 6, new RelPoint(window.innerWidth - 250 - 5, 5 + 6 * 30 * Player.playerCount));
         Player.playerCount += 1;
@@ -69,11 +61,7 @@ export class Player {
 
     giveResource(r: ResourceType, amount: number) {
         assertInt(amount);
-        const currAmount = this.inventory.get(r);
-        defined(currAmount);
-
-        this.inventory.set(r, amount + <number>currAmount);
-
+        this.inventory.update(r, amount)
         this.updateInvBoard();
     }
 
@@ -85,13 +73,8 @@ export class Player {
         if (GameManager.instance.getCurrentPlayer() != this) {
             throw "Not this player's turn";
         }
-        // requires brick and lumber
-        const brick = this.getFromInv(ResourceType.Brick);
-        const lumber= this.getFromInv(ResourceType.Lumber);
-        if (brick >= 1 && lumber >= 1) {
-            // new road!
-            this.inventory.set(ResourceType.Brick, brick - 1);
-            this.inventory.set(ResourceType.Lumber, lumber - 1);
+
+        if (this.inventory.purchase([ResourceType.Brick, ResourceType.Lumber], [1, 1])) {
             GameManager.instance.mayPlaceRoad = true;
             GameManager.instance.print("Place new road");
             this.updateInvBoard();
@@ -110,13 +93,8 @@ export class Player {
             throw "Not this player's turn";
         }
         // requires 3 ore and 2 wheat
-        const wheat = this.getFromInv(ResourceType.Wheat);
-        const ore = this.getFromInv(ResourceType.Ore);
-
-        if (wheat >= 2 && ore >= 3) {
+        if (this.inventory.purchase([ResourceType.Wheat, ResourceType.Ore], [2, 3])) {
             // new city!
-            this.inventory.set(ResourceType.Wheat, wheat - 2);
-            this.inventory.set(ResourceType.Ore, ore - 3);
             GameManager.instance.mayPlaceCity = true;
             GameManager.instance.print("Place new city");
             this.updateInvBoard();
@@ -134,18 +112,11 @@ export class Player {
         if (GameManager.instance.getCurrentPlayer() != this) {
             throw "Not this player's turn";
         }
-        // requires brick and lumber
-        const brick = this.getFromInv(ResourceType.Brick);
-        const lumber = this.getFromInv(ResourceType.Lumber);
-        const sheep = this.getFromInv(ResourceType.Sheep);
-        const wheat = this.getFromInv(ResourceType.Wheat);
-        if (brick >= 1 && lumber >= 1 && sheep >= 1 && wheat >= 1) {
-            // new settlement!
-            this.inventory.set(ResourceType.Brick, brick - 1);
-            this.inventory.set(ResourceType.Lumber, lumber - 1);
-            this.inventory.set(ResourceType.Sheep, sheep - 1);
-            this.inventory.set(ResourceType.Wheat, wheat - 1);
 
+        if (this.inventory.purchase(
+                [ResourceType.Brick, ResourceType.Lumber, ResourceType.Sheep, ResourceType.Wheat], [1, 1, 1, 1])) {
+
+            // new settlement!
             GameManager.instance.mayPlaceSettlement = true;
             GameManager.instance.print("Place new settlement");
             this.updateInvBoard();
@@ -155,21 +126,12 @@ export class Player {
         }
     }
 
-    private getFromInv(r: ResourceType): number {
-        const x = this.inventory.get(r);
-        defined(x);
-        return <number>x;
-    }
-
     private updateInvBoard() {
         this.invBoard.clear();
         this.invBoard.print(this.name);
 
-        const iterator = this.inventory.keys()
-        let k: IteratorResult<ResourceType, any>;
-        while ((x => { k = x.next(); return !k.done })(iterator)) {
-            // console.log(k.value);
-            this.invBoard.print(ResourceType[k.value] + ": " + this.inventory.get(k.value));
+        for (const k of this.inventory.keys()) {
+            this.invBoard.print(ResourceType[k] + ": " + this.inventory.get(k));
         }     
     }
 

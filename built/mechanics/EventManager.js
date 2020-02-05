@@ -59,8 +59,6 @@ define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex",
         static mouseHandler(e) {
             const p = new Point_1.RelPoint(e.clientX, e.clientY);
             const r = EventManager.distanceFromNearestHexCorner(p);
-            // console.log(hArr);
-            // console.log("event", e);
             if (GameManager_1.GameManager.instance.mayPlaceSettlement) {
                 if (r < Hex_1.Hex.getSideLength() / 4) {
                     // clicked on a corner
@@ -120,7 +118,6 @@ define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex",
             GameManager_1.GameManager.instance.getCurrentPlayer().purchaseSettlement();
         }
         static purchaseCity() {
-            console.log("new city requested");
             GameManager_1.GameManager.instance.getCurrentPlayer().purchaseCity();
         }
     }

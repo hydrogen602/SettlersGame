@@ -79,9 +79,6 @@ export class EventManager {
         const p = new RelPoint(e.clientX, e.clientY);
         const r = EventManager.distanceFromNearestHexCorner(p);
         
-        // console.log(hArr);
-
-        // console.log("event", e);
         if (GameManager.instance.mayPlaceSettlement) {            
             
             if (r < Hex.getSideLength() / 4) {
@@ -150,7 +147,6 @@ export class EventManager {
     }
 
     static purchaseCity() {
-        console.log("new city requested")
         GameManager.instance.getCurrentPlayer().purchaseCity();
     }
 

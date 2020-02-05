@@ -1,4 +1,4 @@
-define(["require", "exports", "../util", "../dataTypes", "../graphics/MessageBoard", "../graphics/Screen", "../graphics/Point", "./GameManager"], function (require, exports, util_1, dataTypes_1, MessageBoard_1, Screen_1, Point_1, GameManager_1) {
+define(["require", "exports", "../util", "../dataTypes", "../graphics/MessageBoard", "../graphics/Screen", "../graphics/Point", "./GameManager", "./Inventory"], function (require, exports, util_1, dataTypes_1, MessageBoard_1, Screen_1, Point_1, GameManager_1, Inventory_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Player {
@@ -10,16 +10,7 @@ define(["require", "exports", "../util", "../dataTypes", "../graphics/MessageBoa
             this.settlements = [];
             util_1.defined(color);
             util_1.defined(name);
-            this.inventory = new Map();
-            for (let i in dataTypes_1.ResourceType) {
-                if (Number(i).toString() != "NaN" && i != '0') { // '0' is Desert -> NoResource
-                    // js is retarded    /\
-                    // for thinking that ||
-                    // NaN == NaN is false
-                    //
-                    this.inventory.set(Number(i), 0);
-                }
-            }
+            this.inventory = new Inventory_1.Inventory();
             this.invBoard = new MessageBoard_1.MessageBoard(Screen_1.ctx, 6, new Point_1.RelPoint(window.innerWidth - 250 - 5, 5 + 6 * 30 * Player.playerCount));
             Player.playerCount += 1;
             util_1.defined(this.invBoard);
@@ -45,9 +36,7 @@ define(["require", "exports", "../util", "../dataTypes", "../graphics/MessageBoa
         }
         giveResource(r, amount) {
             util_1.assertInt(amount);
-            const currAmount = this.inventory.get(r);
-            util_1.defined(currAmount);
-            this.inventory.set(r, amount + currAmount);
+            this.inventory.update(r, amount);
             this.updateInvBoard();
         }
         purchaseRoad() {
@@ -58,13 +47,7 @@ define(["require", "exports", "../util", "../dataTypes", "../graphics/MessageBoa
             if (GameManager_1.GameManager.instance.getCurrentPlayer() != this) {
                 throw "Not this player's turn";
             }
-            // requires brick and lumber
-            const brick = this.getFromInv(dataTypes_1.ResourceType.Brick);
-            const lumber = this.getFromInv(dataTypes_1.ResourceType.Lumber);
-            if (brick >= 1 && lumber >= 1) {
-                // new road!
-                this.inventory.set(dataTypes_1.ResourceType.Brick, brick - 1);
-                this.inventory.set(dataTypes_1.ResourceType.Lumber, lumber - 1);
+            if (this.inventory.purchase([dataTypes_1.ResourceType.Brick, dataTypes_1.ResourceType.Lumber], [1, 1])) {
                 GameManager_1.GameManager.instance.mayPlaceRoad = true;
                 GameManager_1.GameManager.instance.print("Place new road");
                 this.updateInvBoard();
@@ -82,12 +65,8 @@ define(["require", "exports", "../util", "../dataTypes", "../graphics/MessageBoa
                 throw "Not this player's turn";
             }
             // requires 3 ore and 2 wheat
-            const wheat = this.getFromInv(dataTypes_1.ResourceType.Wheat);
-            const ore = this.getFromInv(dataTypes_1.ResourceType.Ore);
-            if (wheat >= 2 && ore >= 3) {
+            if (this.inventory.purchase([dataTypes_1.ResourceType.Wheat, dataTypes_1.ResourceType.Ore], [2, 3])) {
                 // new city!
-                this.inventory.set(dataTypes_1.ResourceType.Wheat, wheat - 2);
-                this.inventory.set(dataTypes_1.ResourceType.Ore, ore - 3);
                 GameManager_1.GameManager.instance.mayPlaceCity = true;
                 GameManager_1.GameManager.instance.print("Place new city");
                 this.updateInvBoard();
@@ -104,17 +83,8 @@ define(["require", "exports", "../util", "../dataTypes", "../graphics/MessageBoa
             if (GameManager_1.GameManager.instance.getCurrentPlayer() != this) {
                 throw "Not this player's turn";
             }
-            // requires brick and lumber
-            const brick = this.getFromInv(dataTypes_1.ResourceType.Brick);
-            const lumber = this.getFromInv(dataTypes_1.ResourceType.Lumber);
-            const sheep = this.getFromInv(dataTypes_1.ResourceType.Sheep);
-            const wheat = this.getFromInv(dataTypes_1.ResourceType.Wheat);
-            if (brick >= 1 && lumber >= 1 && sheep >= 1 && wheat >= 1) {
+            if (this.inventory.purchase([dataTypes_1.ResourceType.Brick, dataTypes_1.ResourceType.Lumber, dataTypes_1.ResourceType.Sheep, dataTypes_1.ResourceType.Wheat], [1, 1, 1, 1])) {
                 // new settlement!
-                this.inventory.set(dataTypes_1.ResourceType.Brick, brick - 1);
-                this.inventory.set(dataTypes_1.ResourceType.Lumber, lumber - 1);
-                this.inventory.set(dataTypes_1.ResourceType.Sheep, sheep - 1);
-                this.inventory.set(dataTypes_1.ResourceType.Wheat, wheat - 1);
                 GameManager_1.GameManager.instance.mayPlaceSettlement = true;
                 GameManager_1.GameManager.instance.print("Place new settlement");
                 this.updateInvBoard();
@@ -123,19 +93,11 @@ define(["require", "exports", "../util", "../dataTypes", "../graphics/MessageBoa
                 GameManager_1.GameManager.instance.printErr("Can't afford settlement");
             }
         }
-        getFromInv(r) {
-            const x = this.inventory.get(r);
-            util_1.defined(x);
-            return x;
-        }
         updateInvBoard() {
             this.invBoard.clear();
             this.invBoard.print(this.name);
-            const iterator = this.inventory.keys();
-            let k;
-            while ((x => { k = x.next(); return !k.done; })(iterator)) {
-                // console.log(k.value);
-                this.invBoard.print(dataTypes_1.ResourceType[k.value] + ": " + this.inventory.get(k.value));
+            for (const k of this.inventory.keys()) {
+                this.invBoard.print(dataTypes_1.ResourceType[k] + ": " + this.inventory.get(k));
             }
         }
         draw() {

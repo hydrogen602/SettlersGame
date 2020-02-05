@@ -18,6 +18,9 @@ define(["require", "exports", "../dataTypes", "../util"], function (require, exp
                 }
             }
         }
+        keys() {
+            return this.content.keys();
+        }
         get(k) {
             const tmp = this.content.get(k);
             util_1.defined(tmp);
