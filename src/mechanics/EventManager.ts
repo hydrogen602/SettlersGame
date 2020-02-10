@@ -1,10 +1,11 @@
-import { AbsPoint, RelPoint, HexPoint } from "../graphics/Point";
-import { square, assert } from "../util";
+import { AbsPoint, RelPoint } from "../graphics/Point";
+import { square } from "../util";
 import { Hex } from "../graphics/Hex";
 import { GameManager } from "./GameManager";
 import { Settlement } from "../map/Settlement";
 import { ctx } from "../graphics/Screen";
 import { Road } from "../map/Road";
+import { Tile } from "../map/Tile";
 
 export class EventManager {
 
@@ -19,7 +20,21 @@ export class EventManager {
     }
 
     static mouseHoverHandler(e: MouseEvent) {
-        if (GameManager.instance.mayPlaceSettlement) {            
+        if (GameManager.instance.mayPlaceRobber) {
+            const p = new RelPoint(e.clientX, e.clientY);
+
+            const m = GameManager.instance.getMap();
+
+            const tile = m.getAllowedRobberPlace(p.toAbsPoint());
+            if (tile != undefined) {
+                const tileExists = <Tile>tile;
+                tileExists.strokeRobber(ctx);
+            }
+            else {
+                GameManager.instance.draw();
+            }
+        }
+        else if (GameManager.instance.mayPlaceSettlement) {            
             const p = new RelPoint(e.clientX, e.clientY);
             const r = EventManager.distanceFromNearestHexCorner(p);
             
@@ -78,8 +93,21 @@ export class EventManager {
     static mouseHandler(e: MouseEvent) {
         const p = new RelPoint(e.clientX, e.clientY);
         const r = EventManager.distanceFromNearestHexCorner(p);
-        
-        if (GameManager.instance.mayPlaceSettlement) {            
+
+        if (GameManager.instance.mayPlaceRobber) {
+            const m = GameManager.instance.getMap();
+
+            const tile = m.getAllowedRobberPlace(p.toAbsPoint());
+            if (tile != undefined) {
+                const tileExists = <Tile>tile;
+                GameManager.instance.moveRobber(tileExists);
+                GameManager.instance.mayPlaceRobber = false;
+            }
+            else {
+                GameManager.instance.draw();
+            }
+        }
+        else if (GameManager.instance.mayPlaceSettlement) {            
             
             if (r < Hex.getSideLength() / 4) {
                 // clicked on a corner

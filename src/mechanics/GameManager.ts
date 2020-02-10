@@ -3,6 +3,8 @@ import { GameMap } from "../map/GameMap";
 import { defined, assert, rollTwoDice } from "../util";
 import { MessageBoard } from "../graphics/MessageBoard";
 import { RelPoint } from "../graphics/Point";
+import { Robber } from "./Robber";
+import { Tile } from "../map/Tile";
 
 export class GameManager {
 
@@ -13,12 +15,16 @@ export class GameManager {
     private msgBoard: MessageBoard;
     private errBoard: MessageBoard;
 
+    private rob: Robber;
+
     static instance: GameManager;
 
     // game states
     mayPlaceSettlement = false;
     mayPlaceCity = false;
     mayPlaceRoad = false;
+
+    mayPlaceRobber = false;
 
     constructor(map: GameMap, players: Array<Player>) {
         this.map = map;
@@ -28,10 +34,17 @@ export class GameManager {
 
         this.msgBoard.print("Press t for next turn");
 
+        this.rob = new Robber(this.map.getTiles());
+
         defined(this.map);
         defined(this.players);
         assert(this.players.length > 0, "Needs at least 1 player");
         defined(this.msgBoard);
+        defined(this.rob);
+    }
+
+    getRobber() {
+        return this.rob;
     }
 
     getPlayers() {
@@ -64,6 +77,10 @@ export class GameManager {
             this.printErr("Unplaced Infrastructure");
             return;
         }
+        else if (this.mayPlaceRobber) {
+            this.printErr("Unmoved Robber");
+            return;
+        }
 
         this.nextTurn();
         const p = this.getCurrentPlayer();
@@ -89,9 +106,14 @@ export class GameManager {
             // post init
             const dieRoll = rollTwoDice();
             this.msgBoard.print("Die Rolled: " + dieRoll);
-            this.map.getTiles().forEach(t => {
-                t.activateIfDiceValueMatches(dieRoll, this.map.getSettlements());
-            });
+            if (dieRoll == 7) {
+                this.mayPlaceRobber = true;
+            }
+            else {
+                this.map.getTiles().forEach(t => {
+                    t.activateIfDiceValueMatches(dieRoll, this.map.getSettlements());
+                });
+            }
 
             this.draw();
         }
@@ -120,6 +142,10 @@ export class GameManager {
         this.players.forEach(p => {
             p.draw();
         });
+    }
+
+    moveRobber(t: Tile) {
+        this.rob.moveTo(t);
     }
 
 }

@@ -1,4 +1,4 @@
-import { HexPoint, RelPoint } from "../graphics/Point";
+import { HexPoint, AbsPoint } from "../graphics/Point";
 import { Tile } from "./Tile";
 import { defined } from "../util";
 import { Settlement } from "./Settlement";
@@ -83,6 +83,17 @@ export class GameMap {
             return false;
         }
         return true;
+    }
+
+    getAllowedRobberPlace(a: AbsPoint): Tile | undefined {
+        let currTile = GameManager.instance.getRobber().getTile()
+        for (const t of this.tilesArr) {
+            if (t.isInside(a) && t != currTile) {
+                return t;
+            }
+        }
+
+        return undefined;
     }
 
     isAllowedSettlement(h: HexPoint): boolean {

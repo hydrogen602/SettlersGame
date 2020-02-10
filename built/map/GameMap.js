@@ -54,6 +54,15 @@ define(["require", "exports", "../graphics/Point", "./Tile", "../util", "../grap
             }
             return true;
         }
+        getAllowedRobberPlace(a) {
+            let currTile = GameManager_1.GameManager.instance.getRobber().getTile();
+            for (const t of this.tilesArr) {
+                if (t.isInside(a) && t != currTile) {
+                    return t;
+                }
+            }
+            return undefined;
+        }
         isAllowedSettlement(h) {
             if (!this.isWithinMap(h)) {
                 return false;

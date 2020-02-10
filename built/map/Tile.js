@@ -102,6 +102,36 @@ define(["require", "exports", "./Biome", "../util", "../graphics/Hex", "../Confi
             ctx.strokeStyle = "black";
             ctx.lineWidth = 1;
             Hex_1.Hex.strokeHex(this.p.y, this.p.x, ctx);
+            if (this.isDisabledByRobber) {
+                this.strokeRobber(ctx);
+            }
+        }
+        strokeRobber(ctx) {
+            const relCenter = this.center.toRelPoint();
+            const apo = Hex_1.Hex.getSideLength() / 3.5 + 2;
+            const xStep = 0.5773502691896257 * apo; // Math.tan(Math.PI / 6) * apo;
+            ctx.strokeStyle = "red";
+            ctx.lineWidth = 5;
+            ctx.beginPath();
+            ctx.moveTo(relCenter.x + xStep, relCenter.y - apo);
+            ctx.lineTo(relCenter.x + 2 * xStep, relCenter.y);
+            ctx.lineTo(relCenter.x + xStep, relCenter.y + apo);
+            ctx.lineTo(relCenter.x - xStep, relCenter.y + apo);
+            ctx.lineTo(relCenter.x - 2 * xStep, relCenter.y);
+            ctx.lineTo(relCenter.x - xStep, relCenter.y - apo);
+            ctx.closePath();
+            ctx.stroke();
+        }
+        // this method is from http://www.playchilla.com/how-to-check-if-a-point-is-inside-a-hexagon
+        isInside(pos) {
+            // vertical = apothem
+            const q2x = Math.abs(pos.x - this.center.x);
+            const q2y = Math.abs(pos.y - this.center.y);
+            const vert = Hex_1.Hex.getApothem();
+            const hori = Hex_1.Hex.getSideLength() / 2;
+            if (q2x > hori * 2 || q2y > vert)
+                return false;
+            return vert * 2 * hori - vert * q2x - 2 * hori * q2y >= 0;
         }
     }
     exports.Tile = Tile;

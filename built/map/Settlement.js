@@ -47,7 +47,7 @@ define(["require", "exports", "../util", "../graphics/Hex"], function (require, 
                 //     |/
                 //
                 // tan(30) = xStep / apo
-                const xStep = Math.tan(Math.PI / 6) * apo;
+                const xStep = 0.5773502691896257 * apo; //Math.tan(Math.PI / 6) * apo;
                 ctx.beginPath();
                 ctx.moveTo(relLoc.x + xStep, relLoc.y - apo);
                 ctx.lineTo(relLoc.x + 2 * xStep, relLoc.y);

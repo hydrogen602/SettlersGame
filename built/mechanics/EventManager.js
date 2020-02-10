@@ -10,7 +10,19 @@ define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex",
             return Math.sqrt(util_1.square(abs.x - backConvertedHex.x) + util_1.square(abs.y - backConvertedHex.y));
         }
         static mouseHoverHandler(e) {
-            if (GameManager_1.GameManager.instance.mayPlaceSettlement) {
+            if (GameManager_1.GameManager.instance.mayPlaceRobber) {
+                const p = new Point_1.RelPoint(e.clientX, e.clientY);
+                const m = GameManager_1.GameManager.instance.getMap();
+                const tile = m.getAllowedRobberPlace(p.toAbsPoint());
+                if (tile != undefined) {
+                    const tileExists = tile;
+                    tileExists.strokeRobber(Screen_1.ctx);
+                }
+                else {
+                    GameManager_1.GameManager.instance.draw();
+                }
+            }
+            else if (GameManager_1.GameManager.instance.mayPlaceSettlement) {
                 const p = new Point_1.RelPoint(e.clientX, e.clientY);
                 const r = EventManager.distanceFromNearestHexCorner(p);
                 if (r < Hex_1.Hex.getSideLength() / 4) {
@@ -59,7 +71,19 @@ define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex",
         static mouseHandler(e) {
             const p = new Point_1.RelPoint(e.clientX, e.clientY);
             const r = EventManager.distanceFromNearestHexCorner(p);
-            if (GameManager_1.GameManager.instance.mayPlaceSettlement) {
+            if (GameManager_1.GameManager.instance.mayPlaceRobber) {
+                const m = GameManager_1.GameManager.instance.getMap();
+                const tile = m.getAllowedRobberPlace(p.toAbsPoint());
+                if (tile != undefined) {
+                    const tileExists = tile;
+                    GameManager_1.GameManager.instance.moveRobber(tileExists);
+                    GameManager_1.GameManager.instance.mayPlaceRobber = false;
+                }
+                else {
+                    GameManager_1.GameManager.instance.draw();
+                }
+            }
+            else if (GameManager_1.GameManager.instance.mayPlaceSettlement) {
                 if (r < Hex_1.Hex.getSideLength() / 4) {
                     // clicked on a corner
                     const h = p.toHexPoint();

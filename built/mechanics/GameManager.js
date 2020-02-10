@@ -1,4 +1,4 @@
-define(["require", "exports", "../util", "../graphics/MessageBoard", "../graphics/Point"], function (require, exports, util_1, MessageBoard_1, Point_1) {
+define(["require", "exports", "../util", "../graphics/MessageBoard", "../graphics/Point", "./Robber"], function (require, exports, util_1, MessageBoard_1, Point_1, Robber_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class GameManager {
@@ -9,15 +9,21 @@ define(["require", "exports", "../util", "../graphics/MessageBoard", "../graphic
             this.mayPlaceSettlement = false;
             this.mayPlaceCity = false;
             this.mayPlaceRoad = false;
+            this.mayPlaceRobber = false;
             this.map = map;
             this.players = players;
             this.msgBoard = new MessageBoard_1.MessageBoard(map.getCtx(), 3);
             this.errBoard = new MessageBoard_1.MessageBoard(map.getCtx(), 1, new Point_1.RelPoint(10, 10 + 90));
             this.msgBoard.print("Press t for next turn");
+            this.rob = new Robber_1.Robber(this.map.getTiles());
             util_1.defined(this.map);
             util_1.defined(this.players);
             util_1.assert(this.players.length > 0, "Needs at least 1 player");
             util_1.defined(this.msgBoard);
+            util_1.defined(this.rob);
+        }
+        getRobber() {
+            return this.rob;
         }
         getPlayers() {
             return this.players;
@@ -44,6 +50,10 @@ define(["require", "exports", "../util", "../graphics/MessageBoard", "../graphic
                 this.printErr("Unplaced Infrastructure");
                 return;
             }
+            else if (this.mayPlaceRobber) {
+                this.printErr("Unmoved Robber");
+                return;
+            }
             this.nextTurn();
             const p = this.getCurrentPlayer();
             this.msgBoard.clear();
@@ -64,9 +74,14 @@ define(["require", "exports", "../util", "../graphics/MessageBoard", "../graphic
                 // post init
                 const dieRoll = util_1.rollTwoDice();
                 this.msgBoard.print("Die Rolled: " + dieRoll);
-                this.map.getTiles().forEach(t => {
-                    t.activateIfDiceValueMatches(dieRoll, this.map.getSettlements());
-                });
+                if (dieRoll == 7) {
+                    this.mayPlaceRobber = true;
+                }
+                else {
+                    this.map.getTiles().forEach(t => {
+                        t.activateIfDiceValueMatches(dieRoll, this.map.getSettlements());
+                    });
+                }
                 this.draw();
             }
         }
@@ -89,6 +104,9 @@ define(["require", "exports", "../util", "../graphics/MessageBoard", "../graphic
             this.players.forEach(p => {
                 p.draw();
             });
+        }
+        moveRobber(t) {
+            this.rob.moveTo(t);
         }
     }
     exports.GameManager = GameManager;
