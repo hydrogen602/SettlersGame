@@ -4,6 +4,7 @@ define(["require", "exports", "./Biome", "../util", "../graphics/Hex", "../Confi
     class Tile {
         constructor(location, landType, diceValue) {
             this.active = false; // whether this round's die roll matches this tile
+            this.isDisabledByRobber = false;
             if (diceValue) {
                 util_1.assertInt(diceValue);
                 this.diceValue = diceValue;
@@ -50,9 +51,16 @@ define(["require", "exports", "./Biome", "../util", "../graphics/Hex", "../Confi
         getDiceValue() {
             return this.diceValue;
         }
+        getLandType() {
+            return this.landType;
+        }
+        getPos() {
+            return this.p;
+        }
+        // activate if die matches this tile. Also does production
         activateIfDiceValueMatches(value, settlements) {
             util_1.assertInt(value);
-            if (value == this.diceValue) {
+            if (value == this.diceValue && !this.isDisabledByRobber) { // no profits if the robber is around
                 this.active = true;
                 // find neighboring settlements and award resource
                 Hex_1.Hex.getHexCorners(this.p.y, this.p.x).forEach(c => {
@@ -68,11 +76,17 @@ define(["require", "exports", "./Biome", "../util", "../graphics/Hex", "../Confi
             this.active = false;
         }
         highlightIfActive(ctx) {
-            if (this.active) {
+            if (this.active && !this.isDisabledByRobber) {
                 ctx.strokeStyle = "white";
                 ctx.lineWidth = 4;
                 Hex_1.Hex.strokeHex(this.p.y, this.p.x, ctx);
             }
+        }
+        arriveRobber() {
+            this.isDisabledByRobber = true;
+        }
+        departRobber() {
+            this.isDisabledByRobber = false;
         }
         draw(ctx) {
             ctx.fillStyle = this.landType.getColor();

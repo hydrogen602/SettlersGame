@@ -39,7 +39,13 @@ export class Settlement {
     }
 
     production(r: ResourceType) {
-        this.owner.giveResource(r, 1); // 2 if city
+        if (this._isCity) {
+            this.owner.giveResource(r, 2); // 2 if city
+        }
+        else {
+            this.owner.giveResource(r, 1);
+        }
+        
     }
 
     draw(ctx: CanvasRenderingContext2D) {

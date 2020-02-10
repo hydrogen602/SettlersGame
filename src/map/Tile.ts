@@ -18,6 +18,8 @@ export class Tile {
     private static localBiomeDistributionArray = biomeDistributionArray.slice();
     private static localDiceValueChoices = Tile.diceValueChoices.slice();
 
+    private isDisabledByRobber = false;
+
     static shuffle() {
         Tile.localDiceValueChoices = shuffle(Tile.localDiceValueChoices);
         Tile.localBiomeDistributionArray = shuffle(Tile.localBiomeDistributionArray);
@@ -72,9 +74,18 @@ export class Tile {
         return this.diceValue;
     }
 
+    getLandType() {
+        return this.landType;
+    }
+
+    getPos() {
+        return this.p;
+    }
+
+    // activate if die matches this tile. Also does production
     activateIfDiceValueMatches(value: number, settlements: Array<Settlement>) {
         assertInt(value);
-        if (value == this.diceValue) {
+        if (value == this.diceValue && !this.isDisabledByRobber) { // no profits if the robber is around
             this.active = true;
             
             // find neighboring settlements and award resource
@@ -94,11 +105,19 @@ export class Tile {
     }
 
     highlightIfActive(ctx: CanvasRenderingContext2D) {
-        if (this.active) {
+        if (this.active && !this.isDisabledByRobber) {
             ctx.strokeStyle = "white";
             ctx.lineWidth = 4;
             Hex.strokeHex(this.p.y, this.p.x, ctx);
         }
+    }
+
+    arriveRobber() {
+        this.isDisabledByRobber = true;
+    }
+
+    departRobber() {
+        this.isDisabledByRobber = false;
     }
 
     draw(ctx: CanvasRenderingContext2D) {
