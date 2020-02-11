@@ -39,6 +39,22 @@ define(["require", "exports", "../util", "../dataTypes", "../graphics/MessageBoa
             this.inventory.update(r, amount);
             this.updateInvBoard();
         }
+        genericTrade(toPlayer, n, fromPlayer, m) {
+            util_1.assertInt(n);
+            util_1.assertInt(m);
+            if (this.inventory.hasEnough(fromPlayer, m)) {
+                // trade !!
+                this.inventory.update(fromPlayer, -m);
+                this.inventory.update(toPlayer, n);
+                return true;
+            }
+            else {
+                return false; // trade failed cause not enough resources
+            }
+        }
+        bankTrade(toPlayer, fromPlayer) {
+            return this.genericTrade(toPlayer, 1, fromPlayer, 4);
+        }
         purchaseRoad() {
             if (GameManager_1.GameManager.instance.mayPlaceRoad) {
                 GameManager_1.GameManager.instance.printErr("Place road before buying another");

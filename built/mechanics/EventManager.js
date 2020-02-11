@@ -4,9 +4,8 @@ define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex",
     class EventManager {
         constructor() { }
         static distanceFromNearestHexCorner(p) {
-            const hexP = p.toHexPoint();
             const abs = p.toAbsPoint(); // if already absolute, it returns a copy of itself
-            const backConvertedHex = hexP.toAbsPoint();
+            const backConvertedHex = p.toHexPoint().toAbsPoint();
             return Math.sqrt(util_1.square(abs.x - backConvertedHex.x) + util_1.square(abs.y - backConvertedHex.y));
         }
         static mouseHoverHandler(e) {
@@ -71,12 +70,13 @@ define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex",
         static mouseHandler(e) {
             const p = new Point_1.RelPoint(e.clientX, e.clientY);
             const r = EventManager.distanceFromNearestHexCorner(p);
+            const m = GameManager_1.GameManager.instance.getMap();
             if (GameManager_1.GameManager.instance.mayPlaceRobber) {
-                const m = GameManager_1.GameManager.instance.getMap();
                 const tile = m.getAllowedRobberPlace(p.toAbsPoint());
                 if (tile != undefined) {
                     const tileExists = tile;
                     GameManager_1.GameManager.instance.moveRobber(tileExists);
+                    GameManager_1.GameManager.instance.draw();
                     GameManager_1.GameManager.instance.mayPlaceRobber = false;
                 }
                 else {
@@ -88,7 +88,6 @@ define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex",
                     // clicked on a corner
                     const h = p.toHexPoint();
                     //console.log("new settlement");
-                    const m = GameManager_1.GameManager.instance.getMap();
                     if (m.isAllowedSettlement(h)) {
                         m.addSettlement(new Settlement_1.Settlement(h, GameManager_1.GameManager.instance.getCurrentPlayer()));
                         GameManager_1.GameManager.instance.draw();
@@ -106,7 +105,6 @@ define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex",
                 // strokeCity
                 if (r < Hex_1.Hex.getSideLength() / 3.5) {
                     const h = p.toHexPoint();
-                    const m = GameManager_1.GameManager.instance.getMap();
                     if (m.isAllowedCity(h)) {
                         m.addCity(h);
                         GameManager_1.GameManager.instance.draw();
@@ -122,7 +120,6 @@ define(["require", "exports", "../graphics/Point", "../util", "../graphics/Hex",
             else if (GameManager_1.GameManager.instance.mayPlaceRoad) {
                 const hArr = p.toDualHexPoint();
                 if (hArr.length == 2) { // hArr is empty if not over a line 
-                    const m = GameManager_1.GameManager.instance.getMap();
                     if (m.isAllowedRoad(hArr[0], hArr[1])) { // check if road already there
                         m.addRoad(new Road_1.Road(hArr[0], hArr[1], GameManager_1.GameManager.instance.getCurrentPlayer()));
                         GameManager_1.GameManager.instance.draw();

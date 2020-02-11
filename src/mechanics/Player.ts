@@ -65,6 +65,25 @@ export class Player {
         this.updateInvBoard();
     }
 
+    genericTrade(toPlayer: ResourceType, n: number, fromPlayer: ResourceType, m: number): boolean {
+        assertInt(n);
+        assertInt(m);
+        if (this.inventory.hasEnough(fromPlayer, m)) {
+            // trade !!
+            this.inventory.update(fromPlayer, -m);
+            this.inventory.update(toPlayer, n);
+
+            return true;
+        }
+        else {
+            return false; // trade failed cause not enough resources
+        }
+    }
+
+    bankTrade(toPlayer: ResourceType, fromPlayer: ResourceType): boolean {
+        return this.genericTrade(toPlayer, 1, fromPlayer, 4);
+    }
+
     purchaseRoad() {
         if (GameManager.instance.mayPlaceRoad) {
             GameManager.instance.printErr("Place road before buying another");
