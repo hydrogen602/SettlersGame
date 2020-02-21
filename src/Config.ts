@@ -4,9 +4,19 @@
 
 export class Config {
     private static n = 3;
+    private static ip = "127.0.0.1";
+    private static port = 5050;
 
     static getN() {
         return this.n;
+    }
+
+    static getIP() {
+        return this.ip;
+    }
+
+    static getPort() {
+        return this.port;
     }
 
     private constructor() {}

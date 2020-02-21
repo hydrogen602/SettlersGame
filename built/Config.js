@@ -10,9 +10,17 @@ define(["require", "exports"], function (require, exports) {
         static getN() {
             return this.n;
         }
+        static getIP() {
+            return this.ip;
+        }
+        static getPort() {
+            return this.port;
+        }
     }
     exports.Config = Config;
     Config.n = 3;
+    Config.ip = "127.0.0.1";
+    Config.port = 5050;
 });
 // time spent check
 // Coding: 86 min + 225 min + 230 min + 146 min + 86 min = 773 min
