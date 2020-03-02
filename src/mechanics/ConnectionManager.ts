@@ -10,13 +10,21 @@ export class ConnectionManager {
 
     private testPhase: number;
 
+    public static instance: ConnectionManager;
+
     constructor() {
+        ConnectionManager.instance = this;
+
         this.url = 'ws://' + Config.getIP() + ":" + Config.getPort();
         this.ws = new WebSocket(this.url);
 
-        this.ws.onmessage = this.messageHandler;
+        this.ws.onmessage = function(e: MessageEvent) {
+            ConnectionManager.instance.onmessage(e);
+        };
 
-        this.ws.onopen = this.openHandler;
+        this.ws.onopen = function(ev: Event) {
+            ConnectionManager.instance.onopen(ev);
+        };
 
         this.testPhase = -1;
 
@@ -24,17 +32,45 @@ export class ConnectionManager {
         defined(this.ws);
     }
 
-    openHandler(ev: Event) {
+    ready() {
+        // passed tests
+        return this.testPhase == 2
+    }
+
+    send(o: Object) {
+        const msg = JSON.stringify(o);
+        this.ws.send(msg);
+    }
+
+    onopen(ev: Event) {
         this.ws.send('Hi');
         this.testPhase = 0;
     }
 
-    messageHandler(e: MessageEvent) {
-        if (this.testPhase && e.data == "Hello") {
+    onmessage(e: MessageEvent) {
+        if (this.testPhase == 0 && e.data == "Hello") {
             this.testPhase = 1;
             console.log("Successful Echo, Server is alive!");
+            this.send({"test": "verify"});
         }
-        console.log(e.data);
+        else {
+            try {
+                const obj = JSON.parse(e.data);
+                if (this.testPhase == 1 && "test" in obj && obj["test"] == "echo verified") {
+                    this.testPhase = 2;
+                    console.log("JSON echo success");
+                }
+                
+                if ("update" in obj) {
+                    // update
+                    console.log("got msg")
+                    console.log(obj)
+                }
+            } catch (SyntaxError) {
+                // not json
+            }
+        }
+        
     }
 }
 

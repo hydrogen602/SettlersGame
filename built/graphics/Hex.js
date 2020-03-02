@@ -2,8 +2,7 @@ define(["require", "exports", "./Point"], function (require, exports, Point_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Hex {
-        constructor() {
-        }
+        constructor() { }
         static getSideLength() {
             return Hex.sectionLength;
         }

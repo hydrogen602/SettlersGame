@@ -5,8 +5,7 @@ define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Config {
-        constructor() {
-        }
+        constructor() { }
         static getN() {
             return this.n;
         }
